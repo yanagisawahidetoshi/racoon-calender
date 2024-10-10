@@ -13,7 +13,7 @@
       <h2>date-fnsを使って当月の1日〜最終日までをv-forで表示させる</h2>
       <ol>
         <li v-for="(day, index) in currentMonth" :key="index">
-          {{ day }}
+          {{ formatDate(day) }}
         </li>
       </ol>
     </section>
@@ -27,25 +27,23 @@ import { ja } from "date-fns/locale";
 export default {
   name: "App",
   components: {},
-  data() {
-    return {
-      currentMonth: this.getCurrentMonth(),
-    };
+  computed: {
+    currentMonth() {
+      const now = new Date();
+      const dates = eachDayOfInterval({
+        start: startOfMonth(now),
+        end: endOfMonth(now),
+      });
+      return dates;
+    },
   },
   methods: {
     applyDayOfWeek(day) {
       const dayOfWeek = ["月", "火", "水", "木", "金", "土", "日"];
       return dayOfWeek[(day - 1) % 7];
     },
-    getCurrentMonth() {
-      const now = new Date();
-      const dates = eachDayOfInterval({
-        start: startOfMonth(now),
-        end: endOfMonth(now),
-      });
-      return dates.map((date) => {
-        return format(date, "yyyy年MMMMdo（EEEE）", { locale: ja });
-      });
+    formatDate(date) {
+      return format(date, "yyyy年MMMMdo（EEEE）", { locale: ja });
     },
   },
 };
