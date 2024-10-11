@@ -10,8 +10,8 @@
     <section>
       <h2>date-fnsを使って当月の1日〜最終日までをv-forで表示</h2>
       <ol>
-        <li v-for="(calender, index) in formattedDateList" :key="index">
-          {{ calender }}
+        <li v-for="(date, index) in dateList" :key="index">
+          {{ formatDate(date) }}
         </li>
       </ol>
     </section>
@@ -25,21 +25,21 @@ export default {
   name: "App",
   data() {
     return {
-      formattedDateList: [],
+      dateList: [],
     };
   },
   mounted() {
     this.generateDate();
   },
   methods: {
+    formatDate(date) {
+      return format(date, "yyyy年M月d日（E）", { locale: ja })
+    },
     generateDate() {
       const now = new Date();
       const start = startOfMonth(now);
       const end = endOfMonth(now);
-      const dateList = eachDayOfInterval({ start, end });
-      this.formattedDateList = dateList.map((date) =>
-        format(date, "yyyy年M月d日（E）", { locale: ja })
-      );
+      this.dateList = eachDayOfInterval({ start, end });
     },
   },
   components: {},
