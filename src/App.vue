@@ -40,14 +40,14 @@ export default {
   components: {},
   data() {
     return {
-      now: new Date(),
+      active: new Date(),
     };
   },
   computed: {
     instanceMonth() {
       const dates = eachDayOfInterval({
-        start: startOfMonth(this.now),
-        end: endOfMonth(this.now),
+        start: startOfMonth(this.active),
+        end: endOfMonth(this.active),
       });
       return dates;
     },
@@ -61,13 +61,13 @@ export default {
       return format(date, "yyyy年MMMMdo（EEEE）", { locale: ja });
     },
     prevMonth() {
-      this.now = subMonths(this.now, +1);
+      this.active = subMonths(this.active, +1);
     },
     nextMonth() {
-      this.now = subMonths(this.now, -1);
+      this.active = subMonths(this.active, -1);
     },
     currentMonth() {
-      this.now = new Date();
+      this.active = new Date();
     },
   },
 };
