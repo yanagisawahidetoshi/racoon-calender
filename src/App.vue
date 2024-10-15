@@ -30,9 +30,9 @@ export default {
     const calendar = eachDayOfInterval({
       start: new Date(SOM),
       end: new Date(LOM),
-    }).map((day) => ({
-      DAY: format(day, "dd"),
-      DOW: daysOfWeek[getDay(day)],
+    }).map((date) => ({
+      DAY: format(date, "dd"),
+      DOW: daysOfWeek[getDay(date)],
     }));
     return {
       calendar,
