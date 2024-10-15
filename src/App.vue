@@ -12,27 +12,42 @@
     <section>
       <h2>date-fnsを使って当月の1日〜最終日までをv-forで表示させる</h2>
       <ol>
-        <li v-for="(day, index) in currentMonth" :key="index">
+        <li v-for="(day, index) in instanceMonth" :key="index">
           {{ formatDate(day) }}
         </li>
       </ol>
+      <div>
+        <button @click="prevMonth">前月</button>
+        <button @click="currentMonth">当月</button>
+        <button @click="nextMonth">翌月</button>
+      </div>
     </section>
   </div>
 </template>
 
 <script>
-import { eachDayOfInterval, startOfMonth, endOfMonth, format } from "date-fns";
+import {
+  eachDayOfInterval,
+  startOfMonth,
+  endOfMonth,
+  format,
+  subMonths,
+} from "date-fns";
 import { ja } from "date-fns/locale";
 
 export default {
   name: "App",
   components: {},
+  data() {
+    return {
+      active: new Date(),
+    };
+  },
   computed: {
-    currentMonth() {
-      const now = new Date();
+    instanceMonth() {
       const dates = eachDayOfInterval({
-        start: startOfMonth(now),
-        end: endOfMonth(now),
+        start: startOfMonth(this.active),
+        end: endOfMonth(this.active),
       });
       return dates;
     },
@@ -44,6 +59,15 @@ export default {
     },
     formatDate(date) {
       return format(date, "yyyy年MMMMdo（EEEE）", { locale: ja });
+    },
+    prevMonth() {
+      this.active = subMonths(this.active, +1);
+    },
+    nextMonth() {
+      this.active = subMonths(this.active, -1);
+    },
+    currentMonth() {
+      this.active = new Date();
     },
   },
 };
