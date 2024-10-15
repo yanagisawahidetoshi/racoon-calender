@@ -3,7 +3,7 @@
     {{ /* 日付と曜日を出力 */ }}
     <ol>
       <li v-for="(n, index) in calendar" :key="index">
-        {{ n.DAY }}({{ n.DOW }})
+        {{ n.date }}({{ n.day }})
       </li>
     </ol>
   </div>
@@ -33,9 +33,9 @@ export default {
     const calendar = eachDayOfInterval({
       start: new Date(SOM),
       end: new Date(EOM),
-    }).map((date) => ({
-      DAY: format(date, "dd"),
-      DOW: daysOfWeek[getDay(date)],
+    }).map((day) => ({
+      date: format(day, "dd"),
+      day: daysOfWeek[getDay(day)],
     }));
     //console.log(calendar);
     return {
