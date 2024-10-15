@@ -10,6 +10,9 @@
 </template>
 
 <script>
+// 表示年月を表示
+// 左右に前月次月を切り替えるボタンを表示
+// 当月ボタンを表示
 import {
   startOfMonth,
   endOfMonth,
@@ -24,16 +27,17 @@ export default {
   data() {
     const currentDate = new Date();
     const SOM = startOfMonth(currentDate);
-    const LOM = endOfMonth(currentDate);
+    const EOM = endOfMonth(currentDate);
     // 曜日追加
     const daysOfWeek = ["日", "月", "火", "水", "木", "金", "土"];
     const calendar = eachDayOfInterval({
       start: new Date(SOM),
-      end: new Date(LOM),
+      end: new Date(EOM),
     }).map((date) => ({
       DAY: format(date, "dd"),
       DOW: daysOfWeek[getDay(date)],
     }));
+    //console.log(calendar);
     return {
       calendar,
     };
