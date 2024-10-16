@@ -16,7 +16,12 @@
 </template>
 
 <script>
-import { lastDayOfMonth, format, eachDayOfInterval } from "date-fns";
+import {
+  lastDayOfMonth,
+  startOfMonth,
+  format,
+  eachDayOfInterval,
+} from "date-fns";
 import { ja } from "date-fns/locale";
 
 // date-fnsを使って当月の1日〜最終日までをv-forで表示させる
@@ -32,7 +37,7 @@ export default {
   computed: {
     calendar() {
       const calendar = eachDayOfInterval({
-        start: new Date(),
+        start: startOfMonth(new Date()),
         end: lastDayOfMonth(new Date()),
       });
       return calendar.map((date) => {
