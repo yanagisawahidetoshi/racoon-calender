@@ -3,9 +3,11 @@
     <h1>カレンダー</h1>
     <section>
       <h2>来月、翌月ボタン追加</h2>
-      <button @click="prevMonth">前月</button>
-      <button @click="currentMonth">当月</button>
-      <button @click="nextMonth">翌月</button>
+      <ul class="btnArea mb10">
+          <li><button class="btn" @click="prevMonth">前月</button></li>
+          <li><button class="btn" @click="currentMonth">当月</button></li>
+          <li><button class="btn" @click="nextMonth">翌月</button></li>
+      </ul>
       <ol>
         <li v-for="(date, index) in dateList" :key="index">
           {{ formatDate(date) }}
@@ -54,8 +56,16 @@ export default {
 };
 </script>
 <style scoped>
-ul,
-ol {
-  list-style: none;
+.mb10 {
+  margin-bottom: 10px;
+}
+.btnArea {
+  display: flex;
+  gap: 10px;
+}
+.btn {
+  padding: 0.5em;
+  background-color: #DDD;
+  border-radius: 3px;
 }
 </style>
