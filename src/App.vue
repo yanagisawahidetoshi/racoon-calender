@@ -8,8 +8,15 @@
     </section>
     <section>
       <h1>date-fnsを使って当月の1日〜最終日までをv-forで表示させる</h1>
+      <ul class="controle-month">
+        <li><button type="button" @click="lastMonth">前月</button></li>
+        <li><button type="button" @click="currentMonth">当月</button></li>
+        <li><button type="button" @click="nextMonth">翌月</button></li>
+      </ul>
       <ol>
-        <li v-for="(date, index) in calendar" :key="index">{{ date }}</li>
+        <li v-for="(date, index) in calendar" :key="index">
+          {{ formatDate(date) }}
+        </li>
       </ol>
     </section>
   </div>
@@ -19,6 +26,8 @@
 import {
   lastDayOfMonth,
   startOfMonth,
+  addMonths,
+  subMonths,
   format,
   eachDayOfInterval,
 } from "date-fns";
@@ -34,15 +43,37 @@ import { ja } from "date-fns/locale";
 
 export default {
   name: "App",
+  data() {
+    return {
+      start: startOfMonth(new Date()),
+      end: lastDayOfMonth(new Date()),
+    };
+  },
   computed: {
     calendar() {
-      const calendar = eachDayOfInterval({
-        start: startOfMonth(new Date()),
-        end: lastDayOfMonth(new Date()),
+      return eachDayOfInterval({
+        start: this.start,
+        end: this.end,
       });
-      return calendar.map((date) => {
-        return format(date, "MM月dd日(E)", { locale: ja });
-      });
+    },
+  },
+  methods: {
+    formatDate(date) {
+      return format(date, "MM月dd日(E)", { locale: ja });
+    },
+    lastMonth() {
+      const lastToday = subMonths(this.start, 1);
+      this.start = startOfMonth(lastToday);
+      this.end = lastDayOfMonth(lastToday);
+    },
+    nextMonth() {
+      const nextToday = addMonths(this.start, 1);
+      this.start = startOfMonth(nextToday);
+      this.end = lastDayOfMonth(nextToday);
+    },
+    currentMonth() {
+      this.start = startOfMonth(new Date());
+      this.end = lastDayOfMonth(new Date());
     },
   },
 };
@@ -50,5 +81,12 @@ export default {
 <style scoped>
 li {
   list-style-type: none;
+}
+.controle-month {
+  display: flex;
+  gap: 10px;
+  :hover {
+    cursor: pointer;
+  }
 }
 </style>
