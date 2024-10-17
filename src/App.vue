@@ -4,12 +4,12 @@
     <section>
       <h2>来月、翌月ボタン追加</h2>
       <ul class="btnArea mb10">
-          <li><button class="btn" @click="prevMonth">前月</button></li>
-          <li><button class="btn" @click="currentMonth">当月</button></li>
-          <li><button class="btn" @click="nextMonth">翌月</button></li>
+        <li><button class="btn" @click="prevMonth">前月</button></li>
+        <li><button class="btn" @click="currentMonth">当月</button></li>
+        <li><button class="btn" @click="nextMonth">翌月</button></li>
       </ul>
       <ol>
-        <li v-for="(date, index) in dateList" :key="index">
+        <li v-for="(date, index) in generateDate()" :key="index">
           {{ formatDate(date) }}
         </li>
       </ol>
@@ -18,14 +18,20 @@
 </template>
 
 <script>
-import { startOfMonth, endOfMonth, eachDayOfInterval, format, addMonths, subMonths } from "date-fns";
+import {
+  startOfMonth,
+  endOfMonth,
+  eachDayOfInterval,
+  format,
+  addMonths,
+  subMonths,
+} from "date-fns";
 import ja from "date-fns/locale/ja";
 export default {
   name: "App",
   data() {
     return {
-      currentDay : new Date(),
-      dateList: [],
+      currentDay: new Date(),
     };
   },
   mounted() {
@@ -33,25 +39,22 @@ export default {
   },
   methods: {
     formatDate(date) {
-      return format(date, "yyyy年M月d日（E）", { locale: ja })
+      return format(date, "yyyy年M月d日（E）", { locale: ja });
     },
     generateDate() {
       const start = startOfMonth(this.currentDay);
       const end = endOfMonth(this.currentDay);
-      this.dateList = eachDayOfInterval({ start, end });
+      return eachDayOfInterval({ start, end });
     },
     prevMonth() {
       this.currentDay = subMonths(this.currentDay, 1);
-      this.generateDate();
     },
     nextMonth() {
       this.currentDay = addMonths(this.currentDay, 1);
-      this.generateDate();
     },
     currentMonth() {
       this.currentDay = new Date();
-      this.generateDate();
-    }
+    },
   },
 };
 </script>
@@ -65,7 +68,7 @@ export default {
 }
 .btn {
   padding: 0.5em;
-  background-color: #DDD;
+  background-color: #ddd;
   border-radius: 3px;
 }
 </style>
