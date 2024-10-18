@@ -1,7 +1,7 @@
 <template>
   <input
     type="date"
-    :value="DateValue"
+    :value="dateValue"
     @input="validate($event.target.value)"
     class="inputDate"
   />
@@ -11,7 +11,7 @@
 export default {
   name: "InputDate",
   props: {
-    DateValue: {
+    dateValue: {
       type: String,
       default: "",
     },
