@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    {{ today }}
     <section>
       <h1>ハードコードで1日〜31日までをv-forで表示させてみる</h1>
       <ol>
@@ -46,13 +45,13 @@ export default {
   name: "App",
   data() {
     return {
-      today: new Date(),
+      currentDate: new Date(),
     };
   },
   computed: {
     calendar() {
-      const start = startOfMonth(this.today);
-      const end = lastDayOfMonth(this.today);
+      const start = startOfMonth(this.currentDate);
+      const end = lastDayOfMonth(this.currentDate);
       return eachDayOfInterval({
         start,
         end,
@@ -64,13 +63,13 @@ export default {
       return format(date, "MM月dd日(E)", { locale: ja });
     },
     lastMonth() {
-      this.today = subMonths(this.today, 1);
+      this.currentDate = subMonths(this.currentDate, 1);
     },
     nextMonth() {
-      this.today = addMonths(this.today, 1);
+      this.currentDate = addMonths(this.currentDate, 1);
     },
     currentMonth() {
-      this.today = new Date();
+      this.currentDate = new Date();
     },
   },
 };
