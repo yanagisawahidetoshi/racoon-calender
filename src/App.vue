@@ -2,14 +2,24 @@
   <div>
     <Button @click="previousMonth()" class="btn">前月</Button>
     <span>{{ dispDate }}</span>
-    <Button @click="nexttMonth()" class="btn">次月</Button>
+    <Button @click="nextMonth()" class="btn">次月</Button>
     <Button @click="currentMonth()" class="btn">当月</Button>
+
+    <div class="input-wrap">
+      {{ /* input:text */ }}
+      <InputText v-model="inputText" placeholder="テキストを入力" />
+      {{ /* input:date */ }}
+      <InputDate v-model="inputDate" />
+      {{ /* input:time */ }}
+      <InputTime v-model="inputTime" />
+    </div>
     {{ /* 日付と曜日を出力 */ }}
     <ol>
       <li v-for="(n, index) in calendar" :key="index">
         {{ n.date }}({{ n.day }})
       </li>
     </ol>
+    <input type="text" />
   </div>
 </template>
 
@@ -31,18 +41,27 @@ import {
   getDay,
   addMonths,
 } from "date-fns";
-import { Button } from "./components/Button/";
+import Button from "./components/Button/";
+import InputText from "./components/InputText/";
+import InputDate from "./components/InputDate/";
+import InputTime from "./components/InputTime/";
 
 export default {
   name: "app",
   components: {
     Button,
+    InputText,
+    InputDate,
+    InputTime,
   },
 
   data() {
     return {
       currentDate: new Date(),
       daysOfWeek: ["日", "月", "火", "水", "木", "金", "土"],
+      inputText: "",
+      inputDate: "",
+      inputTime: "",
     };
   },
   computed: {
@@ -65,7 +84,7 @@ export default {
     previousMonth() {
       this.currentDate = addMonths(this.currentDate, -1);
     },
-    nexttMonth() {
+    nextMonth() {
       this.currentDate = addMonths(this.currentDate, 1);
     },
     currentMonth() {
@@ -103,5 +122,8 @@ li {
 }
 .btn {
   margin: 0 6px;
+}
+.input-wrap {
+  margin: 25px 0;
 }
 </style>
