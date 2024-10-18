@@ -1,5 +1,5 @@
 <template>
-  <input type="text" :value="value" @input="upDateDate($event)" />
+  <input type="date" :value="value" @input="upDateDate($event)" />
 </template>
 
 <script>

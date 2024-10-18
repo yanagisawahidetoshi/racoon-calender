@@ -1,5 +1,5 @@
 <template>
-  <input type="text" :value="value" @input="upDateTime($event)" />
+  <input type="time" :value="value" @input="upDateTime($event)" />
 </template>
 
 <script>
@@ -7,8 +7,8 @@ export default {
   name: "InputTime",
   props: {
     value: {
-      type: Number,
-      value: "",
+      type: String,
+      default: "00:00",
     },
   },
   methods: {
