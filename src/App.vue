@@ -33,25 +33,17 @@
 
 <script>
 import {
-  lastDayOfMonth,
-  startOfMonth,
-  addMonths,
-  subMonths,
-  format,
-  eachDayOfInterval,
-} from "date-fns";
-import { ja } from "date-fns/locale";
+  getLastDayOfMonth,
+  getStartOfMonth,
+  getAddMonths,
+  getSubMonths,
+  getFormatJa,
+  getEachDayOfInterval,
+} from "./libs/date-fns.js";
+
 import FormInput from "@/components/atoms/FormInput";
 import FormInputDate from "@/components/atoms/FormInputDate";
 import FormInputTime from "@/components/atoms/FormInputTime";
-
-// date-fnsを使って当月の1日〜最終日までをv-forで表示させる
-// リストは日付 + 曜日にする
-// リスtーの頭に何月かを表示させる。日本語形式で
-// 1行1日のリスト形式で大丈夫です。
-// console.log(format(new Date(), "yyyy年MM月dd日（E）", { locale: ja }));
-
-// 今月を取得し、今月の最終日を取得する
 
 export default {
   name: "App",
@@ -70,23 +62,20 @@ export default {
   },
   computed: {
     calendar() {
-      const start = startOfMonth(this.currentDate);
-      const end = lastDayOfMonth(this.currentDate);
-      return eachDayOfInterval({
-        start,
-        end,
-      });
+      const start = getStartOfMonth(this.currentDate);
+      const end = getLastDayOfMonth(this.currentDate);
+      return getEachDayOfInterval(start, end);
     },
   },
   methods: {
     formatDate(date) {
-      return format(date, "MM月dd日(E)", { locale: ja });
+      return getFormatJa(date, "MM月dd日(E)");
     },
     lastMonth() {
-      this.currentDate = subMonths(this.currentDate, 1);
+      this.currentDate = getSubMonths(this.currentDate, 1);
     },
     nextMonth() {
-      this.currentDate = addMonths(this.currentDate, 1);
+      this.currentDate = getAddMonths(this.currentDate, 1);
     },
     currentMonth() {
       this.currentDate = new Date();
