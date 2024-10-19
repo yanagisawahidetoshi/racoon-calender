@@ -8,6 +8,7 @@
     </section>
     <section>
       <h1>date-fnsを使って当月の1日〜最終日までをv-forで表示させる</h1>
+
       <ul class="controle-month">
         <li><button type="button" @click="lastMonth">前月</button></li>
         <li><button type="button" @click="currentMonth">当月</button></li>
@@ -18,6 +19,14 @@
           {{ formatDate(date) }}
         </li>
       </ol>
+    </section>
+    <section>
+      <h1>
+        input:text/input:date/input:timeのコンポーネントを作っておいてください。
+      </h1>
+      <FormInput v-model="inputText" />
+      <FormInputDate :value="inputDate" @change="inputDate = $event" />
+      <FormInputTime v-model="inputTime" />
     </section>
   </div>
 </template>
@@ -32,6 +41,9 @@ import {
   eachDayOfInterval,
 } from "date-fns";
 import { ja } from "date-fns/locale";
+import FormInput from "@/components/atoms/FormInput";
+import FormInputDate from "@/components/atoms/FormInputDate";
+import FormInputTime from "@/components/atoms/FormInputTime";
 
 // date-fnsを使って当月の1日〜最終日までをv-forで表示させる
 // リストは日付 + 曜日にする
@@ -46,7 +58,15 @@ export default {
   data() {
     return {
       currentDate: new Date(),
+      inputText: "",
+      inputDate: "",
+      inputTime: "",
     };
+  },
+  components: {
+    FormInput,
+    FormInputDate,
+    FormInputTime,
   },
   computed: {
     calendar() {
