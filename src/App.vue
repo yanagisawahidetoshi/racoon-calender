@@ -31,7 +31,7 @@ export default {
   name: "App",
   data() {
     return {
-      currentDay: new Date(),
+      activeDate: new Date(),
     };
   },
   mounted() {
@@ -42,18 +42,18 @@ export default {
       return format(date, "yyyy年M月d日（E）", { locale: ja });
     },
     generateDate() {
-      const start = startOfMonth(this.currentDay);
-      const end = endOfMonth(this.currentDay);
+      const start = startOfMonth(this.activeDate);
+      const end = endOfMonth(this.activeDate);
       return eachDayOfInterval({ start, end });
     },
     prevMonth() {
-      this.currentDay = subMonths(this.currentDay, 1);
+      this.activeDate = subMonths(this.activeDate, 1);
     },
     nextMonth() {
-      this.currentDay = addMonths(this.currentDay, 1);
+      this.activeDate = addMonths(this.activeDate, 1);
     },
     currentMonth() {
-      this.currentDay = new Date();
+      this.activeDate = new Date();
     },
   },
 };
