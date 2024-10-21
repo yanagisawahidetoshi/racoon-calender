@@ -33,14 +33,12 @@
 //   表示用の年月もここで処理
 // 6.ボタン操作用のmethodsを用意
 // 7.dateに、年月日用の変数を定義。日本語用の曜日を定義
+
 import {
-  startOfMonth,
-  endOfMonth,
-  eachDayOfInterval,
-  format,
-  getDay,
-  addMonths,
-} from "date-fns";
+  getFormat,
+  getEachDayOfInterval,
+  getAddMonths,
+} from "./libs/date-utility";
 import Button from "./components/Button/";
 import InputText from "./components/InputText/";
 import InputDate from "./components/InputDate/";
@@ -66,26 +64,18 @@ export default {
   },
   computed: {
     dispDate() {
-      return format(this.currentDate, "yyyy年MM月");
+      return getFormat(this.currentDate, "yyyy年MM月");
     },
     calendar() {
-      const SOM = startOfMonth(this.currentDate);
-      const EOM = endOfMonth(this.currentDate);
-      return eachDayOfInterval({
-        start: new Date(SOM),
-        end: new Date(EOM),
-      }).map((days) => ({
-        date: format(days, "dd日"),
-        day: this.daysOfWeek[getDay(days)],
-      }));
+      return getEachDayOfInterval(this.currentDate, this.daysOfWeek);
     },
   },
   methods: {
     previousMonth() {
-      this.currentDate = addMonths(this.currentDate, -1);
+      this.currentDate = getAddMonths(this.currentDate, -1);
     },
     nextMonth() {
-      this.currentDate = addMonths(this.currentDate, 1);
+      this.currentDate = getAddMonths(this.currentDate, 1);
     },
     currentMonth() {
       this.currentDate = new Date();
