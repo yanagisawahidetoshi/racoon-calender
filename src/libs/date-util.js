@@ -7,18 +7,18 @@ import {
 } from "date-fns";
 import { ja } from "date-fns/locale";
 
-export const dateFnsEachDayOfInterval = (startDate, endDate) => {
+export const getEachDayOfInterval = (startDate, endDate) => {
   return eachDayOfInterval(startDate, endDate);
 };
-export const dateFnsStartOfMonth = (date) => {
+export const getStartOfMonth = (date) => {
   return startOfMonth(date);
 };
-export const dateFnsEndOfMonth = (date) => {
+export const getEndOfMonth = (date) => {
   return endOfMonth(date);
 };
-export const dateFnsFormat = (date, type) => {
+export const getFormat = (date, type) => {
   return format(date, type, { locale: ja });
 };
-export const dateFnsSubMonths = (date, monthsToSubtract) => {
+export const getSubMonths = (date, monthsToSubtract) => {
   return subMonths(date, monthsToSubtract);
 };

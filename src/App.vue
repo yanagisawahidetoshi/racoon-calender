@@ -45,12 +45,12 @@
 
 <script>
 import {
-  dateFnsEachDayOfInterval,
-  dateFnsStartOfMonth,
-  dateFnsEndOfMonth,
-  dateFnsFormat,
-  dateFnsSubMonths,
-} from "./libs/date-fns";
+  getEachDayOfInterval as eachDayOfInterval,
+  getStartOfMonth as startOfMonth,
+  getEndOfMonth as endOfMonth,
+  getFormat as format,
+  getSubMonths as subMonths,
+} from "./libs/date-util";
 import InputText from "./components/atoms/InputText.vue";
 import InputDate from "./components/atoms/InputDate.vue";
 import InputTime from "./components/atoms/InputTime.vue";
@@ -68,9 +68,9 @@ export default {
   },
   computed: {
     instanceMonth() {
-      const dates = dateFnsEachDayOfInterval({
-        start: dateFnsStartOfMonth(this.active),
-        end: dateFnsEndOfMonth(this.active),
+      const dates = eachDayOfInterval({
+        start: startOfMonth(this.active),
+        end: endOfMonth(this.active),
       });
       return dates;
     },
@@ -81,13 +81,13 @@ export default {
       return dayOfWeek[(day - 1) % 7];
     },
     formatDate(date) {
-      return dateFnsFormat(date, "yyyy年MMMMdo（EEEE）");
+      return format(date, "yyyy年MMMMdo（EEEE）");
     },
     prevMonth() {
-      this.active = dateFnsSubMonths(this.active, +1);
+      this.active = subMonths(this.active, +1);
     },
     nextMonth() {
-      this.active = dateFnsSubMonths(this.active, -1);
+      this.active = subMonths(this.active, -1);
     },
     currentMonth() {
       this.active = new Date();
