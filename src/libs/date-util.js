@@ -17,8 +17,8 @@ export const endOfMonth = (date) => {
 export const eachDayOfInterval = ({ start, end }) => {
   return dateFnsEachDayOfInterval({ start, end });
 };
-export const format = (date, DateFormatDate) => {
-  return dateFnsFormat(date, DateFormatDate, { locale: ja });
+export const format = (date, dateFormatDate) => {
+  return dateFnsFormat(date, dateFormatDate, { locale: ja });
 };
 export const addMonths = (date, num) => {
   return dateFnsAddMonths(date, num);
