@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <h1>カレンダー</h1>
-    <section>
+    <section class="mb10">
       <h2>来月、翌月ボタン追加</h2>
       <ul class="btnArea mb10">
         <li><button class="btn" @click="prevMonth">前月</button></li>
@@ -14,43 +14,60 @@
         </li>
       </ol>
     </section>
+    <section>
+      <h2>inputコンポーネント確認用</h2>
+      <div class="mb10"><InputText v-model="inputText" /></div>
+      <div class="mb10"><InputDate v-model="inputDate" /></div>
+      <div class="mb10"><InputTime v-model="inputTime" /></div>
+    </section>
   </div>
 </template>
 
 <script>
 import {
-  startOfMonth,
-  endOfMonth,
-  eachDayOfInterval,
-  format,
-  addMonths,
-  subMonths,
-} from "date-fns";
-import ja from "date-fns/locale/ja";
+  getStartOfMonth,
+  getEndOfMonth,
+  getEachDayOfInterval,
+  getFormat,
+  getAddMonths,
+  getSubMonths,
+} from "./libs/date-fns";
+import InputText from "./components/atoms/InputText/";
+import InputDate from "./components/atoms/InputDate/";
+import InputTime from "./components/atoms/InputTime/";
 export default {
   name: "App",
+  components: {
+    InputText,
+    InputDate,
+    InputTime,
+  },
   data() {
     return {
       activeDate: new Date(),
+      changeText: "",
     };
   },
   mounted() {
     this.generateDate();
   },
   methods: {
+    handleText(val) {
+      this.changeText = val;
+    },
     formatDate(date) {
-      return format(date, "yyyy年M月d日（E）", { locale: ja });
+      return getFormat(date);
     },
     generateDate() {
-      const start = startOfMonth(this.activeDate);
-      const end = endOfMonth(this.activeDate);
-      return eachDayOfInterval({ start, end });
+      const start = getStartOfMonth(this.activeDate);
+      const end = getEndOfMonth(this.activeDate);
+      return getEachDayOfInterval({ start, end });
     },
     prevMonth() {
-      this.activeDate = subMonths(this.activeDate, 1);
+      this.activeDate = getAddMonths(this.activeDate, 1);
     },
     nextMonth() {
-      this.activeDate = addMonths(this.activeDate, 1);
+      this.activeDate = getSubMonths(this.activeDate, 1);
     },
     currentMonth() {
       this.activeDate = new Date();
