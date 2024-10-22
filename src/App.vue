@@ -16,22 +16,24 @@
     </section>
     <section>
       <h2>inputコンポーネント確認用</h2>
-      <div class="mb10"><InputText v-model="inputText" /></div>
-      <div class="mb10"><InputDate v-model="inputDate" /></div>
-      <div class="mb10"><InputTime v-model="inputTime" /></div>
+      <div class="input-wrap">
+        <InputText v-model="inputText" />
+        <InputDate v-model="inputDate" />
+        <InputTime v-model="inputTime" />
+      </div>
     </section>
   </div>
 </template>
 
 <script>
 import {
-  getStartOfMonth,
-  getEndOfMonth,
-  getEachDayOfInterval,
-  getFormat,
-  getAddMonths,
-  getSubMonths,
-} from "./libs/date-fns";
+  startOfMonth,
+  endOfMonth,
+  eachDayOfInterval,
+  format,
+  addMonths,
+  subMonths,
+} from "./libs/date-util";
 import InputText from "./components/atoms/InputText/";
 import InputDate from "./components/atoms/InputDate/";
 import InputTime from "./components/atoms/InputTime/";
@@ -56,18 +58,18 @@ export default {
       this.changeText = val;
     },
     formatDate(date) {
-      return getFormat(date);
+      return format(date, "yyyy年M月d日（E）");
     },
     generateDate() {
-      const start = getStartOfMonth(this.activeDate);
-      const end = getEndOfMonth(this.activeDate);
-      return getEachDayOfInterval({ start, end });
+      const start = startOfMonth(this.activeDate);
+      const end = endOfMonth(this.activeDate);
+      return eachDayOfInterval({ start, end });
     },
     prevMonth() {
-      this.activeDate = getAddMonths(this.activeDate, 1);
+      this.activeDate = addMonths(this.activeDate, 1);
     },
     nextMonth() {
-      this.activeDate = getSubMonths(this.activeDate, 1);
+      this.activeDate = subMonths(this.activeDate, 1);
     },
     currentMonth() {
       this.activeDate = new Date();
@@ -87,5 +89,9 @@ export default {
   padding: 0.5em;
   background-color: #ddd;
   border-radius: 3px;
+}
+.input-wrap {
+  display: flex;
+  gap: 10px;
 }
 </style>
