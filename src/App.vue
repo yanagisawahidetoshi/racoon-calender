@@ -25,7 +25,8 @@
         input:text/input:date/input:timeのコンポーネントを作っておいてください。
       </h1>
       <FormInput v-model="inputText" />
-      <FormInputDate :value="inputDate" @change="inputDate = $event" />
+      <FormInputDate v-model="inputDate" />aas{{inputDate}}
+      <!-- <FormInputDate :value="inputDate" @change="inputDate = $event" /> -->
       <FormInputTime v-model="inputTime" />
     </section>
   </div>
@@ -33,13 +34,13 @@
 
 <script>
 import {
-  getLastDayOfMonth,
-  getStartOfMonth,
-  getAddMonths,
-  getSubMonths,
-  getFormatJa,
-  getEachDayOfInterval,
-} from "./libs/date-fns.js";
+  lastDayOfMonth,
+  startOfMonth,
+  addMonths,
+  subMonths,
+  format,
+  eachDayOfInterval,
+} from "./libs/dateUtil.js";
 
 import FormInput from "@/components/atoms/FormInput";
 import FormInputDate from "@/components/atoms/FormInputDate";
@@ -62,20 +63,20 @@ export default {
   },
   computed: {
     calendar() {
-      const start = getStartOfMonth(this.currentDate);
-      const end = getLastDayOfMonth(this.currentDate);
-      return getEachDayOfInterval(start, end);
+      const start = startOfMonth(this.currentDate);
+      const end = lastDayOfMonth(this.currentDate);
+      return eachDayOfInterval(start, end);
     },
   },
   methods: {
     formatDate(date) {
-      return getFormatJa(date, "MM月dd日(E)");
+      return format(date, "MM月dd日(E)");
     },
     lastMonth() {
-      this.currentDate = getSubMonths(this.currentDate, 1);
+      this.currentDate = subMonths(this.currentDate, 1);
     },
     nextMonth() {
-      this.currentDate = getAddMonths(this.currentDate, 1);
+      this.currentDate = addMonths(this.currentDate, 1);
     },
     currentMonth() {
       this.currentDate = new Date();
