@@ -9,18 +9,23 @@ import {
 // import * as dateFns from "date-fns";
 /*-----*/
 
-
-export const dateInterval = (currentDate, daysOfWeek) => {
-	return dateFnsGetEachDayOfInterval({
-		start: new Date(dateFnsStartOfMonth(currentDate)),
-		end: new Date(dateFnsEndOfMonth(currentDate)),
-	}).map((days) => ({
-		date: dateFnsFormat(days, "dd日"),
-		day: daysOfWeek[dateFnsGetDay(days)]
-	}))
+export const startOfMonth = (currentDate) => {
+	return dateFnsStartOfMonth(currentDate);
 }
-export const addMonths = (currentDate, e) => {
-	return dateFnsAddMonths(currentDate, e);
+export const endOfMonth = (currentDate) => {
+	return dateFnsEndOfMonth(currentDate);
+}
+export const getDay = (currentDate) => {
+	return dateFnsGetDay(currentDate);
+}
+export const dateInterval = (startDate, endDate) => {
+	return dateFnsGetEachDayOfInterval({
+		start: new Date(startDate),
+		end: new Date(endDate),
+	})
+}
+export const addMonths = (currentDate, monthToAdd) => {
+	return dateFnsAddMonths(currentDate, monthToAdd);
 }
 export const format = (currentDate, dateFormat) => {
 	return dateFnsFormat(currentDate, dateFormat);
