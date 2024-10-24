@@ -4,13 +4,17 @@
       <Button @click="chengeMonth(-1)" className="arrow-left"></Button>
       <Button @click="chengeMonth(1)" className="arrow-right"></Button>
       <span class="nowMonth">{{ dispDate }}</span>
-      <Button @click="$vm2.open('modal-1')" tagName="a" className="regist">
+      <Button
+        @click="$vm2.open('modalToRegistSchedule')"
+        tagName="a"
+        className="regist"
+      >
         登録
       </Button>
       <Button @click="currentMonth()">当月</Button>
     </div>
     <vue-modal-2
-      name="modal-1"
+      name="modalToRegistSchedule"
       @on-close="close"
       :headerOptions="{
         title: '予定を登録',
@@ -25,7 +29,7 @@
           backgroundColor: 'green',
         },
         btn1OnClick: () => {
-          $vm2.close('modal-1');
+          $vm2.close('modalToRegistSchedule');
         },
       }"
     >
@@ -107,10 +111,10 @@ export default {
       this.currentDate = new Date();
     },
     open() {
-      this.$vm2.open("modal-1");
+      this.$vm2.open("modalToRegistSchedule");
     },
     close() {
-      this.$vm2.close("modal-1");
+      this.$vm2.close("modalToRegistSchedule");
     },
   },
 };
