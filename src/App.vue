@@ -45,7 +45,7 @@
         <p class="day">{{ formatDate(date, "E") }}</p>
       </li>
     </ol>
-    <vue-modal-2 name="modal-1" @on-close="close">
+    <vue-modal-2 name="modal-add-schedule" @on-close="close">
       <div>
         <p>予定を変更</p>
         <p><FormInputDate v-model="inputDate" /></p>
@@ -108,10 +108,10 @@ export default {
       this.currentDate = new Date();
     },
     open() {
-      this.$vm2.open("modal-1");
+      this.$vm2.open("modal-add-schedule");
     },
     close() {
-      this.$vm2.close("modal-1");
+      this.$vm2.close("modal-add-schedule");
     },
   },
 };
