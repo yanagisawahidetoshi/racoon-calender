@@ -2,10 +2,12 @@
   <div id="app">
     <header class="common_header">
       <div class="wrap_button">
-        <button class="button" @click="prevMonth">前月</button>
+        <button class="button" @click="changeMonth(-1)">前月</button>
         <button class="button" @click="currentMonth">当月</button>
-        <button class="button" @click="nextMonth">翌月</button>
-        <button class="button" @click="$vm2.open('modal')">登録</button>
+        <button class="button" @click="changeMonth(1)">翌月</button>
+        <button class="button" @click="$vm2.open('registScheduleModal')">
+          登録
+        </button>
       </div>
     </header>
     <h1 class="title">カレンダー</h1>
@@ -17,8 +19,8 @@
       </ol>
     </section>
     <vue-modal-2
-      @on-close="$vm2.close('modal')"
-      name="modal"
+      @on-close="$vm2.close('registScheduleModal')"
+      name="registScheduleModal"
       :headerOptions="{
         title: '予定を登録',
       }"
@@ -29,7 +31,7 @@
           backgroundColor: 'green',
         },
         btn1OnClick: () => {
-          $vm2.close('modal');
+          $vm2.close('registScheduleModal');
         },
       }"
     >
@@ -57,7 +59,7 @@ import {
   startOfMonth,
   endOfMonth,
   format,
-  subMonths,
+  addMonths,
 } from "./libs/date-util";
 import InputDate from "./components/atoms/InputDate.vue";
 import InputTime from "./components/atoms/InputTime.vue";
@@ -91,11 +93,8 @@ export default {
     formatDate(date) {
       return format(date, "yyyy年MMMMdo（EEEE）");
     },
-    prevMonth() {
-      this.active = subMonths(this.active, +1);
-    },
-    nextMonth() {
-      this.active = subMonths(this.active, -1);
+    changeMonth(delta) {
+      this.active = addMonths(this.active, delta);
     },
     currentMonth() {
       this.active = new Date();
