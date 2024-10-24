@@ -2,9 +2,9 @@
   <div id="app">
     <header class="header">
       <ul class="btnArea">
-        <li><button class="btn" @click="prevMonth">&lt;</button></li>
+        <li><button class="btn" @click="changeMonth(-1)">&lt;</button></li>
         <li><button class="btn" @click="currentMonth">当月</button></li>
-        <li><button class="btn" @click="nextMonth">&gt;</button></li>
+        <li><button class="btn" @click="changeMonth(1)">&gt;</button></li>
       </ul>
       <div>{{ formatMonth(activeDate) }}</div>
       <button class="btn" @click="openModal">登録</button>
@@ -35,14 +35,13 @@
             <InputText v-model="inputText" />
           </div>
           <div><InputDate v-model="inputDate" /></div>
-          <dl>
-            <dt>開始時間</dt>
-            <dd><InputTime v-model="inputTime" /></dd>
-          </dl>
-          <dl>
-            <dt>終了時間</dt>
-            <dd><InputTime v-model="inputTime" /></dd>
-          </dl>
+          <div class="scheduleRegister-startTime">
+            <span>開始時間</span><InputTime v-model="inputTime" />
+          </div>
+          <div class="scheduleRegister-endTime">
+            <span>終了時間</span>
+            <InputTime v-model="inputTime" />
+          </div>
         </div>
       </vue-modal-2>
     </header>
@@ -71,7 +70,6 @@ import {
   eachDayOfInterval,
   format,
   addMonths,
-  subMonths,
 } from "./libs/date-util";
 import InputText from "./components/atoms/InputText/";
 import InputDate from "./components/atoms/InputDate/";
@@ -110,11 +108,8 @@ export default {
       const end = endOfMonth(this.activeDate);
       return eachDayOfInterval({ start, end });
     },
-    prevMonth() {
-      this.activeDate = addMonths(this.activeDate, 1);
-    },
-    nextMonth() {
-      this.activeDate = subMonths(this.activeDate, 1);
+    changeMonth(num) {
+      this.activeDate = addMonths(this.activeDate, num);
     },
     currentMonth() {
       this.activeDate = new Date();
@@ -177,7 +172,8 @@ export default {
   flex-wrap: wrap;
   gap: 10px;
 }
-.scheduleRegister-content dl {
+.scheduleRegister-startTime,
+.scheduleRegister-endTime {
   display: flex;
   align-items: center;
   gap: 10px;
