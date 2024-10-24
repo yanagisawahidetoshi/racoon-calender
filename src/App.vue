@@ -1,11 +1,11 @@
 <template>
   <div id="app">
-    <button type="submit" @click="goPrev">前月</button>
+    <button type="submit" @click="changeMonth(-1)">前月</button>
     <button type="submit" @click="goThisMonth">当月</button>
-    <button type="submit" @click="goNext">翌月</button>
+    <button type="submit" @click="changeMonth(1)">翌月</button>
     <ol>
-      <li v-for="date in formattedDates" :key="date">
-        <p>{{ date }}</p>
+      <li v-for="(date, index) in dates" :key="index">
+        <p>{{ format(date, "MM/dd EE") }}</p>
       </li>
     </ol>
   </div>
@@ -17,7 +17,6 @@ import {
   lastDayOfMonth,
   eachDayOfInterval,
   format,
-  subMonths,
   addMonths,
 } from "date-fns";
 export default {
@@ -26,36 +25,24 @@ export default {
   data() {
     return {
       currentDay: new Date(),
-      dates: [],
     };
   },
-  mounted() {
-    this.makeDatesArrey();
-  },
   computed: {
-    formattedDates() {
-      return this.dates.map((date) => {
-        return format(date, "dd eeee");
-      });
+    dates() {
+      const start = startOfMonth(this.currentDay);
+      const end = lastDayOfMonth(this.currentDay);
+      return eachDayOfInterval({ start, end });
     },
   },
   methods: {
-    makeDatesArrey() {
-      const start = startOfMonth(this.currentDay);
-      const end = lastDayOfMonth(this.currentDay);
-      this.dates = eachDayOfInterval({ start, end });
+    format(date, pattern) {
+      return format(date, pattern);
     },
-    goPrev() {
-      this.currentDay = subMonths(this.currentDay, 1);
-      this.makeDatesArrey();
-    },
-    goNext() {
-      this.currentDay = addMonths(this.currentDay, 1);
-      this.makeDatesArrey();
+    changeMonth(num) {
+      this.currentDay = addMonths(this.currentDay, num);
     },
     goThisMonth() {
       this.currentDay = new Date();
-      this.makeDatesArrey();
     },
   },
 };
