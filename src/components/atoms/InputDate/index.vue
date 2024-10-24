@@ -19,6 +19,6 @@ export default {
 <style scoped>
 input {
   border: 1px solid #ccc;
-  padding: 5px;
+  padding: 0.5em;
 }
 </style>
