@@ -3,7 +3,7 @@ import {
   startOfMonth as getStartOfMonth,
   endOfMonth as getEndOfMonth,
   format as getFormat,
-  subMonths as getSubMonths,
+  addMonths as getAddMonths,
 } from "date-fns";
 import { ja } from "date-fns/locale";
 
@@ -19,6 +19,6 @@ export const endOfMonth = (date) => {
 export const format = (date, type) => {
   return getFormat(date, type, { locale: ja });
 };
-export const subMonths = (date, monthsToSubtract) => {
-  return getSubMonths(date, monthsToSubtract);
+export const addMonths = (date, monthsToSubtract) => {
+  return getAddMonths(date, monthsToSubtract);
 };
