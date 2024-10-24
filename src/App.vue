@@ -2,19 +2,6 @@
   <div id="app">
     <h1 class="title">カレンダー</h1>
     <section class="block">
-      <h2 class="sub_title">
-        まずは、ハードコードで1日〜31日までをv-forで表示させてみる
-      </h2>
-      <ol class="list">
-        <li class="detail" v-for="day in 31" :key="day">
-          {{ day }}日{{ applyDayOfWeek(day) }}曜日
-        </li>
-      </ol>
-    </section>
-    <section class="block">
-      <h2 class="sub_title">
-        date-fnsを使って当月の1日〜最終日までをv-forで表示させる
-      </h2>
       <div class="wrap_button">
         <button class="button" @click="prevMonth">前月</button>
         <button class="button" @click="currentMonth">当月</button>
@@ -50,8 +37,7 @@ import {
   endOfMonth,
   format,
   subMonths,
-} from "date-fns";
-import { ja } from "date-fns/locale";
+} from "./libs/date-util";
 import InputText from "./components/atoms/InputText.vue";
 import InputDate from "./components/atoms/InputDate.vue";
 import InputTime from "./components/atoms/InputTime.vue";
@@ -82,7 +68,7 @@ export default {
       return dayOfWeek[(day - 1) % 7];
     },
     formatDate(date) {
-      return format(date, "yyyy年MMMMdo（EEEE）", { locale: ja });
+      return format(date, "yyyy年MMMMdo（EEEE）");
     },
     prevMonth() {
       this.active = subMonths(this.active, +1);
@@ -104,11 +90,6 @@ export default {
 .title {
   font-size: 50px;
   font-weight: bold;
-}
-.sub_title {
-  font-size: 30px;
-  font-weight: bold;
-  margin-bottom: 20px;
 }
 .block {
   margin: 30px 0;
