@@ -1,24 +1,24 @@
 import {
-  eachDayOfInterval,
-  startOfMonth,
-  endOfMonth,
-  format,
-  subMonths,
+  eachDayOfInterval as getEachDayOfInterval,
+  startOfMonth as getStartOfMonth,
+  endOfMonth as getEndOfMonth,
+  format as getFormat,
+  subMonths as getSubMonths,
 } from "date-fns";
 import { ja } from "date-fns/locale";
 
-export const getEachDayOfInterval = (startDate, endDate) => {
-  return eachDayOfInterval(startDate, endDate);
+export const eachDayOfInterval = (startDate, endDate) => {
+  return getEachDayOfInterval(startDate, endDate);
 };
-export const getStartOfMonth = (date) => {
-  return startOfMonth(date);
+export const startOfMonth = (date) => {
+  return getStartOfMonth(date);
 };
-export const getEndOfMonth = (date) => {
-  return endOfMonth(date);
+export const endOfMonth = (date) => {
+  return getEndOfMonth(date);
 };
-export const getFormat = (date, type) => {
-  return format(date, type, { locale: ja });
+export const format = (date, type) => {
+  return getFormat(date, type, { locale: ja });
 };
-export const getSubMonths = (date, monthsToSubtract) => {
-  return subMonths(date, monthsToSubtract);
+export const subMonths = (date, monthsToSubtract) => {
+  return getSubMonths(date, monthsToSubtract);
 };
