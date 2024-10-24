@@ -84,7 +84,6 @@ export default {
   data() {
     return {
       activeDate: new Date(),
-      isModalVisible: false,
       inputText: "",
       inputDate: "",
       inputTime: "",
