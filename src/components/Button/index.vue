@@ -3,7 +3,7 @@
     :is="tagName"
     v-bind:type="tagName === 'button' ? 'button' : null"
     @click="$emit('click')"
-    class="btn"
+    v-bind:class="className !== '' ? className : defaultClass"
     ><slot></slot
   ></component>
 </template>
@@ -22,6 +22,14 @@ export default {
       type: String,
       required: false, //button以外の場合もあるため
       default: "button",
+    },
+    className: {
+      type: String,
+      default: "",
+    },
+    defaultClass: {
+      type: String,
+      default: "btn",
     },
   },
 };
