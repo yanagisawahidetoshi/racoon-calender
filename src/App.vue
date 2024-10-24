@@ -1,34 +1,61 @@
 <template>
   <div id="app">
-    <section>
-      <h1>ハードコードで1日〜31日までをv-forで表示させてみる</h1>
-      <ol>
-        <li v-for="m in 31" :key="m">{{ m }}日</li>
-      </ol>
-    </section>
-    <section>
-      <h1>date-fnsを使って当月の1日〜最終日までをv-forで表示させる</h1>
-
+    <header class="header">
       <ul class="controle-month">
-        <li><button type="button" @click="lastMonth">前月</button></li>
-        <li><button type="button" @click="currentMonth">当月</button></li>
-        <li><button type="button" @click="nextMonth">翌月</button></li>
-      </ul>
-      <ol>
-        <li v-for="(date, index) in calendar" :key="index">
-          {{ formatDate(date) }}
+        <li>
+          <button type="button" @click="changeMonth(-1)">
+            <svg
+              data-v-0b6b1d24=""
+              focusable="false"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+            >
+              <path
+                data-v-0b6b1d24=""
+                d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z"
+              ></path>
+            </svg>
+          </button>
         </li>
-      </ol>
-    </section>
-    <section>
-      <h1>
-        input:text/input:date/input:timeのコンポーネントを作っておいてください。
-      </h1>
-      <FormInput v-model="inputText" />
-      <FormInputDate v-model="inputDate" />aas{{inputDate}}
-      <!-- <FormInputDate :value="inputDate" @change="inputDate = $event" /> -->
-      <FormInputTime v-model="inputTime" />
-    </section>
+        <li>
+          <button type="button" @click="changeMonth(1)">
+            <svg
+              data-v-0b6b1d24=""
+              focusable="false"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+            >
+              <path
+                data-v-0b6b1d24=""
+                d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z"
+              ></path>
+            </svg>
+          </button>
+        </li>
+        <!-- <li><button type="button" @click="currentMonth">当月</button></li> -->
+      </ul>
+      <h1 class="title">{{ formatDate(currentDate, "yyyy年M月") }}</h1>
+      <button type="button" @click="open">登録</button>
+    </header>
+    <ol class="calendar-list">
+      <li v-for="(date, index) in calendar" :key="index" class="calendar-item">
+        <p>{{ formatDate(date, "d") }}</p>
+        <p class="day">{{ formatDate(date, "E") }}</p>
+      </li>
+    </ol>
+    <vue-modal-2 name="modal-1" @on-close="close">
+      <div>
+        <p>予定を変更</p>
+        <p><FormInputDate v-model="inputDate" /></p>
+        <p>開始時間<FormInputTime v-model="inputTime" /></p>
+        <p>終了時間<FormInputTime v-model="inputTime" /></p>
+        <!-- <FormInputDate :value="inputDate" @change="inputDate = $event" /> -->
+        <button type="button">登録</button>
+        <button type="button" @on-close="close">キャンセル</button>
+      </div>
+    </vue-modal-2>
   </div>
 </template>
 
@@ -37,14 +64,17 @@ import {
   lastDayOfMonth,
   startOfMonth,
   addMonths,
-  subMonths,
   format,
   eachDayOfInterval,
 } from "./libs/dateUtil.js";
 
-import FormInput from "@/components/atoms/FormInput";
 import FormInputDate from "@/components/atoms/FormInputDate";
 import FormInputTime from "@/components/atoms/FormInputTime";
+import Vue from "vue";
+import Modal from "@burhanahmeed/vue-modal-2";
+Vue.use(Modal);
+
+Vue.config.productionTip = false;
 
 export default {
   name: "App",
@@ -57,7 +87,6 @@ export default {
     };
   },
   components: {
-    FormInput,
     FormInputDate,
     FormInputTime,
   },
@@ -69,30 +98,67 @@ export default {
     },
   },
   methods: {
-    formatDate(date) {
-      return format(date, "MM月dd日(E)");
+    formatDate(date, pattern) {
+      return format(date, pattern);
     },
-    lastMonth() {
-      this.currentDate = subMonths(this.currentDate, 1);
-    },
-    nextMonth() {
-      this.currentDate = addMonths(this.currentDate, 1);
+    changeMonth(number) {
+      this.currentDate = addMonths(this.currentDate, number);
     },
     currentMonth() {
       this.currentDate = new Date();
+    },
+    open() {
+      this.$vm2.open("modal-1");
+    },
+    close() {
+      this.$vm2.close("modal-1");
     },
   },
 };
 </script>
 <style scoped>
+button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  padding: 0;
+  appearance: none;
+}
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid #000;
+}
+.title {
+  font-size: 18px;
+  margin: 0;
+}
 li {
   list-style-type: none;
 }
 .controle-month {
   display: flex;
   gap: 10px;
+  align-items: center;
+  margin: 0;
+  padding-left: 0;
   :hover {
     cursor: pointer;
+  }
+}
+.calendar-list {
+  padding-left: 0;
+}
+.calendar-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border-bottom: 1px solid #dadce0;
+  padding: 16px;
+  .day {
+    font-size: 0.8em;
   }
 }
 </style>
