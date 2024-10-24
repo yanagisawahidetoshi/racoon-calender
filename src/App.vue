@@ -1,20 +1,51 @@
 <template>
   <div>
-    <Button @click="previousMonth()" class="btn">前月</Button>
-    <span>{{ dispDate }}</span>
-    <Button @click="nextMonth()" class="btn">次月</Button>
-    <Button @click="currentMonth()" class="btn">当月</Button>
-
-    <div class="input-wrap">
-      {{ /* input:text */ }}
-      <InputText v-model="inputText" placeholder="テキストを入力" />
-      {{ /* input:date */ }}
-      <InputDate v-model="inputDate" />
-      {{ /* input:time */ }}
-      <InputTime v-model="inputTime" />
+    <div class="menu">
+      <Button @click="chengeMonth(-1)" className="arrow-left"></Button>
+      <Button @click="chengeMonth(1)" className="arrow-right"></Button>
+      <span class="nowMonth">{{ dispDate }}</span>
+      <Button @click="$vm2.open('modal-1')" tagName="a" className="regist">
+        登録
+      </Button>
+      <Button @click="currentMonth()">当月</Button>
     </div>
+    <vue-modal-2
+      name="modal-1"
+      @on-close="close"
+      :headerOptions="{
+        title: '予定を登録',
+      }"
+      :footerOptions="{
+        btn1: 'キャンセル',
+        btn2: '登録',
+        btn1Style: {
+          backgroundColor: '#cccccc',
+        },
+        btn2Style: {
+          backgroundColor: 'green',
+        },
+        btn1OnClick: () => {
+          $vm2.close('modal-1');
+        },
+      }"
+    >
+      <div class="input-wrap">
+        {{ /* input:text */ }}
+        <p>
+          <InputText v-model="inputText" placeholder="予定を入力" />
+        </p>
+        {{ /* input:date */ }}
+        <p>
+          <InputDate v-model="inputDate" />
+        </p>
+        {{ /* input:time */ }}
+        <p>開始時間：<InputTime v-model="inputTime" /></p>
+        <p>終了時間：<InputTime v-model="inputTime" /></p>
+      </div>
+    </vue-modal-2>
+
     {{ /* 日付と曜日を出力 */ }}
-    <ol>
+    <ol class="date-list">
       <li v-for="(n, index) in calendar" :key="index">
         {{ n.date }}({{ n.day }})
       </li>
@@ -24,16 +55,6 @@
 </template>
 
 <script>
-// 1.初回表示時は当月日がを表示する
-// 2.年月用の変数を用意（入れ替えることで、月初、月末の取得を動的に行う）
-// 3.date-fnsに年月の算出が出来る関数があれば利用、なければ計算用のロジックを考える。
-// 4.当月・次月・前月のボタンで、年月の変数を切り替える（値を入れ替える？）
-//   ボタンは使いまわしが出来そうなのでコンポーネント化
-// 5.日・曜日は再算出（関数利用）用の、computedを用意
-//   表示用の年月もここで処理
-// 6.ボタン操作用のmethodsを用意
-// 7.dateに、年月日用の変数を定義。日本語用の曜日を定義
-
 import {
   format,
   dateInterval,
@@ -79,36 +100,19 @@ export default {
     },
   },
   methods: {
-    previousMonth() {
-      this.currentDate = addMonths(this.currentDate, -1);
-    },
-    nextMonth() {
-      this.currentDate = addMonths(this.currentDate, 1);
+    chengeMonth(addDate) {
+      this.currentDate = addMonths(this.currentDate, addDate);
     },
     currentMonth() {
       this.currentDate = new Date();
     },
+    open() {
+      this.$vm2.open("modal-1");
+    },
+    close() {
+      this.$vm2.close("modal-1");
+    },
   },
-  /*
-  data() {
-    const currentDate = new Date();
-    const SOM = startOfMonth(currentDate);
-    const EOM = endOfMonth(currentDate);
-    // 曜日追加
-    const daysOfWeek = ["日", "月", "火", "水", "木", "金", "土"];
-    const calendar = eachDayOfInterval({
-      start: new Date(SOM),
-      end: new Date(EOM),
-    }).map((day) => ({
-      date: format(day, "dd"),
-      day: daysOfWeek[getDay(day)],
-    }));
-    //console.log(calendar);
-    return {
-      calendar,
-    };
-  },
-	*/
 };
 </script>
 <style scoped>
@@ -118,10 +122,69 @@ li {
   margin: 0;
   list-style: none;
 }
+.menu {
+  position: sticky;
+  background: #fff;
+  top: 0;
+  border-bottom: 2px solid #333;
+  padding: 0 0 12px;
+}
+.date-list li {
+  border-bottom: 1px solid #d3d3d3;
+  padding: 12px 0;
+}
 .btn {
   margin: 0 6px;
 }
 .input-wrap {
-  margin: 25px 0;
+  margin: 6px 10px;
+}
+.arrow-left,
+.arrow-right {
+  margin: 0 6px;
+}
+.nowMonth {
+  font-size: 18px;
+  vertical-align: middle;
+  font-weight: 500;
+  margin: 0 0 0 16px;
+  display: inline-block;
+}
+.inputDate,
+.inputTime {
+  border: none;
+}
+.inputText {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px solid #cccccc;
+  width: 100%;
+  border-radius: inherit;
+}
+.inputText:focus {
+  outline: none;
+}
+.arrow-left {
+  display: inline-block;
+  width: 0.6rem;
+  height: 0.6rem;
+  margin: 0 10px;
+  border-left: 2px solid #000;
+  border-bottom: 2px solid #000;
+  transform: rotate(45deg);
+}
+.arrow-right {
+  display: inline-block;
+  width: 0.6rem;
+  height: 0.6rem;
+  margin: 0 10px;
+  border-top: 2px solid #000;
+  border-right: 2px solid #000;
+  transform: rotate(45deg);
+}
+.regist {
+  vertical-align: -4px;
+  margin: 0 6px;
 }
 </style>
