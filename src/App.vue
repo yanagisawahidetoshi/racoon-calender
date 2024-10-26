@@ -37,7 +37,7 @@
         <!-- <li><button type="button" @click="currentMonth">当月</button></li> -->
       </ul>
       <h1 class="title">{{ formatDate(currentDate, "yyyy年M月") }}</h1>
-      <button type="button" @click="open">登録</button>
+      <button type="button" @click="openModalAddSchedule">登録</button>
     </header>
     <ol class="calendar-list">
       <li v-for="(date, index) in calendar" :key="index" class="calendar-item">
@@ -45,15 +45,27 @@
         <p class="day">{{ formatDate(date, "E") }}</p>
       </li>
     </ol>
-    <vue-modal-2 name="modal-add-schedule" @on-close="close">
+    <vue-modal-2
+      name="modal-add-schedule"
+      @on-close="closeModalAddSchedule"
+      :footerOptions="{
+        btn1: '登録',
+        btn2: 'キャンセル',
+        btn2OnClick: () => {
+          $vm2.close('modal-add-schedule');
+        },
+      }"
+    >
       <div>
         <p>予定を変更</p>
         <p><FormInputDate v-model="inputDate" /></p>
         <p>開始時間<FormInputTime v-model="inputTime" /></p>
         <p>終了時間<FormInputTime v-model="inputTime" /></p>
         <!-- <FormInputDate :value="inputDate" @change="inputDate = $event" /> -->
-        <button type="button">登録</button>
-        <button type="button" @on-close="close">キャンセル</button>
+        <!-- <button type="button">登録</button>
+        <button type="button" @on-close="closeModalAddSchedule">
+          キャンセル
+        </button> -->
       </div>
     </vue-modal-2>
   </div>
@@ -70,11 +82,6 @@ import {
 
 import FormInputDate from "@/components/atoms/FormInputDate";
 import FormInputTime from "@/components/atoms/FormInputTime";
-import Vue from "vue";
-import Modal from "@burhanahmeed/vue-modal-2";
-Vue.use(Modal);
-
-Vue.config.productionTip = false;
 
 export default {
   name: "App",
@@ -107,10 +114,10 @@ export default {
     currentMonth() {
       this.currentDate = new Date();
     },
-    open() {
+    openModalAddSchedule() {
       this.$vm2.open("modal-add-schedule");
     },
-    close() {
+    closeModalAddSchedule() {
       this.$vm2.close("modal-add-schedule");
     },
   },
