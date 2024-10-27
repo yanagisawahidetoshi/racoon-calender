@@ -3,7 +3,7 @@
     <header class="header">
       <ul class="controle-month">
         <li>
-          <button type="button" @click="changeMonth(-1)">
+          <a href="javascript:void(0);" @click="changeMonth(-1)">
             <svg
               data-v-0b6b1d24=""
               focusable="false"
@@ -16,10 +16,10 @@
                 d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z"
               ></path>
             </svg>
-          </button>
+          </a>
         </li>
         <li>
-          <button type="button" @click="changeMonth(1)">
+          <a href="javascript:void(0);" @click="changeMonth(1)">
             <svg
               data-v-0b6b1d24=""
               focusable="false"
@@ -32,7 +32,7 @@
                 d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z"
               ></path>
             </svg>
-          </button>
+          </a>
         </li>
         <!-- <li><button type="button" @click="currentMonth">当月</button></li> -->
       </ul>
@@ -110,6 +110,12 @@ export default {
     },
     changeMonth(number) {
       this.currentDate = addMonths(this.currentDate, number);
+      const param = this.formatDate(this.currentDate, "yyyyMM");
+      this.$router.push(`/?month=${param}`);
+      // const url = location.href;
+      // const newurl = new URL(url);
+      // newurl.searchParams.set("month", "202410");
+      // console.log(newurl);
     },
     currentMonth() {
       this.currentDate = new Date();
