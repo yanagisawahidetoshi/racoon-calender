@@ -111,11 +111,9 @@ export default {
     changeMonth(number) {
       this.currentDate = addMonths(this.currentDate, number);
       const param = this.formatDate(this.currentDate, "yyyyMM");
-      this.$router.push(`/?month=${param}`);
-      // const url = location.href;
-      // const newurl = new URL(url);
-      // newurl.searchParams.set("month", "202410");
-      // console.log(newurl);
+      const url = new URL(window.location);
+      url.searchParams.set("month", param);
+      window.history.pushState({}, "", url);
     },
     currentMonth() {
       this.currentDate = new Date();

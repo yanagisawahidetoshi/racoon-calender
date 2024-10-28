@@ -9,9 +9,9 @@ Vue.use(Modal);
 Vue.use(Router);
 Vue.config.productionTip = false;
 
-const router = new Router({});
+// const router = new Router({});
 
 new Vue({
-  router,
+  // router,
   render: (h) => h(App),
 }).$mount("#app");
