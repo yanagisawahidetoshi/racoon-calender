@@ -113,7 +113,7 @@ export default {
       this.currentDate = addMonths(this.currentDate, number);
       const param = this.formatDate(this.currentDate, "yyyyMM");
       const url = new URL(window.location);
-      url.searchParams.set("month", param);
+      url.searchParams.set("currentDate", param);
       window.history.pushState({}, "", url);
     },
     currentMonth() {
@@ -128,7 +128,7 @@ export default {
   },
   mounted() {
     const url = new URL(window.location);
-    const param = url.searchParams.get("month");
+    const param = url.searchParams.get("currentDate");
     if (param !== null) {
       const year = param.slice(0, 4);
       const month = getMonth(new Date(year, param.slice(4), 1));
