@@ -5,6 +5,7 @@ import {
   subMonths as dateFnsSubMonths,
   format as dateFnsFormat,
   eachDayOfInterval as dateFnsEachDayOfInterval,
+  getMonth as dateFnsGetMonth,
 } from "date-fns";
 
 import { ja } from "date-fns/locale";
@@ -31,4 +32,7 @@ export const format = (date, pattern) => {
 
 export const eachDayOfInterval = (start, end) => {
   return dateFnsEachDayOfInterval({ start, end });
+};
+export const getMonth = (date) => {
+  return dateFnsGetMonth(date);
 };

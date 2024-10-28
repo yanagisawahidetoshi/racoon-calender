@@ -78,6 +78,7 @@ import {
   addMonths,
   format,
   eachDayOfInterval,
+  getMonth,
 } from "./libs/dateUtil.js";
 
 import FormInputDate from "@/components/atoms/FormInputDate";
@@ -124,6 +125,16 @@ export default {
     closeModalAddSchedule() {
       this.$vm2.close("modal-add-schedule");
     },
+  },
+  mounted() {
+    const url = new URL(window.location);
+    const param = url.searchParams.get("month");
+    if (param !== null) {
+      const year = param.slice(0, 4);
+      const month = getMonth(new Date(year, param.slice(4), 1));
+      const newDate = `${year}-${month}-1`;
+      this.currentDate = new Date(newDate);
+    }
   },
 };
 </script>
