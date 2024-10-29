@@ -108,12 +108,8 @@ export default {
       return eachDayOfInterval({ start, end });
     },
     changeMonth(num) {
-      this.activeDate = addMonths(this.activeDate, num);
-      history.replaceState(
-        "",
-        "",
-        "?date=" + format(this.activeDate, "yyyy-M")
-      );
+      const changeMonth = addMonths(this.activeDate, num);
+      history.replaceState("", "", "?date=" + format(changeMonth, "yyyy-M"));
       this.getDateQueryParam();
     },
     getDateQueryParam() {
