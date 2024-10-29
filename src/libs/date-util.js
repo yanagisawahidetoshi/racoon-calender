@@ -1,24 +1,24 @@
 import {
-  startOfMonth as getStartOfMonth,
-  lastDayOfMonth as getlastDayOfMonth,
-  eachDayOfInterval as getEachDayOfInterval,
-  format as getFormat,
-  addMonths as getAddMonths,
+  startOfMonth as dateFnsStartOfMonth,
+  lastDayOfMonth as dateFnslastDayOfMonth,
+  eachDayOfInterval as dateFnsEachDayOfInterval,
+  format as dateFnsFormat,
+  addMonths as dateFnsAddMonths,
 } from "date-fns";
 import { ja } from "date-fns/locale";
 
 export const startOfMonth = (date) => {
-  return getStartOfMonth(date);
+  return dateFnsStartOfMonth(date);
 };
 export const lastDayOfMonth = (date) => {
-  return getlastDayOfMonth(date);
+  return dateFnslastDayOfMonth(date);
 };
 export const eachDayOfInterval = (startDate, endDate) => {
-  return getEachDayOfInterval(startDate, endDate);
+  return dateFnsEachDayOfInterval(startDate, endDate);
 };
 export const format = (date, pattern) => {
-  return getFormat(date, pattern, { locale: ja });
+  return dateFnsFormat(date, pattern, { locale: ja });
 };
 export const addMonths = (date, num) => {
-  return getAddMonths(date, num);
+  return dateFnsAddMonths(date, num);
 };
