@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <button type="submit" @click="changeMonth(-1)">前月</button>
-    <button type="submit" @click="goThisMonth">当月</button>
+    <button type="submit" @click="changeToCurrentMonth">当月</button>
     <button type="submit" @click="changeMonth(1)">翌月</button>
     <ol>
       <li v-for="(date, index) in dates" :key="index">
@@ -24,7 +24,7 @@ import {
   eachDayOfInterval,
   format,
   addMonths,
-} from "date-fns";
+} from "./libs/date-util.js";
 import InputDate from "./components/atoms/InputDate";
 import InputText from "./components/atoms/InputText";
 import InputTime from "./components/atoms/InputTime";
@@ -57,7 +57,7 @@ export default {
     changeMonth(num) {
       this.currentDay = addMonths(this.currentDay, num);
     },
-    goThisMonth() {
+    changeToCurrentMonth() {
       this.currentDay = new Date();
     },
   },
