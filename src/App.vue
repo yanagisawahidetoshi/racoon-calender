@@ -8,6 +8,12 @@
         <p>{{ format(date, "MM/dd EE") }}</p>
       </li>
     </ol>
+    {{ inputDate }}
+    {{ inputTime }}
+    {{ inputText }}<br />
+    <InputDate v-model="inputDate" />
+    <InputTime v-model="inputTime" />
+    <InputText v-model="inputText" />
   </div>
 </template>
 
@@ -18,13 +24,23 @@ import {
   eachDayOfInterval,
   format,
   addMonths,
-} from "./libs/date-util.js";
+} from "date-fns";
+import InputDate from "./components/atoms/InputDate";
+import InputText from "./components/atoms/InputText";
+import InputTime from "./components/atoms/InputTime";
 export default {
   name: "App",
-  components: {},
+  components: {
+    InputDate,
+    InputText,
+    InputTime,
+  },
   data() {
     return {
       currentDay: new Date(),
+      inputDate: "2024-10-28",
+      inputText: "aaa",
+      inputTime: "10:12",
     };
   },
   computed: {
