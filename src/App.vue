@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <ol>
-      <li v-for="date in formattedDates" :key="date">
-        <p>{{ date }}</p>
+      <li v-for="(date, index) in dates" :key="index">
+        <p>{{ format(date, "dd EE") }}</p>
       </li>
     </ol>
   </div>
@@ -25,10 +25,10 @@ export default {
       const end = lastDayOfMonth(now);
       return eachDayOfInterval({ start, end });
     },
-    formattedDates() {
-      return this.dates.map((date) => {
-        return format(date, "dd eeee");
-      });
+  },
+  methods: {
+    format(date, pattern) {
+      return format(date, pattern);
     },
   },
 };
