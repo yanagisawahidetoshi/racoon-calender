@@ -2,39 +2,9 @@
   <div id="app">
     <header class="common_header">
       <div class="wrap_button">
-        <button
-          class="button"
-          @click="
-            () => {
-              changeMonth(-1);
-              changeUrl();
-            }
-          "
-        >
-          前月
-        </button>
-        <button
-          class="button"
-          @click="
-            () => {
-              currentMonth();
-              changeUrl();
-            }
-          "
-        >
-          当月
-        </button>
-        <button
-          class="button"
-          @click="
-            () => {
-              changeMonth(1);
-              changeUrl();
-            }
-          "
-        >
-          翌月
-        </button>
+        <button class="button" @click="changeUrl(-1)">前月</button>
+        <button class="button" @click="changeCurrentMonth()">当月</button>
+        <button class="button" @click="changeUrl(1)">翌月</button>
         <button class="button" @click="$vm2.open('registScheduleModal')">
           登録
         </button>
@@ -119,28 +89,30 @@ export default {
     formatDate(date, f) {
       return format(date, f);
     },
-    changeMonth(delta) {
-      this.active = addMonths(this.active, delta);
-    },
-    currentMonth() {
+    changeCurrentMonth() {
       this.active = new Date();
+      this.changeUrl(0);
     },
-    changeUrl() {
+    changeUrl(num) {
+      const changeMonth = addMonths(this.active, num);
       const url = new URL(window.location.href);
-      url.searchParams.set("year", format(this.active, "yyyy"));
-      url.searchParams.set("month", format(this.active, "MM"));
+      url.searchParams.set("year", format(changeMonth, "yyyy"));
+      url.searchParams.set("month", format(changeMonth, "MM"));
       window.history.pushState({}, "", url);
+      if (num != 0) {
+        // changeCurrentMonth経由での実行の場合、実行しない
+        this.changeDate();
+      }
+    },
+    changeDate() {
+      const params = new URLSearchParams(window.location.search);
+      const year = params.get("year");
+      const month = params.get("month");
+      this.active = new Date(year, month - 1); //dateオブジェクトの月は0から始まる
     },
   },
   mounted() {
-    const params = new URLSearchParams(window.location.search);
-    const year = params.get("year");
-    const month = params.get("month");
-    if (year && month) {
-      this.active = new Date(year, month - 1); //dateオブジェクトの月は0から始まる
-    } else {
-      this.currentMonth();
-    }
+    this.changeDate();
   },
 };
 </script>
