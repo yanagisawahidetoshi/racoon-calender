@@ -90,7 +90,7 @@ export default {
     };
   },
   mounted() {
-    this.generateDate();
+    this.getDateQueryParam();
   },
   methods: {
     formatDate(date) {
@@ -108,7 +108,14 @@ export default {
       return eachDayOfInterval({ start, end });
     },
     changeMonth(num) {
-      this.activeDate = addMonths(this.activeDate, num);
+      const changeMonth = addMonths(this.activeDate, num);
+      history.replaceState("", "", "?date=" + format(changeMonth, "yyyy-M"));
+      this.getDateQueryParam();
+    },
+    getDateQueryParam() {
+      const url = location.search.substring(1);
+      this.activeDate = url || new Date();
+      this.generateDate();
     },
     currentMonth() {
       this.activeDate = new Date();
