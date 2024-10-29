@@ -2,9 +2,39 @@
   <div id="app">
     <header class="common_header">
       <div class="wrap_button">
-        <button class="button" @click="changeMonth(-1)">前月</button>
-        <button class="button" @click="currentMonth">当月</button>
-        <button class="button" @click="changeMonth(1)">翌月</button>
+        <button
+          class="button"
+          @click="
+            () => {
+              changeMonth(-1);
+              changeUrl();
+            }
+          "
+        >
+          前月
+        </button>
+        <button
+          class="button"
+          @click="
+            () => {
+              currentMonth();
+              changeUrl();
+            }
+          "
+        >
+          当月
+        </button>
+        <button
+          class="button"
+          @click="
+            () => {
+              changeMonth(1);
+              changeUrl();
+            }
+          "
+        >
+          翌月
+        </button>
         <button class="button" @click="$vm2.open('registScheduleModal')">
           登録
         </button>
@@ -14,7 +44,7 @@
     <section class="block">
       <ol class="list">
         <li class="detail" v-for="(day, index) in instanceMonth" :key="index">
-          {{ formatDate(day) }}
+          {{ formatDate(day, "yyyy年MMMMdo（EEEE）") }}
         </li>
       </ol>
     </section>
@@ -86,12 +116,8 @@ export default {
     },
   },
   methods: {
-    applyDayOfWeek(day) {
-      const dayOfWeek = ["月", "火", "水", "木", "金", "土", "日"];
-      return dayOfWeek[(day - 1) % 7];
-    },
-    formatDate(date) {
-      return format(date, "yyyy年MMMMdo（EEEE）");
+    formatDate(date, f) {
+      return format(date, f);
     },
     changeMonth(delta) {
       this.active = addMonths(this.active, delta);
@@ -99,6 +125,22 @@ export default {
     currentMonth() {
       this.active = new Date();
     },
+    changeUrl() {
+      const url = new URL(window.location.href);
+      url.searchParams.set("year", format(this.active, "yyyy"));
+      url.searchParams.set("month", format(this.active, "MM"));
+      window.history.pushState({}, "", url);
+    },
+  },
+  mounted() {
+    const params = new URLSearchParams(window.location.search);
+    const year = params.get("year");
+    const month = params.get("month");
+    if (year && month) {
+      this.active = new Date(year, month - 1); //dateオブジェクトの月は0から始まる
+    } else {
+      this.currentMonth();
+    }
   },
 };
 </script>
