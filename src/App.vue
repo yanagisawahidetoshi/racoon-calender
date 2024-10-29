@@ -88,7 +88,7 @@ export default {
   name: "App",
   data() {
     return {
-      currentDate: new Date(),
+      currentDate: null,
       inputText: "",
       inputDate: "",
       inputTime: "",
@@ -111,9 +111,9 @@ export default {
     },
     changeMonth(number) {
       this.currentDate = addMonths(this.currentDate, number);
-      const param = this.formatDate(this.currentDate, "yyyyMM");
       const url = new URL(window.location);
-      url.searchParams.set("currentDate", param);
+      url.searchParams.set("year", this.formatDate(this.currentDate, "yyyy"));
+      url.searchParams.set("month", this.formatDate(this.currentDate, "MM"));
       window.history.pushState({}, "", url);
     },
     currentMonth() {
@@ -128,12 +128,14 @@ export default {
   },
   mounted() {
     const url = new URL(window.location);
-    const param = url.searchParams.get("currentDate");
-    if (param !== null) {
-      const year = param.slice(0, 4);
-      const month = getMonth(new Date(year, param.slice(4), 1));
+    const hasParams = url.searchParams.get("year") !== null && url.searchParams.get("month") !== null;
+    if (hasParams) {
+      const year = url.searchParams.get("year")
+      const month = getMonth(new Date(year, url.searchParams.get("month"), 1));
       const newDate = `${year}-${month}-1`;
       this.currentDate = new Date(newDate);
+    } else {
+      this.currentDate = new Date();
     }
   },
 };
