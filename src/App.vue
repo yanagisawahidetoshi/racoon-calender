@@ -103,12 +103,15 @@ export default {
       }));
     },
   },
+
   methods: {
     chengeMonth(addDate) {
       this.currentDate = addMonths(this.currentDate, addDate);
+      this.urlParams();
     },
     currentMonth() {
       this.currentDate = new Date();
+      this.urlParams();
     },
     open() {
       this.$vm2.open("modalToRegistSchedule");
@@ -116,6 +119,24 @@ export default {
     close() {
       this.$vm2.close("modalToRegistSchedule");
     },
+    urlParams() {
+      const yearMonth = format(this.currentDate, "yyyy-MM");
+      //console.log(yearMonth);
+      const newUrl = `${window.location.pathname}?yearMonth=${yearMonth}`;
+      window.history.pushState({ path: newUrl }, "", newUrl);
+    },
+  },
+  mounted() {
+    const currentUrl = window.location.href;
+    const url = new URL(currentUrl);
+    const param = url.searchParams.get("yearMonth");
+
+    if (param) {
+      this.currentDate = param;
+      this.urlParams();
+    } else {
+      this.urlParams();
+    }
   },
 };
 </script>
