@@ -134,11 +134,10 @@ export default {
     const monthParam = url.searchParams.get("month");
 
     if (yearParam && monthParam) {
-      // 更新（リロード）時の対応
+      //console.log(new Date(yearParam, monthParam));
       this.currentDate = new Date(yearParam, monthParam - 1);
-      //console.log(this.currentDate);
-      this.urlParams();
     } else {
+      //console.log(this.currentDate);
       this.urlParams();
     }
   },
