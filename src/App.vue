@@ -120,19 +120,23 @@ export default {
       this.$vm2.close("modalToRegistSchedule");
     },
     urlParams() {
-      const yearMonth = format(this.currentDate, "yyyy-MM");
-      //console.log(yearMonth);
-      const newUrl = `${window.location.pathname}?yearMonth=${yearMonth}`;
+      const year = format(this.currentDate, "yyyy");
+      const Month = format(this.currentDate, "MM");
+      //console.log(year);
+      const newUrl = `${window.location.pathname}?year=${year}&month=${Month}`;
       window.history.pushState({ path: newUrl }, "", newUrl);
     },
   },
   mounted() {
     const currentUrl = window.location.href;
     const url = new URL(currentUrl);
-    const param = url.searchParams.get("yearMonth");
+    const yearParam = url.searchParams.get("year");
+    const monthParam = url.searchParams.get("month");
 
-    if (param) {
-      this.currentDate = param;
+    if (yearParam && monthParam) {
+      // 更新（リロード）時の対応
+      this.currentDate = new Date(yearParam, monthParam - 1);
+      //console.log(this.currentDate);
       this.urlParams();
     } else {
       this.urlParams();
