@@ -124,15 +124,20 @@ export default {
     closeModalAddSchedule() {
       this.$vm2.close("modal-add-schedule");
     },
+    getSearchParam(url, param) {
+      return url.searchParams.get(param);
+    },
   },
   mounted() {
     const url = this.getCurrentUrl;
     const hasParams =
-      url.searchParams.get("year") !== null &&
-      url.searchParams.get("month") !== null;
+      this.getSearchParam(url, "year") !== null &&
+      this.getSearchParam(url, "month") !== null;
     if (hasParams) {
-      const year = url.searchParams.get("year");
-      const month = getMonth(new Date(year, url.searchParams.get("month"), 1));
+      const year = this.getSearchParam(url, "year");
+      const month = getMonth(
+        new Date(year, this.getSearchParam(url, "month"), 1)
+      );
       const newDate = `${year}-${month}-1`;
       this.currentDate = new Date(newDate);
     } else {
