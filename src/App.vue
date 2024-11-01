@@ -106,7 +106,7 @@ export default {
     },
     getCurrentUrl() {
       return new URL(window.location);
-    }    
+    },
   },
   methods: {
     formatDate(date, pattern) {
@@ -124,13 +124,14 @@ export default {
     closeModalAddSchedule() {
       this.$vm2.close("modal-add-schedule");
     },
-
   },
   mounted() {
     const url = this.getCurrentUrl;
-    const hasParams = url.searchParams.get("year") !== null && url.searchParams.get("month") !== null;
+    const hasParams =
+      url.searchParams.get("year") !== null &&
+      url.searchParams.get("month") !== null;
     if (hasParams) {
-      const year = url.searchParams.get("year")
+      const year = url.searchParams.get("year");
       const month = getMonth(new Date(year, url.searchParams.get("month"), 1));
       const newDate = `${year}-${month}-1`;
       this.currentDate = new Date(newDate);
@@ -144,8 +145,8 @@ export default {
       url.searchParams.set("year", this.formatDate(this.currentDate, "yyyy"));
       url.searchParams.set("month", this.formatDate(this.currentDate, "MM"));
       window.history.pushState({}, "", url);
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
