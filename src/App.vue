@@ -103,12 +103,15 @@ export default {
       }));
     },
   },
+
   methods: {
     chengeMonth(addDate) {
       this.currentDate = addMonths(this.currentDate, addDate);
+      this.urlParams();
     },
     currentMonth() {
       this.currentDate = new Date();
+      this.urlParams();
     },
     open() {
       this.$vm2.open("modalToRegistSchedule");
@@ -116,6 +119,31 @@ export default {
     close() {
       this.$vm2.close("modalToRegistSchedule");
     },
+    urlParams() {
+      const year = format(this.currentDate, "yyyy");
+      const Month = format(this.currentDate, "MM");
+      //console.log(year);
+      const newUrl = `${window.location.pathname}?year=${year}&month=${Month}`;
+      window.history.pushState({ path: newUrl }, "", newUrl);
+    },
+  },
+  mounted() {
+    const currentUrl = window.location.href;
+    const url = new URL(currentUrl);
+    const yearParam = !isNaN(Number(url.searchParams.get("year")))
+      ? url.searchParams.get("year")
+      : null;
+    const monthParam = !isNaN(Number(url.searchParams.get("month")))
+      ? url.searchParams.get("month")
+      : null;
+    if (yearParam && monthParam) {
+      //console.log(new Date(yearParam, monthParam));
+      this.currentDate = new Date(yearParam, monthParam - 1);
+    }
+    //else {
+    //console.log(this.currentDate);
+    //this.urlParams();
+    //}
   },
 };
 </script>
