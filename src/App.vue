@@ -130,16 +130,20 @@ export default {
   mounted() {
     const currentUrl = window.location.href;
     const url = new URL(currentUrl);
-    const yearParam = url.searchParams.get("year");
-    const monthParam = url.searchParams.get("month");
-
+    const yearParam = !isNaN(Number(url.searchParams.get("year")))
+      ? url.searchParams.get("year")
+      : null;
+    const monthParam = !isNaN(Number(url.searchParams.get("month")))
+      ? url.searchParams.get("month")
+      : null;
     if (yearParam && monthParam) {
       //console.log(new Date(yearParam, monthParam));
       this.currentDate = new Date(yearParam, monthParam - 1);
-    } else {
-      //console.log(this.currentDate);
-      this.urlParams();
     }
+    //else {
+    //console.log(this.currentDate);
+    //this.urlParams();
+    //}
   },
 };
 </script>
