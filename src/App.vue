@@ -104,6 +104,9 @@ export default {
       const end = lastDayOfMonth(this.currentDate);
       return eachDayOfInterval(start, end);
     },
+    getCurrentUrl() {
+      return new URL(window.location);
+    }    
   },
   methods: {
     formatDate(date, pattern) {
@@ -111,10 +114,6 @@ export default {
     },
     changeMonth(number) {
       this.currentDate = addMonths(this.currentDate, number);
-      const url = new URL(window.location);
-      url.searchParams.set("year", this.formatDate(this.currentDate, "yyyy"));
-      url.searchParams.set("month", this.formatDate(this.currentDate, "MM"));
-      window.history.pushState({}, "", url);
     },
     currentMonth() {
       this.currentDate = new Date();
@@ -125,9 +124,10 @@ export default {
     closeModalAddSchedule() {
       this.$vm2.close("modal-add-schedule");
     },
+
   },
   mounted() {
-    const url = new URL(window.location);
+    const url = this.getCurrentUrl;
     const hasParams = url.searchParams.get("year") !== null && url.searchParams.get("month") !== null;
     if (hasParams) {
       const year = url.searchParams.get("year")
@@ -138,6 +138,14 @@ export default {
       this.currentDate = new Date();
     }
   },
+  watch: {
+    currentDate() {
+      const url = this.getCurrentUrl;
+      url.searchParams.set("year", this.formatDate(this.currentDate, "yyyy"));
+      url.searchParams.set("month", this.formatDate(this.currentDate, "MM"));
+      window.history.pushState({}, "", url);
+    }
+  }
 };
 </script>
 <style scoped>
