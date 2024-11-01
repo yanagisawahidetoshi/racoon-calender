@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <ul>
-      <li><button @click="movePreviousMonth">prev</button></li>
-      <li><button @click="moveCurrentMonth">current</button></li>
-      <li><button @click="moveNextMonth">next</button></li>
+      <li><button @click="changeMonth(-1)">prev</button></li>
+      <li><button @click="changeToCurrentMonth()">current</button></li>
+      <li><button @click="changeMonth(1)">next</button></li>
     </ul>
     <ol>
       <li v-for="(date, index) in dates" :key="index">
@@ -14,7 +14,13 @@
 </template>
 
 <script>
-import { startOfMonth, eachDayOfInterval, lastDayOfMonth, format, addMonths } from 'date-fns';
+import {
+  getStartOfMonth,
+  getLastOfMonth,
+  getEachDayOfMonth,
+  moveMonth,
+  moveToCurrentMonth,
+} from "./libs/date-fns";
 
 export default {
   name: "App",
@@ -26,23 +32,17 @@ export default {
   },
   computed: {
     dates(){
-      const startDate = startOfMonth(this.today);
-      const lastDate = lastDayOfMonth(this.today);
-      return eachDayOfInterval({
-        start: startDate,
-        end: lastDate
-      }).map(date => format(date, 'MM/dd EEEE'))
+      const startDate = getStartOfMonth(this.today);
+      const lastDate = getLastOfMonth(this.today);
+      return getEachDayOfMonth(startDate, lastDate);
     }
   },
   methods: {
-    movePreviousMonth() {
-      return this.today = addMonths(this.today, -1);
+    changeToCurrentMonth() {
+      this.today = moveToCurrentMonth();
     },
-    moveCurrentMonth() {
-      return this.today = new Date();
-    },
-    moveNextMonth() {
-      return this.today = addMonths(this.today, 1);
+    changeMonth(num) {
+      this.today = moveMonth(this.today, num);
     },
   }
 };
