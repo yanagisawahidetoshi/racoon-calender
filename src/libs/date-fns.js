@@ -7,15 +7,18 @@ export const getStartOfMonth = (today) => {
 export const getLastOfMonth = (today) => {
   return lastDayOfMonth(today);
 }
-export const getEachDayOfMonth = (startDate, lastDate) => {
+export const getEachDateAndDay = (startDate, lastDate, setting01, setting02) => {
   return eachDayOfInterval({
     start: startDate,
     end: lastDate
-  }).map(date => format(date, 'd EEEEE', {locale: ja}))
+  }).map(date => ({num: format(date, setting01, {locale: ja}), day: format(date, setting02, {locale: ja})}))
 }
 export const moveMonth = (date, num) => {
   return addMonths(date, num);
 }
 export const moveToCurrentMonth = () => {
   return new Date();
+}
+export const formatYearAndDate = (date) => {
+  return format(date, 'yyyy年M月', {locale: ja});
 }
