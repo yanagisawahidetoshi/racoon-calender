@@ -2,9 +2,9 @@
   <div id="app">
     <header class="common_header">
       <div class="wrap_button">
-        <button class="button" @click="changeUrl(-1)">前月</button>
+        <button class="button" @click="changeDate(-1)">前月</button>
         <button class="button" @click="changeCurrentMonth()">当月</button>
-        <button class="button" @click="changeUrl(1)">翌月</button>
+        <button class="button" @click="changeDate(1)">翌月</button>
         <button class="button" @click="$vm2.open('registScheduleModal')">
           登録
         </button>
@@ -91,28 +91,26 @@ export default {
     },
     changeCurrentMonth() {
       this.active = new Date();
-      this.changeUrl(0);
     },
-    changeUrl(num) {
-      const changeMonth = addMonths(this.active, num);
-      const url = new URL(window.location.href);
-      url.searchParams.set("year", format(changeMonth, "yyyy"));
-      url.searchParams.set("month", format(changeMonth, "MM"));
-      window.history.pushState({}, "", url);
-      if (num != 0) {
-        // changeCurrentMonth経由での実行の場合、実行しない
-        this.changeDate();
-      }
-    },
-    changeDate() {
-      const params = new URLSearchParams(window.location.search);
-      const year = params.get("year");
-      const month = params.get("month");
-      this.active = new Date(year, month - 1); //dateオブジェクトの月は0から始まる
+    changeDate(num) {
+      this.active = addMonths(this.active, num);
     },
   },
   mounted() {
-    this.changeDate();
+    const params = new URLSearchParams(window.location.search);
+    const year = params.get("year");
+    const month = params.get("month");
+    if (year && month) {
+      this.active = new Date(year, month - 1); //dateオブジェクトの月は0から始まる
+    }
+  },
+  watch: {
+    active: function () {
+      const url = new URL(window.location.href);
+      url.searchParams.set("year", format(this.active, "yyyy"));
+      url.searchParams.set("month", format(this.active, "MM"));
+      window.history.pushState({}, "", url);
+    },
   },
 };
 </script>
