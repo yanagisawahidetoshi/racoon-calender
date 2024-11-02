@@ -4,6 +4,7 @@ import {
   endOfMonth as getEndOfMonth,
   format as getFormat,
   addMonths as getAddMonths,
+  parse as getParse,
 } from "date-fns";
 import { ja } from "date-fns/locale";
 
@@ -21,4 +22,7 @@ export const format = (date, type) => {
 };
 export const addMonths = (date, monthsToSubtract) => {
   return getAddMonths(date, monthsToSubtract);
+};
+export const parse = (date, format, newDate) => {
+  return getParse(date, format, newDate);
 };

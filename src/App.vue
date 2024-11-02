@@ -60,6 +60,7 @@ import {
   endOfMonth,
   format,
   addMonths,
+  parse,
 } from "./libs/date-util";
 import InputDate from "./components/atoms/InputDate.vue";
 import InputTime from "./components/atoms/InputTime.vue";
@@ -101,14 +102,14 @@ export default {
     const year = params.get("year");
     const month = params.get("month");
     if (year && month) {
-      this.active = new Date(year, month - 1); //dateオブジェクトの月は0から始まる
+      this.active = parse(`${year}-${month}`, "yyyy-MM", new Date());
     }
   },
   watch: {
-    active: function () {
+    active: function (newActive) {
       const url = new URL(window.location.href);
-      url.searchParams.set("year", format(this.active, "yyyy"));
-      url.searchParams.set("month", format(this.active, "MM"));
+      url.searchParams.set("year", format(newActive, "yyyy"));
+      url.searchParams.set("month", format(newActive, "MM"));
       window.history.pushState({}, "", url);
     },
   },
