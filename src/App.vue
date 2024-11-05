@@ -78,7 +78,7 @@ import {
   addMonths,
   format,
   eachDayOfInterval,
-  getMonth,
+  parse,
 } from "./libs/dateUtil.js";
 
 import FormInputDate from "@/components/atoms/FormInputDate";
@@ -129,26 +129,22 @@ export default {
     },
   },
   mounted() {
-    const url = this.getCurrentUrl;
-    const hasParams =
-      this.getSearchParam(url, "year") !== null &&
-      this.getSearchParam(url, "month") !== null;
-    if (hasParams) {
-      const year = this.getSearchParam(url, "year");
-      const month = getMonth(
-        new Date(year, this.getSearchParam(url, "month"), 1)
+    const params = new URLSearchParams(location.search);
+    if (params.size > 0) {
+      const year = params.get("year");
+      const month = params.get("month");
+      this.currentDate = new Date(
+        parse(`${year}-${month}`, "yyyy-MM", new Date())
       );
-      const newDate = `${year}-${month}-1`;
-      this.currentDate = new Date(newDate);
     } else {
       this.currentDate = new Date();
     }
   },
   watch: {
-    currentDate() {
+    currentDate(newCurrentDate) {
       const url = this.getCurrentUrl;
-      url.searchParams.set("year", this.formatDate(this.currentDate, "yyyy"));
-      url.searchParams.set("month", this.formatDate(this.currentDate, "MM"));
+      url.searchParams.set("year", this.formatDate(newCurrentDate, "yyyy"));
+      url.searchParams.set("month", this.formatDate(newCurrentDate, "MM"));
       window.history.pushState({}, "", url);
     },
   },
