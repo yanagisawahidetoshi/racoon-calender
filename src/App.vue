@@ -38,7 +38,7 @@ import {
   addMonths,
   format,
   eachDayOfInterval,
-  getMonth,
+  parse,
 } from "./libs/dateUtil.js";
 
 import FormInputDate from "@/components/atoms/FormInputDate";
@@ -88,26 +88,27 @@ export default {
     closeModalAddSchedule() {
       this.$vm2.close("modal-add-schedule");
     },
+    getSearchParam(url, param) {
+      return url.searchParams.get(param);
+    },
   },
   mounted() {
-    const url = this.getCurrentUrl;
-    const hasParams =
-      url.searchParams.get("year") !== null &&
-      url.searchParams.get("month") !== null;
-    if (hasParams) {
-      const year = url.searchParams.get("year");
-      const month = getMonth(new Date(year, url.searchParams.get("month"), 1));
-      const newDate = `${year}-${month}-1`;
-      this.currentDate = new Date(newDate);
+    const params = new URLSearchParams(location.search);
+    if (params.size > 0) {
+      const year = params.get("year");
+      const month = params.get("month");
+      this.currentDate = new Date(
+        parse(`${year}-${month}`, "yyyy-MM", new Date())
+      );
     } else {
       this.currentDate = new Date();
     }
   },
   watch: {
-    currentDate() {
+    currentDate(newCurrentDate) {
       const url = this.getCurrentUrl;
-      url.searchParams.set("year", this.formatDate(this.currentDate, "yyyy"));
-      url.searchParams.set("month", this.formatDate(this.currentDate, "MM"));
+      url.searchParams.set("year", this.formatDate(newCurrentDate, "yyyy"));
+      url.searchParams.set("month", this.formatDate(newCurrentDate, "MM"));
       window.history.pushState({}, "", url);
     },
   },
