@@ -2,9 +2,9 @@
   <div id="app">
     <header class="common_header">
       <div class="wrap_button">
-        <button class="button" @click="changeMonth(-1)">前月</button>
-        <button class="button" @click="currentMonth">当月</button>
-        <button class="button" @click="changeMonth(1)">翌月</button>
+        <button class="button" @click="changeDate(-1)">前月</button>
+        <button class="button" @click="changeCurrentMonth()">当月</button>
+        <button class="button" @click="changeDate(1)">翌月</button>
         <button class="button" @click="$vm2.open('registScheduleModal')">
           登録
         </button>
@@ -14,7 +14,7 @@
     <section class="block">
       <ol class="list">
         <li class="detail" v-for="(day, index) in instanceMonth" :key="index">
-          {{ formatDate(day) }}
+          {{ formatDate(day, "yyyy年MMMMdo（EEEE）") }}
         </li>
       </ol>
     </section>
@@ -60,6 +60,7 @@ import {
   endOfMonth,
   format,
   addMonths,
+  parse,
 } from "./libs/date-util";
 import InputDate from "./components/atoms/InputDate.vue";
 import InputTime from "./components/atoms/InputTime.vue";
@@ -86,18 +87,30 @@ export default {
     },
   },
   methods: {
-    applyDayOfWeek(day) {
-      const dayOfWeek = ["月", "火", "水", "木", "金", "土", "日"];
-      return dayOfWeek[(day - 1) % 7];
+    formatDate(date, f) {
+      return format(date, f);
     },
-    formatDate(date) {
-      return format(date, "yyyy年MMMMdo（EEEE）");
-    },
-    changeMonth(delta) {
-      this.active = addMonths(this.active, delta);
-    },
-    currentMonth() {
+    changeCurrentMonth() {
       this.active = new Date();
+    },
+    changeDate(num) {
+      this.active = addMonths(this.active, num);
+    },
+  },
+  mounted() {
+    const params = new URLSearchParams(window.location.search);
+    const year = params.get("year");
+    const month = params.get("month");
+    if (year && month) {
+      this.active = parse(`${year}-${month}`, "yyyy-MM", new Date());
+    }
+  },
+  watch: {
+    active: function (newActive) {
+      const url = new URL(window.location.href);
+      url.searchParams.set("year", format(newActive, "yyyy"));
+      url.searchParams.set("month", format(newActive, "MM"));
+      window.history.pushState({}, "", url);
     },
   },
 };
