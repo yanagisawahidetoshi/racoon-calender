@@ -3,7 +3,7 @@
     <header class="header">
       <ul class="controle-month">
         <li>
-          <button type="button" @click="changeMonth(-1)">
+          <a href="javascript:void(0);" @click="changeMonth(-1)">
             <svg
               data-v-0b6b1d24=""
               focusable="false"
@@ -16,10 +16,10 @@
                 d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12l4.58-4.59z"
               ></path>
             </svg>
-          </button>
+          </a>
         </li>
         <li>
-          <button type="button" @click="changeMonth(1)">
+          <a href="javascript:void(0);" @click="changeMonth(1)">
             <svg
               data-v-0b6b1d24=""
               focusable="false"
@@ -32,7 +32,7 @@
                 d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6z"
               ></path>
             </svg>
-          </button>
+          </a>
         </li>
         <!-- <li><button type="button" @click="currentMonth">当月</button></li> -->
       </ul>
@@ -78,6 +78,7 @@ import {
   addMonths,
   format,
   eachDayOfInterval,
+  parse,
 } from "./libs/dateUtil.js";
 
 import FormInputDate from "@/components/atoms/FormInputDate";
@@ -87,7 +88,7 @@ export default {
   name: "App",
   data() {
     return {
-      currentDate: new Date(),
+      currentDate: null,
       inputText: "",
       inputDate: "",
       inputTime: "",
@@ -102,6 +103,9 @@ export default {
       const start = startOfMonth(this.currentDate);
       const end = lastDayOfMonth(this.currentDate);
       return eachDayOfInterval(start, end);
+    },
+    getCurrentUrl() {
+      return new URL(window.location);
     },
   },
   methods: {
@@ -119,6 +123,29 @@ export default {
     },
     closeModalAddSchedule() {
       this.$vm2.close("modal-add-schedule");
+    },
+    getSearchParam(url, param) {
+      return url.searchParams.get(param);
+    },
+  },
+  mounted() {
+    const params = new URLSearchParams(location.search);
+    if (params.size > 0) {
+      const year = params.get("year");
+      const month = params.get("month");
+      this.currentDate = new Date(
+        parse(`${year}-${month}`, "yyyy-MM", new Date())
+      );
+    } else {
+      this.currentDate = new Date();
+    }
+  },
+  watch: {
+    currentDate(newCurrentDate) {
+      const url = this.getCurrentUrl;
+      url.searchParams.set("year", this.formatDate(newCurrentDate, "yyyy"));
+      url.searchParams.set("month", this.formatDate(newCurrentDate, "MM"));
+      window.history.pushState({}, "", url);
     },
   },
 };
