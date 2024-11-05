@@ -1,9 +1,12 @@
 {
+  "parser": "vue-eslint-parser",
+  "extends": ["plugin:vue/recommended", "eslint:recommended"],
   "env": {
     "jest": true
   },
   "parserOptions": {
     "ecmaVersion": 2020,
-    "sourceType": "module"
+    "sourceType": "module",
+    "parser": "@babel/eslint-parser"
   }
 }
