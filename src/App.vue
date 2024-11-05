@@ -1,20 +1,14 @@
 <template>
   <div id="app">
-    <header class="common_header">
-      <div class="wrap_button">
-        <button class="button" @click="changeDate(-1)">前月</button>
-        <button class="button" @click="changeCurrentMonth()">当月</button>
-        <button class="button" @click="changeDate(1)">翌月</button>
-        <button class="button" @click="$vm2.open('registScheduleModal')">
-          登録
-        </button>
-      </div>
-    </header>
+    <CalenderHeader
+      :changeDate="changeDate"
+      :changeCurrentMonth="changeCurrentMonth"
+    />
     <h1 class="title">カレンダー</h1>
     <section class="block">
       <ol class="list">
         <li class="detail" v-for="(day, index) in instanceMonth" :key="index">
-          {{ formatDate(day, "yyyy年MMMMdo（EEEE）") }}
+          <CalenderDate :day="day" />
         </li>
       </ol>
     </section>
@@ -64,10 +58,12 @@ import {
 } from "./libs/date-util";
 import InputDate from "./components/atoms/InputDate.vue";
 import InputTime from "./components/atoms/InputTime.vue";
+import CalenderHeader from "./components/molecules/Calender/Header.vue";
+import CalenderDate from "./components/molecules/Calender/Date.vue";
 
 export default {
   name: "App",
-  components: { InputDate, InputTime },
+  components: { InputDate, InputTime, CalenderHeader, CalenderDate },
   data() {
     return {
       active: new Date(),
@@ -120,11 +116,6 @@ export default {
 #app {
   margin: 30px;
 }
-.common_header {
-  padding-bottom: 10px;
-  border-bottom: 1px solid #999;
-  margin-bottom: 20px;
-}
 .title {
   font-size: 50px;
   font-weight: bold;
@@ -134,21 +125,6 @@ export default {
 }
 .list .detail {
   margin-bottom: 8px;
-}
-.wrap_button {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-.button {
-  padding: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: rgb(240, 240, 240);
-  font-size: 15px;
-  border-radius: 4px;
-  border: 1px solid black;
 }
 .wrap_input {
   margin-bottom: 20px;
