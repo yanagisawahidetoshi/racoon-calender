@@ -23,7 +23,7 @@ import FormInputDate from "@/components/atoms/FormInputDate";
 import FormInputTime from "@/components/atoms/FormInputTime";
 
 export default {
-  name: "CalenderModal",
+  name: "ScheduleRegisterModal",
   components: {
     FormInputDate,
     FormInputTime,
