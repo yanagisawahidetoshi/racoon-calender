@@ -36,12 +36,14 @@
       <!-- <li><button type="button" @click="currentMonth">当月</button></li> -->
     </ul>
     <h1 class="title">{{ formatDate(date, "yyyy年M月") }}</h1>
-    <CommonButton @click="$emit('openModalAddSchedule')">登録</CommonButton>
+    <CommonButton @click="openModalAddSchedule">登録</CommonButton>
+    <CalenderModal />
   </header>
 </template>
 <script>
 import { format } from "../../libs/dateUtil.js";
 import CommonButton from "@/components/atoms/CommonButton";
+import CalenderModal from "@/components/morcules/CalenderModal";
 
 export default {
   name: "CalenderHeader",
@@ -52,10 +54,17 @@ export default {
   },
   components: {
     CommonButton,
+    CalenderModal,
   },
   methods: {
     formatDate(date, pattern) {
       return format(date, pattern);
+    },
+    openModalAddSchedule() {
+      this.$vm2.open("modal-add-schedule");
+    },
+    closeModalAddSchedule() {
+      this.$vm2.close("modal-add-schedule");
     },
   },
 };

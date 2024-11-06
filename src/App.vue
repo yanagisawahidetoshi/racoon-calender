@@ -1,33 +1,11 @@
 <template>
   <div id="app">
-    <CalenderHeader
-      @changeMonth="changeMonth"
-      :date="currentDate"
-      @openModalAddSchedule="openModalAddSchedule"
-    />
+    <CalenderHeader @changeMonth="changeMonth" :date="currentDate" />
     <ol class="calendar-list">
       <li v-for="(date, index) in calendar" :key="index" class="calendar-item">
         <CalenderRow :date="date" />
       </li>
     </ol>
-    <vue-modal-2
-      name="modal-add-schedule"
-      @on-close="closeModalAddSchedule"
-      :footerOptions="{
-        btn1: '登録',
-        btn2: 'キャンセル',
-        btn2OnClick: () => {
-          $vm2.close('modal-add-schedule');
-        },
-      }"
-    >
-      <div>
-        <p>予定を変更</p>
-        <p><FormInputDate v-model="inputDate" /></p>
-        <p>開始時間<FormInputTime v-model="inputTime" /></p>
-        <p>終了時間<FormInputTime v-model="inputTime" /></p>
-      </div>
-    </vue-modal-2>
   </div>
 </template>
 
@@ -41,8 +19,6 @@ import {
   parse,
 } from "./libs/dateUtil.js";
 
-import FormInputDate from "@/components/atoms/FormInputDate";
-import FormInputTime from "@/components/atoms/FormInputTime";
 import CalenderRow from "@/components/atoms/CalenderRow";
 import CalenderHeader from "@/components/morcules/CalenderHeader";
 
@@ -57,8 +33,6 @@ export default {
     };
   },
   components: {
-    FormInputDate,
-    FormInputTime,
     CalenderRow,
     CalenderHeader,
   },
@@ -81,12 +55,6 @@ export default {
     },
     currentMonth() {
       this.currentDate = new Date();
-    },
-    openModalAddSchedule() {
-      this.$vm2.open("modal-add-schedule");
-    },
-    closeModalAddSchedule() {
-      this.$vm2.close("modal-add-schedule");
     },
     getSearchParam(url, param) {
       return url.searchParams.get(param);
