@@ -4,6 +4,7 @@ import {
   eachDayOfInterval as dateFnsEachDayOfInterval,
   format as dateFnsFormat,
   addMonths as dateFnsAddMonths,
+  parse as dateFnsParse,
 } from "date-fns";
 import ja from "date-fns/locale/ja";
 
@@ -21,4 +22,7 @@ export const format = (date, dateFormatDate) => {
 };
 export const addMonths = (date, num) => {
   return dateFnsAddMonths(date, num);
+};
+export const parse = (date, dateFormatDate) => {
+  return dateFnsParse(date, dateFormatDate, new Date());
 };
