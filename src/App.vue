@@ -3,7 +3,7 @@
     <CalenderHeader
       :active-date="activeDate"
       @changeMonth="changeMonth"
-      @currentMonth="currentMonth"
+      @onChange="changeCurrentMonth"
     />
     <section>
       <ol class="calender">
@@ -62,7 +62,7 @@ export default {
       }
       this.generateDate();
     },
-    currentMonth() {
+    changeCurrentMonth() {
       history.replaceState("", "", "?date=" + format(new Date(), "yyyy-MM"));
       this.getDateQueryParam();
     },
