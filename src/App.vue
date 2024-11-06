@@ -3,12 +3,13 @@
     <CalenderHeader
       :changeDate="changeDate"
       :changeCurrentMonth="changeCurrentMonth"
+      :active="active"
+      @sendParent="receivedSchedules"
     />
-    <h1 class="title">カレンダー</h1>
     <section class="block">
       <ol class="list">
         <li class="detail" v-for="(day, index) in instanceMonth" :key="index">
-          <CalenderDate :day="day" />
+          <CalenderDate :day="day" :schedules="schedules" />
         </li>
       </ol>
     </section>
@@ -33,10 +34,7 @@ export default {
   data() {
     return {
       active: new Date(),
-      textValue: "",
-      dateValue: "",
-      startTimeValue: "",
-      endTimeValue: "",
+      schedules: [],
     };
   },
   computed: {
@@ -57,6 +55,9 @@ export default {
     },
     changeDate(num) {
       this.active = addMonths(this.active, num);
+    },
+    receivedSchedules(data) {
+      this.schedules.push(data); //data内はdateValue,startTimeValue,endTimeValue
     },
   },
   mounted() {
@@ -81,10 +82,6 @@ export default {
 <style scoped>
 #app {
   margin: 30px;
-}
-.title {
-  font-size: 50px;
-  font-weight: bold;
 }
 .block {
   margin: 30px 0;

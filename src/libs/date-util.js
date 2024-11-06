@@ -5,6 +5,10 @@ import {
   format as getDateFnsFormat,
   addMonths as getDateFnsAddMonths,
   parse as getDateFnsParse,
+  parseISO as getDateFnsParseISO,
+  isSameYear as getDateFnsIsSameYear,
+  isSameMonth as getDateFnsIsSameMonth,
+  isSameDay as getDateFnsIsSameDay,
 } from "date-fns";
 import { ja } from "date-fns/locale";
 
@@ -25,4 +29,16 @@ export const addMonths = (date, monthsToSubtract) => {
 };
 export const parse = (date, format, newDate) => {
   return getDateFnsParse(date, format, newDate);
+};
+export const parseISO = (date) => {
+  return getDateFnsParseISO(date);
+};
+export const isSameYear = (date1, date2) => {
+  return getDateFnsIsSameYear(date1, date2);
+};
+export const isSameMonth = (date1, date2) => {
+  return getDateFnsIsSameMonth(date1, date2);
+};
+export const isSameDay = (date1, date2) => {
+  return getDateFnsIsSameDay(date1, date2);
 };
