@@ -21,28 +21,31 @@ export default {
   components: {},
   data() {
     return{
-      today: new Date(),
+      baseDate: new Date(),
     }
   },
   computed: {
     dates(){
-      const startDate = startOfMonth(this.today);
-      const lastDate = lastDayOfMonth(this.today);
+      const startDate = startOfMonth(this.baseDate);
+      const lastDate = lastDayOfMonth(this.baseDate);
       return eachDayOfInterval({
         start: startDate,
         end: lastDate
-      }).map(date => format(date, 'MM/dd EEEE'))
+      })
     }
   },
   methods: {
+    formatDate(date) {
+      return format(date, 'MM/dd EEEE');
+    },
     movePreviousMonth() {
-      return this.today = addMonths(this.today, -1);
+      return this.baseDate = addMonths(this.baseDate, -1);
     },
     moveCurrentMonth() {
-      return this.today = new Date();
+      return this.baseDate = new Date();
     },
     moveNextMonth() {
-      return this.today = addMonths(this.today, 1);
+      return this.baseDate = addMonths(this.baseDate, 1);
     },
   }
 };
