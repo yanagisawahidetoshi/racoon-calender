@@ -1,11 +1,11 @@
-import { startOfMonth, eachDayOfInterval, lastDayOfMonth, format, addMonths } from 'date-fns';
+import { startOfMonth as dateFnsStartOfMonth, eachDayOfInterval, lastDayOfMonth as dateFnsLastOfMonth, format, addMonths } from 'date-fns';
 import ja from 'date-fns/locale/ja'
 
-export const getStartOfMonth = (today) => {
-  return startOfMonth(today);
+export const startOfMonth = (baseDate) => {
+  return dateFnsStartOfMonth(baseDate);
 }
-export const getLastOfMonth = (today) => {
-  return lastDayOfMonth(today);
+export const lastDayOfMonth = (baseDate) => {
+  return dateFnsLastOfMonth(baseDate);
 }
 export const getEachDayOfMonth = (startDate, lastDate) => {
   return eachDayOfInterval({
@@ -13,12 +13,12 @@ export const getEachDayOfMonth = (startDate, lastDate) => {
     end: lastDate
   });
 }
-export const moveMonth = (date, num) => {
+export const addMonth = (date, num) => {
   return addMonths(date, num);
 }
 export const moveToCurrentMonth = () => {
   return new Date();
 }
-export const formatDateAndDay = (date) => {
-  return format(date, 'MM/dd EEEE', {locale: ja});
+export const formatDateAndDay = (date, formatSetting) => {
+  return format(date, formatSetting, {locale: ja});
 }

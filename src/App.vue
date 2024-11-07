@@ -7,7 +7,7 @@
     </ul>
     <ol>
       <li v-for="(date, index) in dates" :key="index">
-        <p>{{ formatDate(date) }}</p>
+        <p>{{ formatDate(date, 'MM/dd EEEE') }}</p>
       </li>
     </ol>
   </div>
@@ -15,10 +15,10 @@
 
 <script>
 import {
-  getStartOfMonth,
-  getLastOfMonth,
+  startOfMonth,
+  lastDayOfMonth,
   getEachDayOfMonth,
-  moveMonth,
+  addMonth,
   moveToCurrentMonth,
   formatDateAndDay,
 } from "./libs/date-fns";
@@ -33,20 +33,20 @@ export default {
   },
   computed: {
     dates(){
-      const startDate = getStartOfMonth(this.baseDate);
-      const lastDate = getLastOfMonth(this.baseDate);
+      const startDate = startOfMonth(this.baseDate);
+      const lastDate = lastDayOfMonth(this.baseDate);
       return getEachDayOfMonth(startDate, lastDate);
     }
   },
   methods: {
-    formatDate(date){
-      return formatDateAndDay(date);
+    formatDate(date, formatSetting){
+      return formatDateAndDay(date, formatSetting);
     },
     changeToCurrentMonth() {
       this.baseDate = moveToCurrentMonth();
     },
     changeMonth(num) {
-      this.baseDate = moveMonth(this.baseDate, num);
+      this.baseDate = addMonth(this.baseDate, num);
     },
   }
 };
