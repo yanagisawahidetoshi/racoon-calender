@@ -36,7 +36,7 @@
     </ul>
     <h1 class="title">{{ formatDate(date, "yyyy年M月") }}</h1>
     <CommonButton @click="openModalAddSchedule">登録</CommonButton>
-    <ScheduleRegisterModal />
+    <ScheduleRegisterModal @registered="(v) => $emit('registered', v)" />
   </header>
 </template>
 <script>

@@ -2,6 +2,13 @@
   <div class="row">
     <p>{{ formatDate(date, "d") }}</p>
     <p class="day">{{ formatDate(date, "E") }}</p>
+    <button>
+      <div v-for="(schedule, index) in schedules" :key="index">
+        {{ schedule.content }}
+        {{ schedule.inputStartTime }}
+        {{ schedule.inputFinishTime }}
+      </div>
+    </button>
   </div>
 </template>
 <script>
@@ -12,6 +19,9 @@ export default {
   props: {
     date: {
       type: Date,
+    },
+    schedules: {
+      type: Array,
     },
   },
   methods: {

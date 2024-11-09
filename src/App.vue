@@ -1,9 +1,13 @@
 <template>
   <div id="app">
-    <CalenderHeader @changeMonth="changeMonth" :date="currentDate" />
+    <CalenderHeader
+      @changeMonth="changeMonth"
+      :date="currentDate"
+      @registered="registered"
+    />
     <ol class="calendar-list">
       <li v-for="(date, index) in calendar" :key="index" class="calendar-item">
-        <CalenderRow :date="date" />
+        <CalenderRow :date="date" :schedules="inputSchedule(date)" />
       </li>
     </ol>
   </div>
@@ -27,9 +31,7 @@ export default {
   data() {
     return {
       currentDate: null,
-      inputText: "",
-      inputDate: "",
-      inputTime: "",
+      schedules: [],
     };
   },
   components: {
@@ -47,6 +49,12 @@ export default {
     },
   },
   methods: {
+    inputSchedule(date) {
+      const target = this.formatDate(date, "yyyy-MM-dd");
+      return this.schedules.filter((schedule) => {
+        return target === schedule.inputDate;
+      });
+    },
     formatDate(date, pattern) {
       return format(date, pattern);
     },
@@ -58,6 +66,9 @@ export default {
     },
     getSearchParam(url, param) {
       return url.searchParams.get(param);
+    },
+    registered(newSchedule) {
+      this.schedules = [...this.schedules, newSchedule];
     },
   },
   mounted() {
