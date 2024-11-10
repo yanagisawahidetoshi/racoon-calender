@@ -18,9 +18,9 @@
   >
     <div>
       <p class="schedule-text"><FormInput v-model="schedule.content" /></p>
-      <p><FormInputDate v-model="schedule.inputDate" /></p>
-      <p>開始時間<FormInputTime v-model="schedule.inputStartTime" /></p>
-      <p>終了時間<FormInputTime v-model="schedule.inputFinishTime" /></p>
+      <p><FormInputDate v-model="schedule.date" /></p>
+      <p>開始時間<FormInputTime v-model="schedule.startTime" /></p>
+      <p>終了時間<FormInputTime v-model="schedule.finishTime" /></p>
     </div>
   </vue-modal-2>
 </template>
@@ -40,9 +40,9 @@ export default {
     return {
       schedule: {
         content: "",
-        inputDate: "",
-        inputStartTime: "",
-        inputFinishTime: "",
+        date: "",
+        startTime: "",
+        finishTime: "",
       },
     };
   },
@@ -53,13 +53,11 @@ export default {
     register() {
       this.$emit("registered", {
         content: this.schedule.content,
-        inputDate: this.schedule.inputDate,
-        inputStartTime: this.schedule.inputStartTime,
-        inputFinishTime: this.schedule.inputFinishTime,
+        date: this.schedule.date,
+        startTime: this.schedule.startTime,
+        finishTime: this.schedule.finishTime,
       });
       this.$vm2.close("modal-add-schedule");
-      // モーダル閉じたときに入力値をリセットしたいが下層コンポーネントの値が変わらなかった
-      // リセットしないとchangeイベントが発火せず、前回と同じ値の項目は入力されない。11/7で登録→再度11/7が入力されたまま→登録ボタン押すと、日付は空扱いされる
       Object.keys(this.schedule).forEach((key) => {
         this.schedule[key] = "";
       });

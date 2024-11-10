@@ -52,7 +52,7 @@ export default {
     inputSchedule(date) {
       const target = this.formatDate(date, "yyyy-MM-dd");
       return this.schedules.filter((schedule) => {
-        return target === schedule.inputDate;
+        return target === schedule.date;
       });
     },
     formatDate(date, pattern) {
