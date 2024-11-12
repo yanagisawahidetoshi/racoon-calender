@@ -3,12 +3,13 @@
     <CalenderHeader
       :changeDate="changeDate"
       :changeCurrentMonth="changeCurrentMonth"
+      :currentDate="currentDate"
+      @sendSchedule="receivedSchedules"
     />
-    <h1 class="title">カレンダー</h1>
     <section class="block">
       <ol class="list">
         <li class="detail" v-for="(day, index) in instanceMonth" :key="index">
-          <CalenderDate :day="day" />
+          <CalenderDate :day="day" :schedules="schedules" />
         </li>
       </ol>
     </section>
@@ -32,18 +33,15 @@ export default {
   components: { CalenderHeader, CalenderDate },
   data() {
     return {
-      active: new Date(),
-      textValue: "",
-      dateValue: "",
-      startTimeValue: "",
-      endTimeValue: "",
+      currentDate: new Date(),
+      schedules: [],
     };
   },
   computed: {
     instanceMonth() {
       const dates = eachDayOfInterval({
-        start: startOfMonth(this.active),
-        end: endOfMonth(this.active),
+        start: startOfMonth(this.currentDate),
+        end: endOfMonth(this.currentDate),
       });
       return dates;
     },
@@ -53,10 +51,13 @@ export default {
       return format(date, f);
     },
     changeCurrentMonth() {
-      this.active = new Date();
+      this.currentDate = new Date();
     },
     changeDate(num) {
-      this.active = addMonths(this.active, num);
+      this.currentDate = addMonths(this.currentDate, num);
+    },
+    receivedSchedules(data) {
+      this.schedules.push(data); //data内はdateValue,startTimeValue,endTimeValue
     },
   },
   mounted() {
@@ -64,14 +65,14 @@ export default {
     const year = params.get("year");
     const month = params.get("month");
     if (year && month) {
-      this.active = parse(`${year}-${month}`, "yyyy-MM", new Date());
+      this.currentDate = parse(`${year}-${month}`, "yyyy-MM", new Date());
     }
   },
   watch: {
-    active: function (newActive) {
+    currentDate: function (newcurrentDate) {
       const url = new URL(window.location.href);
-      url.searchParams.set("year", format(newActive, "yyyy"));
-      url.searchParams.set("month", format(newActive, "MM"));
+      url.searchParams.set("year", format(newcurrentDate, "yyyy"));
+      url.searchParams.set("month", format(newcurrentDate, "MM"));
       window.history.pushState({}, "", url);
     },
   },
@@ -81,10 +82,6 @@ export default {
 <style scoped>
 #app {
   margin: 30px;
-}
-.title {
-  font-size: 50px;
-  font-weight: bold;
 }
 .block {
   margin: 30px 0;

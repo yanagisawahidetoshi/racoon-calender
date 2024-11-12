@@ -6,20 +6,33 @@
       <BaseButton @click="changeDate(1)">翌月</BaseButton>
       <BaseButton @click="$vm2.open('registScheduleModal')">登録</BaseButton>
       <!--vue-modal-2はグローバルに提供されている-->
+      {{ formatDate(currentDate, "yyyy年MMMM") }}
     </div>
-    <ModalRegistScheduleVue />
+    <ModalRegistScheduleVue @sendSchedule="sendSchedule" />
   </header>
 </template>
 
 <script>
 import BaseButton from "@/components/atoms/BaseButton.vue";
 import ModalRegistScheduleVue from "./ModalRegistSchedule.vue";
+import { format } from "../../../libs/date-util";
 export default {
   name: "CalenderHeader",
   components: { BaseButton, ModalRegistScheduleVue },
   props: {
-    changeDate: () => {},
-    changeCurrentMonth: () => {},
+    changeDate: Function,
+    changeCurrentMonth: Function,
+    currentDate: {
+      type: Date,
+    },
+  },
+  methods: {
+    sendSchedule(data) {
+      this.$emit("sendSchedule", data);
+    },
+    formatDate(data, f) {
+      return format(data, f);
+    },
   },
 };
 </script>
@@ -32,6 +45,7 @@ export default {
 }
 .wrap_button {
   display: flex;
+  align-items: center;
   gap: 12px;
   margin-bottom: 20px;
 }

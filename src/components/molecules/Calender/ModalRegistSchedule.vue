@@ -14,6 +14,10 @@
       btn1OnClick: () => {
         $vm2.close('registScheduleModal');
       },
+      btn2OnClick: () => {
+        registSchedule();
+        $vm2.close('registScheduleModal');
+      },
     }"
   >
     <div class="wrap_input">
@@ -39,6 +43,22 @@ import InputTime from "@/components/atoms/InputTime.vue";
 export default {
   name: "CalenderModalRegistSchedule.vue",
   components: { InputDate, InputTime },
+  data() {
+    return {
+      dateValue: "",
+      startTimeValue: "",
+      endTimeValue: "",
+    };
+  },
+  methods: {
+    registSchedule() {
+      this.$emit("sendSchedule", {
+        dateValue: this.dateValue,
+        startTimeValue: this.startTimeValue,
+        endTimeValue: this.endTimeValue,
+      });
+    },
+  },
 };
 </script>
 
