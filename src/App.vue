@@ -19,7 +19,7 @@ import {
   lastDayOfMonth,
   getEachDayOfMonth,
   addMonth,
-  moveToCurrentMonth,
+  moveCurrentMonth,
   formatDateAndDay,
 } from "./libs/date-fns";
 
@@ -43,7 +43,7 @@ export default {
       return formatDateAndDay(date, formatSetting);
     },
     changeToCurrentMonth() {
-      this.baseDate = moveToCurrentMonth();
+      this.baseDate = moveCurrentMonth();
     },
     changeMonth(num) {
       this.baseDate = addMonth(this.baseDate, num);

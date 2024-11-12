@@ -16,7 +16,7 @@ export const getEachDayOfMonth = (startDate, lastDate) => {
 export const addMonth = (date, num) => {
   return addMonths(date, num);
 }
-export const moveToCurrentMonth = () => {
+export const moveCurrentMonth = () => {
   return new Date();
 }
 export const formatDateAndDay = (date, formatSetting) => {
