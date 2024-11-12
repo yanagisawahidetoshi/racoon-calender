@@ -7,7 +7,7 @@ export const startOfMonth = (baseDate) => {
 export const lastOfMonth = (baseDate) => {
   return dateFnsLastOfMonth(baseDate);
 }
-export const getEachDayOfMonth = (startDate, lastDate) => {
+export const getEachDateOfMonth = (startDate, lastDate) => {
   return eachDayOfInterval({
     start: startDate,
     end: lastDate

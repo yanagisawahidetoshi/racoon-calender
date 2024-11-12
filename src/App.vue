@@ -17,7 +17,7 @@
 import {
   startOfMonth,
   lastOfMonth,
-  getEachDayOfMonth,
+  getEachDateOfMonth,
   addMonth,
   changeToCurrentMonth,
   formatDateAndDay,
@@ -35,7 +35,7 @@ export default {
     dates(){
       const startDate = startOfMonth(this.baseDate);
       const lastDate = lastOfMonth(this.baseDate);
-      return getEachDayOfMonth(startDate, lastDate);
+      return getEachDateOfMonth(startDate, lastDate);
     }
   },
   methods: {
