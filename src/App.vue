@@ -16,10 +16,10 @@
 <script>
 import {
   startOfMonth,
-  lastDayOfMonth,
+  lastOfMonth,
   getEachDayOfMonth,
   addMonth,
-  moveCurrentMonth,
+  changeToCurrentMonth,
   formatDateAndDay,
 } from "./libs/date-fns";
 
@@ -34,16 +34,16 @@ export default {
   computed: {
     dates(){
       const startDate = startOfMonth(this.baseDate);
-      const lastDate = lastDayOfMonth(this.baseDate);
+      const lastDate = lastOfMonth(this.baseDate);
       return getEachDayOfMonth(startDate, lastDate);
     }
   },
   methods: {
-    formatDate(date, formatSetting){
-      return formatDateAndDay(date, formatSetting);
+    formatDate(date, setting){
+      return formatDateAndDay(date, setting);
     },
     changeToCurrentMonth() {
-      this.baseDate = moveCurrentMonth();
+      this.baseDate = changeToCurrentMonth();
     },
     changeMonth(num) {
       this.baseDate = addMonth(this.baseDate, num);

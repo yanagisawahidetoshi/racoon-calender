@@ -4,7 +4,7 @@ import ja from 'date-fns/locale/ja'
 export const startOfMonth = (baseDate) => {
   return dateFnsStartOfMonth(baseDate);
 }
-export const lastDayOfMonth = (baseDate) => {
+export const lastOfMonth = (baseDate) => {
   return dateFnsLastOfMonth(baseDate);
 }
 export const getEachDayOfMonth = (startDate, lastDate) => {
@@ -16,9 +16,9 @@ export const getEachDayOfMonth = (startDate, lastDate) => {
 export const addMonth = (date, num) => {
   return addMonths(date, num);
 }
-export const moveCurrentMonth = () => {
+export const changeToCurrentMonth = () => {
   return new Date();
 }
-export const formatDateAndDay = (date, formatSetting) => {
-  return format(date, formatSetting, {locale: ja});
+export const formatDateAndDay = (date, setting) => {
+  return format(date, setting, {locale: ja});
 }
