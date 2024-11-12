@@ -52,7 +52,7 @@ export default {
   },
   methods: {
     registSchedule() {
-      this.$emit("sendParent", {
+      this.$emit("sendSchedule", {
         dateValue: this.dateValue,
         startTimeValue: this.startTimeValue,
         endTimeValue: this.endTimeValue,

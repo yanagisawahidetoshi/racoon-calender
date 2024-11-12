@@ -6,9 +6,9 @@
       <BaseButton @click="changeDate(1)">翌月</BaseButton>
       <BaseButton @click="$vm2.open('registScheduleModal')">登録</BaseButton>
       <!--vue-modal-2はグローバルに提供されている-->
-      {{ formatDate(active, "yyyy年MMMM") }}
+      {{ formatDate(currentDate, "yyyy年MMMM") }}
     </div>
-    <ModalRegistScheduleVue @sendParent="sendParent" />
+    <ModalRegistScheduleVue @sendSchedule="sendSchedule" />
   </header>
 </template>
 
@@ -22,13 +22,13 @@ export default {
   props: {
     changeDate: Function,
     changeCurrentMonth: Function,
-    active: {
+    currentDate: {
       type: Date,
     },
   },
   methods: {
-    sendParent(data) {
-      this.$emit("sendParent", data);
+    sendSchedule(data) {
+      this.$emit("sendSchedule", data);
     },
     formatDate(data, f) {
       return format(data, f);

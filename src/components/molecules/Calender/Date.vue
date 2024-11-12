@@ -10,7 +10,7 @@
 
 <script>
 import {
-  parseISO,
+  parse,
   format,
   isSameYear,
   isSameMonth,
@@ -29,7 +29,7 @@ export default {
   computed: {
     hasSchedules() {
       return this.schedules.filter((object) => {
-        const dateValue = parseISO(`${object.dateValue}`); // dateValueはyyyy-mm-ddなので、dayと比較するためフォーマットを揃える
+        const dateValue = parse(object.dateValue, "yyyy-MM-dd", new Date()); // dateValueはyyyy-mm-ddなので、dayと比較するためフォーマットを揃える
         return (
           isSameYear(this.day, dateValue) &&
           isSameMonth(this.day, dateValue) &&
