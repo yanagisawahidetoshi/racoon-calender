@@ -1,19 +1,41 @@
 <template>
   <div id="app">
-    <button type="submit" @click="changeMonth(-1)">前月</button>
-    <button type="submit" @click="changeToCurrentMonth">当月</button>
-    <button type="submit" @click="changeMonth(1)">翌月</button>
+    <div>
+      <button type="submit" @click="changeMonth(-1)">前月</button>
+      <button type="submit" @click="changeToCurrentMonth">当月</button>
+      <button type="submit" @click="changeMonth(1)">翌月</button>
+      <h1>{{ format(currentDay, "yyyy/MM") }}</h1>
+      <button type="submit" @click="openModal('registNewSchedule-modal')">
+        登録
+      </button>
+    </div>
     <ol>
       <li v-for="(date, index) in dates" :key="index">
         <p>{{ format(date, "MM/dd EE") }}</p>
       </li>
     </ol>
-    {{ inputDate }}
-    {{ inputTime }}
-    {{ inputText }}<br />
-    <InputDate v-model="inputDate" />
-    <InputTime v-model="inputTime" />
-    <InputText v-model="inputText" />
+    <vue-modal-2
+      name="registNewSchedule-modal"
+      @on-close="closeModal('registNewSchedule-modal')"
+      :headerOptions="{ title: '予定を登録' }"
+      :footerOptions="{
+        btn1: 'キャンセル',
+        btn2: '登録',
+        btn2Style: {
+          backgroundColor: 'blue',
+        },
+        btn1OnClick: () => {
+          closeModal('registNewSchedule-modal');
+        },
+        btn2OnClick: () => {
+          regist();
+        },
+      }"
+    >
+      <InputDate v-model="inputDate" /><br />
+      <InputTime v-model="inputTime" /><br />
+      <InputText v-model="inputText" /><br />
+    </vue-modal-2>
   </div>
 </template>
 
@@ -28,6 +50,7 @@ import {
 import InputDate from "./components/atoms/InputDate";
 import InputText from "./components/atoms/InputText";
 import InputTime from "./components/atoms/InputTime";
+
 export default {
   name: "App",
   components: {
@@ -60,6 +83,13 @@ export default {
     changeToCurrentMonth() {
       this.currentDay = new Date();
     },
+    openModal(pos) {
+      this.$vm2.open(pos);
+    },
+    closeModal(pos) {
+      this.$vm2.close(pos);
+    },
+    regist() {},
   },
 };
 </script>
