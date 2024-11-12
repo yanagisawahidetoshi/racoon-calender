@@ -1,4 +1,4 @@
-import { startOfMonth as dateFnsStartOfMonth, eachDayOfInterval, lastDayOfMonth as dateFnsLastOfMonth, format, addMonths } from 'date-fns';
+import { startOfMonth as dateFnsStartOfMonth, eachDayOfInterval as dateFnsEachDayOfInterval, lastDayOfMonth as dateFnsLastOfMonth, format, addMonths } from 'date-fns';
 import ja from 'date-fns/locale/ja'
 
 export const startOfMonth = (baseDate) => {
@@ -8,7 +8,7 @@ export const lastOfMonth = (baseDate) => {
   return dateFnsLastOfMonth(baseDate);
 }
 export const getEachDateOfMonth = (startDate, lastDate) => {
-  return eachDayOfInterval({
+  return dateFnsEachDayOfInterval({
     start: startDate,
     end: lastDate
   });
