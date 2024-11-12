@@ -3,9 +3,10 @@
     <CalenderHeader
       :dispDate="dispDate"
       @changeMonth="changeMonth"
-      @currentMonth="currentMonth"
+      @changeCurrentMonth="changeCurrentMonth"
+      @modalOpen="modalOpen"
+      @modalClose="modalClose"
       @registerSchedule="registerSchedule"
-      @open="open"
     />
     {{ /* 日付と曜日を出力 */ }}
     <ol class="date-list">
@@ -17,44 +18,6 @@
         />
       </li>
     </ol>
-
-    <vue-modal-2
-      name="modalToRegistSchedule"
-      @on-close="close"
-      :headerOptions="{
-        title: '予定を登録',
-      }"
-      :footerOptions="{
-        btn1: 'キャンセル',
-        btn2: '登録',
-        btn1Style: {
-          backgroundColor: '#cccccc',
-        },
-        btn2Style: {
-          backgroundColor: 'green',
-        },
-        btn1OnClick: () => {
-          this.close();
-        },
-        btn2OnClick: () => {
-          this.registerSchedule();
-        },
-      }"
-    >
-      <div class="input-wrap">
-        {{ /* input:text */ }}
-        <p>
-          <InputText v-model="inputSchedule" placeholder="予定を入力" />
-        </p>
-        {{ /* input:date */ }}
-        <p>
-          <InputDate v-model="inputDate" />
-        </p>
-        {{ /* input:time */ }}
-        <p>開始時間：<InputTime v-model="inputStartTime" /></p>
-        <p>終了時間：<InputTime v-model="inputEndTime" /></p>
-      </div>
-    </vue-modal-2>
   </div>
 </template>
 
@@ -69,18 +32,12 @@ import {
 } from "./libs/date-utility";
 import DateItem from "./components/DateItem";
 import CalenderHeader from "./components/CalenderHeader";
-import InputDate from "./components/InputDate";
-import InputTime from "./components/InputTime";
-import InputText from "./components/InputText";
 
 export default {
   name: "app",
   components: {
     DateItem,
     CalenderHeader,
-    InputDate,
-    InputTime,
-    InputText,
   },
 
   data() {
@@ -91,7 +48,7 @@ export default {
       inputDate: "",
       inputStartTime: "",
       inputEndTime: "",
-      items: [],
+      rgistedSchedule: [],
     };
   },
   computed: {
@@ -110,50 +67,50 @@ export default {
 
   methods: {
     changeMonth(addDate) {
-      //console.log("");
       this.currentDate = addMonths(this.currentDate, addDate);
       this.urlParams();
     },
-    currentMonth() {
+    changeCurrentMonth() {
       this.currentDate = new Date();
       this.urlParams();
     },
-    open() {
+    modalOpen() {
       this.$vm2.open("modalToRegistSchedule");
     },
-    close() {
+    modalClose() {
+      //this.clearInput(scheduleData);
       this.$vm2.close("modalToRegistSchedule");
     },
-    clear() {
+    /*
+    clearInput() {
       this.inputDate = "";
       this.inputStartTime = "";
       this.inputEndTime = "";
       this.inputSchedule = "";
+      console.log("クリア" + this.inputSchedule + "です");
     },
+		*/
     urlParams() {
       const year = format(this.currentDate, "yyyy");
       const Month = format(this.currentDate, "MM");
-      //console.log(year);
       const newUrl = `${window.location.pathname}?year=${year}&month=${Month}`;
       window.history.pushState({ path: newUrl }, "", newUrl);
     },
-    registerSchedule() {
-      // 追加用
+    registerSchedule(scheduleData) {
       const newSchedule = {
-        date: this.inputDate,
-        startTime: this.inputStartTime,
-        endTime: this.inputEndTime,
-        schedule: this.inputSchedule,
+        date: scheduleData.date,
+        startTime: scheduleData.startTime,
+        endTime: scheduleData.endTime,
+        schedule: scheduleData.schedule,
       };
-      //console.log(newSchedule);
-      this.items.push(newSchedule);
-      //console.log(this.items);
-      this.clear();
-      this.close();
+      this.rgistedSchedule.push(newSchedule);
+      //this.clearInput();
+      this.modalClose();
     },
     getSchedule(date) {
-      //console.log(this.items);
-      const scheduleDate = this.items.find((item) => item.date === date);
+      const scheduleDate = this.rgistedSchedule.filter(
+        (item) => item.date === date
+      );
       return scheduleDate ? scheduleDate : null;
     },
   },
@@ -167,13 +124,12 @@ export default {
       ? url.searchParams.get("month")
       : null;
     if (yearParam && monthParam) {
-      //console.log(new Date(yearParam, monthParam));
       this.currentDate = new Date(yearParam, monthParam - 1);
     }
   },
 };
 </script>
-<style scoped>
+<style>
 ol,
 li {
   padding: 0;

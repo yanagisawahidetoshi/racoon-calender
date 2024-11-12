@@ -1,9 +1,9 @@
 <template>
   <input
     type="date"
-    :value="dateValue"
-    @input="validate($event.target.value)"
+    :value="value"
     class="inputDate"
+    @input="validate($event.target.value)"
   />
 </template>
 
@@ -11,17 +11,17 @@
 export default {
   name: "InputDate",
   props: {
-    dateValue: {
+    value: {
       type: String,
       default: "",
     },
   },
   methods: {
-    validate(value) {
+    validate(inputValue) {
       //console.log(value);
       const datePattern = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
-      if (datePattern.test(value)) {
-        this.$emit("input", value);
+      if (datePattern.test(inputValue)) {
+        this.$emit("input", inputValue);
       } else {
         console.log('日付フォーマットが違います。YYYY-MM-DD"');
       }
@@ -29,7 +29,7 @@ export default {
   },
 };
 </script>
-<style scoped>
+<style>
 .inputDate {
   padding: 6px 12px;
   border: 1px solid #333;

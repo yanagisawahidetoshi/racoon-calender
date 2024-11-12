@@ -1,17 +1,23 @@
 <template>
   <div class="menu">
-    <Button @click="$emit('changeMonth', -1)" className="arrow-left"></Button>
-    <Button @click="$emit('currentMonth')" tagName="span">当月</Button>
-    <Button @click="$emit('changeMonth', 1)" className="arrow-right"></Button>
     <span class="nowMonth">{{ dispDate }}</span>
-    <Button @click="$emit('open')" tagName="a" className="regist">
+    <Button className="arrow-left" @click="$emit('changeMonth', -1)" />
+    <Button tagName="span" @click="$emit('changeCurrentMonth')">当月</Button>
+    <Button className="arrow-right" @click="$emit('changeMonth', 1)" />
+
+    <Button tagName="a" className="regist" @click="$emit('modalOpen')">
       登録
     </Button>
+    <ScheduleRegistModal
+      @modalClose="$emit('modalClose', $event)"
+      @registerSchedule="$emit('registerSchedule', $event)"
+    />
   </div>
 </template>
 
 <script>
 import Button from "./Button";
+import ScheduleRegistModal from "./ScheduleRegistModal";
 
 export default {
   name: "CalenderHeader",
@@ -23,6 +29,7 @@ export default {
   },
   components: {
     Button,
+    ScheduleRegistModal,
   },
 };
 </script>

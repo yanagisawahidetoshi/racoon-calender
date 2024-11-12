@@ -1,9 +1,10 @@
 <template>
-  <p v-bind:class="className !== '' ? className : defaultClass">
+  <p :class="className !== '' ? className : defaultClass">
     {{ formatDate }} 日 <span class="day">({{ day }})</span>
     <span v-if="scheduleDate" class="schedule">
-      {{ scheduleDate.schedule }}
-      ({{ scheduleDate.startTime }} - {{ scheduleDate.endTime }})
+      <span v-for="(n, index) in scheduleDate" :key="index" class="schedule">
+        {{ n.schedule }} ({{ n.startTime }} - {{ n.endTime }})
+      </span>
     </span>
   </p>
 </template>
@@ -22,8 +23,8 @@ export default {
       required: true,
     },
     scheduleDate: {
-      type: Object,
-      default: null,
+      type: Array,
+      default: () => [],
     },
     className: {
       type: String,

@@ -2,8 +2,8 @@
   <component
     :is="tagName"
     v-bind:type="tagName === 'button' ? 'button' : null"
-    @click="$emit('click')"
     v-bind:class="className !== '' ? className : defaultClass"
+    @click="$emit('click')"
     ><slot></slot
   ></component>
 </template>
