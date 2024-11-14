@@ -62,13 +62,8 @@ export default {
   },
   methods: {
     modalClose() {
-      this.$emit("inputDate", {
-        date: this.inputDate,
-        startTime: this.inputStartTime,
-        endTime: this.inputEndTime,
-        schedule: this.inputSchedule,
-      });
       this.clearInputs();
+      this.$emit("modalClose");
     },
     submitRegist() {
       this.$emit("registerSchedule", {

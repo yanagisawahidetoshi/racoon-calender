@@ -34,7 +34,7 @@ import DateItem from "./components/DateItem";
 import CalenderHeader from "./components/CalenderHeader";
 
 export default {
-  name: "app",
+  name: "App",
   components: {
     DateItem,
     CalenderHeader,
@@ -111,6 +111,10 @@ export default {
       const scheduleDate = this.rgistedSchedule.filter(
         (item) => item.date === date
       );
+      if (scheduleDate) {
+        console.log(scheduleDate);
+      }
+
       return scheduleDate ? scheduleDate : null;
     },
   },

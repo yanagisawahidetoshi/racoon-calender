@@ -1,10 +1,8 @@
 <template>
-  <p :class="className !== '' ? className : defaultClass">
+  <p class="date">
     {{ formatDate }} 日 <span class="day">({{ day }})</span>
-    <span v-if="scheduleDate" class="schedule">
-      <span v-for="(n, index) in scheduleDate" :key="index" class="schedule">
-        {{ n.schedule }} ({{ n.startTime }} - {{ n.endTime }})
-      </span>
+    <span v-for="(n, index) in scheduleDate" :key="index" class="schedule">
+      {{ n.schedule }} ({{ n.startTime }} - {{ n.endTime }})
     </span>
   </p>
 </template>
@@ -25,14 +23,6 @@ export default {
     scheduleDate: {
       type: Array,
       default: () => [],
-    },
-    className: {
-      type: String,
-      default: "",
-    },
-    defaultClass: {
-      type: String,
-      default: "date",
     },
   },
   computed: {
