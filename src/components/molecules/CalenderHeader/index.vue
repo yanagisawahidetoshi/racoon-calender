@@ -2,16 +2,16 @@
   <header class="header">
     <ul class="btnArea">
       <li>
-        <BaseButton @click="$emit('changeMonth', -1)"> &lt; </BaseButton>
+        <BaseButton @click="$emit('changeMonth', -1)">&lt;</BaseButton>
       </li>
       <li>
-        <BaseButton @click="$emit('onChange')"> 当月 </BaseButton>
+        <BaseButton @click="$emit('onChange')">当月</BaseButton>
       </li>
       <li><BaseButton @click="$emit('changeMonth', 1)">&gt;</BaseButton></li>
     </ul>
     <div>{{ formatMonth(activeDate) }}</div>
     <BaseButton @click="openModal">登録</BaseButton>
-    <CalenderRegisterModal />
+    <CalenderRegisterModal @register="handleRegister" />
   </header>
 </template>
 <script>
@@ -32,13 +32,12 @@ export default {
     formatMonth(date) {
       return format(date, "yyyy年M月");
     },
-    closeModal() {
-      this.isModalVisible = false;
-      this.$vm2.close("scheduleRegister-modal");
-    },
     openModal() {
       this.isModalVisible = true;
       this.$vm2.open("scheduleRegister-modal");
+    },
+    handleRegister(scheduleData) {
+      this.$emit("register", scheduleData);
     },
   },
 };
