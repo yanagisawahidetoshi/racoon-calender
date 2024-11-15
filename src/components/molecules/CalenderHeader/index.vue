@@ -11,7 +11,7 @@
     </ul>
     <div>{{ formatMonth(activeDate) }}</div>
     <BaseButton @click="openModal">登録</BaseButton>
-    <CalenderRegisterModal @register="handleRegister" />
+    <CalenderRegisterModal @register="handleRegisterSchedule" />
   </header>
 </template>
 <script>
@@ -36,7 +36,7 @@ export default {
       this.isModalVisible = true;
       this.$vm2.open("scheduleRegister-modal");
     },
-    handleRegister(scheduleData) {
+    handleRegisterSchedule(scheduleData) {
       this.$emit("register", scheduleData);
     },
   },

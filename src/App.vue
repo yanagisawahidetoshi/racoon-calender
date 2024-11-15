@@ -4,12 +4,15 @@
       :active-date="activeDate"
       @changeMonth="changeMonth"
       @onChange="changeCurrentMonth"
-      @register="handleRegister"
+      @register="handleRegisterSchedule"
     />
     <section>
       <ol class="calender">
         <li v-for="(date, index) in generateDate()" :key="index">
-          <CalenderRow :date="date" :scheduleList="updateScheduleList(date)" />
+          <CalenderRow
+            :date="date"
+            :scheduleList="filterScheduleListByDate(date)"
+          />
         </li>
       </ol>
     </section>
@@ -68,10 +71,10 @@ export default {
       history.replaceState("", "", "?date=" + format(new Date(), "yyyy-MM"));
       this.getDateQueryParam();
     },
-    handleRegister(scheduleData) {
+    handleRegisterSchedule(scheduleData) {
       this.scheduleList = [...this.scheduleList, scheduleData];
     },
-    updateScheduleList(date) {
+    filterScheduleListByDate(date) {
       const formatDate = format(date, "yyyy-MM-dd");
       const scheduleList = this.scheduleList.filter((v) => {
         return formatDate == v.date;
