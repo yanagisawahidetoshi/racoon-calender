@@ -10,11 +10,11 @@
       btn2Style: {
         backgroundColor: 'green',
       },
-      btn2OnClick: () => {
-        doDelete();
-      },
       btn1OnClick: () => {
-        $vm2.close('scheduleRegister-modal');
+        closeModal();
+      },
+      btn2OnClick: () => {
+        registerButton();
       },
     }"
     class="scheduleRegister-modal"
@@ -26,11 +26,11 @@
       </div>
       <div><InputDate v-model="inputDate" /></div>
       <div class="scheduleRegister-startTime">
-        <span>開始時間</span><InputTime v-model="inputTime" />
+        <span>開始時間</span><InputTime v-model="startTime" />
       </div>
       <div class="scheduleRegister-endTime">
         <span>終了時間</span>
-        <InputTime v-model="inputTime" />
+        <InputTime v-model="endTime" />
       </div>
     </div>
   </vue-modal-2>
@@ -47,17 +47,33 @@ export default {
     return {
       inputText: "",
       inputDate: "",
-      inputTime: "",
+      startTime: "",
+      endTime: "",
     };
   },
   methods: {
     closeModal() {
+      this.resetInput();
       this.isModalVisible = false;
       this.$vm2.close("scheduleRegister-modal");
     },
-    openModal() {
-      this.isModalVisible = true;
-      this.$vm2.open("scheduleRegister-modal");
+    registerButton() {
+      const scheduleData = {
+        text: this.inputText,
+        date: this.inputDate,
+        startTime: this.startTime,
+        endTime: this.endTime,
+      };
+      this.$emit("register", scheduleData);
+      this.resetInput();
+      this.isModalVisible = false;
+      this.$vm2.close("scheduleRegister-modal");
+    },
+    resetInput() {
+      this.inputText = "";
+      this.inputDate = "";
+      this.startTime = "";
+      this.endTime = "";
     },
   },
 };

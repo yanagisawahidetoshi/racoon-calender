@@ -4,10 +4,13 @@
       <p class="date">{{ formatDate(date) }}</p>
       <p class="day">{{ formatDay(date) }}</p>
     </div>
-    <div class="schedule-content">
-      <!-- TODO: スケジュール登録 -->
-      <div><span>00:00</span> ～ <span>00:00</span></div>
-      <p>スケジュールが入ります</p>
+    <div
+      v-for="(schedule, index) in scheduleList"
+      :key="index"
+      class="schedule-content"
+    >
+      <span>{{ schedule.startTime }} ～ {{ schedule.endTime }}</span>
+      <p>{{ schedule.text }}</p>
     </div>
   </div>
 </template>
@@ -19,6 +22,9 @@ export default {
     date: {
       type: Date,
       required: true,
+    },
+    scheduleList: {
+      type: Array,
     },
   },
   methods: {
