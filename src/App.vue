@@ -32,9 +32,9 @@
         },
       }"
     >
-      <InputDate v-model="inputDate" /><br />
-      <InputTime v-model="inputTime" /><br />
-      <InputText v-model="inputText" /><br />
+      <InputDate v-model="inputDate" />
+      <InputTime v-model="inputTime" />
+      <InputText v-model="inputText" />
     </vue-modal-2>
   </div>
 </template>
@@ -83,11 +83,11 @@ export default {
     changeToCurrentMonth() {
       this.currentDay = new Date();
     },
-    openModal(pos) {
-      this.$vm2.open(pos);
+    openModal(name) {
+      this.$vm2.open(name);
     },
-    closeModal(pos) {
-      this.$vm2.close(pos);
+    closeModal(name) {
+      this.$vm2.close(name);
     },
     regist() {},
   },
