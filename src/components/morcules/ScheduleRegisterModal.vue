@@ -51,7 +51,7 @@ export default {
       this.$vm2.close("modal-add-schedule");
     },
     register() {
-      this.$emit("registered", {
+      this.$emit("registeredSchedule", {
         content: this.schedule.content,
         date: this.schedule.date,
         startTime: this.schedule.startTime,
