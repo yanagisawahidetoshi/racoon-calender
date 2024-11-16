@@ -2,6 +2,16 @@
   <div class="row">
     <p>{{ formatDate(date, "d") }}</p>
     <p class="day">{{ formatDate(date, "E") }}</p>
+    <button
+      v-for="(schedule, index) in schedules"
+      :key="index"
+      class="calender-button"
+    >
+      <div>
+        {{ schedule.startTime }}～{{ schedule.finishTime }}
+        {{ schedule.content }}
+      </div>
+    </button>
   </div>
 </template>
 <script>
@@ -12,6 +22,9 @@ export default {
   props: {
     date: {
       type: Date,
+    },
+    schedules: {
+      type: Array,
     },
   },
   methods: {
@@ -29,5 +42,8 @@ export default {
 }
 .day {
   font-size: 0.8em;
+}
+.calender-button {
+  margin-right: 10px;
 }
 </style>
