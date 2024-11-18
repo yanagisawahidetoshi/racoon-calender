@@ -86,8 +86,6 @@ export default {
         schedule: scheduleData.schedule,
       };
       this.rgistedSchedule.push(newSchedule);
-      //this.clearInput();
-      this.$vm2.close("modalToRegistSchedule");
     },
     getSchedule(date) {
       const scheduleDate = this.rgistedSchedule.filter(

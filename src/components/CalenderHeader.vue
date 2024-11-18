@@ -5,9 +5,7 @@
     <Button tagName="span" @click="$emit('changeCurrentMonth')">当月</Button>
     <Button className="arrow-right" @click="$emit('changeMonth', 1)" />
 
-    <ScheduleRegistModal
-      @registerSchedule="$emit('registerSchedule', $event)"
-    />
+    <ScheduleRegistModal @registerSchedule="registerSchedule($event)" />
   </div>
 </template>
 
@@ -26,6 +24,12 @@ export default {
   components: {
     Button,
     ScheduleRegistModal,
+  },
+  methods: {
+    registerSchedule(evnet) {
+      this.$emit("registerSchedule", evnet);
+      this.$vm2.close("modalToRegistSchedule");
+    },
   },
 };
 </script>
