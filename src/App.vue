@@ -106,10 +106,10 @@ export default {
     if (yearParam && monthParam) {
       this.currentDate = new Date(yearParam, monthParam - 1);
     }
-    const testUrl = new URL("http://localhost:8082/2024/01/");
+    const testUrl = new URL("http://localhost:8082/2024/01");
     const testpath = testUrl.pathname;
     //console.log(testpath);
-    const matchDate = testpath.match(/^\/(\d{4})\/(0?[1-9]|1[0-2])\//);
+    const matchDate = testpath.match(/^\/(\d{4})\/(0?[1-9]|1[0-2])\/?$/);
     //console.log(matchDate);
     if (matchDate) {
       const year = matchDate[1];
