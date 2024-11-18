@@ -1,10 +1,10 @@
 <template>
   <input
     type="text"
-    :value="textValue"
-    @input="$emit('input', $event.target.value)"
+    :value="value"
     :placeholder="placeholder"
     class="inputText"
+    @input="valueText($event.target.value)"
   />
 </template>
 
@@ -12,7 +12,7 @@
 export default {
   name: "InputText",
   props: {
-    textValue: {
+    value: {
       type: String,
       default: "",
     },
@@ -21,9 +21,14 @@ export default {
       default: "",
     },
   },
+  methods: {
+    valueText(inputValue) {
+      this.$emit("input", inputValue);
+    },
+  },
 };
 </script>
-<style scoped>
+<style>
 .inputText {
   padding: 6px 12px;
   border: 1px solid #333;

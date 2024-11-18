@@ -1,9 +1,9 @@
 <template>
   <input
     type="time"
-    :value="timeValue"
-    @input="validate($event.target.value)"
+    :value="value"
     class="inputTime"
+    @input="validate($event.target.value)"
   />
 </template>
 
@@ -11,17 +11,17 @@
 export default {
   name: "InputTime",
   props: {
-    timeValue: {
+    value: {
       type: String,
       default: "",
     },
   },
   methods: {
-    validate(value) {
+    validate(inputValue) {
       //console.log(value);
       const datePattern = /^(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])$/;
-      if (datePattern.test(value)) {
-        this.$emit("input", value);
+      if (datePattern.test(inputValue)) {
+        this.$emit("input", inputValue);
       } else {
         console.log("時間フォーマットが違います。HH:mm");
       }
@@ -29,7 +29,7 @@ export default {
   },
 };
 </script>
-<style scoped>
+<style>
 .inputTime {
   padding: 6px 12px;
   border: 1px solid #333;
