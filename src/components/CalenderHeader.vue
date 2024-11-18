@@ -5,11 +5,7 @@
     <Button tagName="span" @click="$emit('changeCurrentMonth')">当月</Button>
     <Button className="arrow-right" @click="$emit('changeMonth', 1)" />
 
-    <Button tagName="a" className="regist" @click="$emit('modalOpen')">
-      登録
-    </Button>
     <ScheduleRegistModal
-      @modalClose="$emit('modalClose', $event)"
       @registerSchedule="$emit('registerSchedule', $event)"
     />
   </div>

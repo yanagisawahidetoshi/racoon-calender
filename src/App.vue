@@ -4,8 +4,6 @@
       :dispDate="dispDate"
       @changeMonth="changeMonth"
       @changeCurrentMonth="changeCurrentMonth"
-      @modalOpen="modalOpen"
-      @modalClose="modalClose"
       @registerSchedule="registerSchedule"
     />
     {{ /* 日付と曜日を出力 */ }}
@@ -74,22 +72,6 @@ export default {
       this.currentDate = new Date();
       this.urlParams();
     },
-    modalOpen() {
-      this.$vm2.open("modalToRegistSchedule");
-    },
-    modalClose() {
-      //this.clearInput(scheduleData);
-      this.$vm2.close("modalToRegistSchedule");
-    },
-    /*
-    clearInput() {
-      this.inputDate = "";
-      this.inputStartTime = "";
-      this.inputEndTime = "";
-      this.inputSchedule = "";
-      console.log("クリア" + this.inputSchedule + "です");
-    },
-		*/
     urlParams() {
       const year = format(this.currentDate, "yyyy");
       const Month = format(this.currentDate, "MM");
@@ -105,16 +87,12 @@ export default {
       };
       this.rgistedSchedule.push(newSchedule);
       //this.clearInput();
-      this.modalClose();
+      this.$vm2.close("modalToRegistSchedule");
     },
     getSchedule(date) {
       const scheduleDate = this.rgistedSchedule.filter(
         (item) => item.date === date
       );
-      if (scheduleDate) {
-        console.log(scheduleDate);
-      }
-
       return scheduleDate ? scheduleDate : null;
     },
   },
