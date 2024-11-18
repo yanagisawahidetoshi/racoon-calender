@@ -32,6 +32,10 @@ export default {
     return {
       currentDate: null,
       schedules: [],
+      url: {
+        year: "",
+        month: "",
+      },
     };
   },
   components: {
@@ -82,6 +86,11 @@ export default {
     } else {
       this.currentDate = new Date();
     }
+
+    // 課題
+    const url = "https://hoge.com/2024/01/";
+    this.url.year = url.match(/\/[0-9]{4}\//)[0].substring(1, 5);
+    this.url.month = url.match(/\/[0-9]{2}\//)[0].substring(1, 3);
   },
   watch: {
     currentDate(newCurrentDate) {
