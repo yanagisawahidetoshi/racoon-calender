@@ -52,7 +52,7 @@ export default {
   mounted(){
     // ~/{西暦４桁}/{月1or2桁} を判断する正規表現。どんなURLにも対応できるように
     const currentUrl = window.location.href;
-    const matchUrl = currentUrl.match(/https?:\/\/[^\s]+\/(\d{4})\/(\d{1,2})/);
+    const matchUrl = currentUrl.match(/https?:\/\/.+\/(\d{4})\/(\d{1,2})/);
     if (matchUrl) {
       console.log(matchUrl[1]);
       console.log(matchUrl[2]);
