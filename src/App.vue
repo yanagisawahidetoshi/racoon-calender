@@ -88,12 +88,15 @@ export default {
     }
 
     // 課題
-    const url = "https://hoge.com/2024/01/";
+    const url = "http://hoge.com/2024/01/";
     // this.url.year = url.match(/\/[0-9]{4}\//)[0].substring(1, 5);
     // this.url.month = url.match(/\/[0-9]{2}\//)[0].substring(1, 3);
-    const [year, month] = [...url.matchAll(/[0-9]{2,4}/g)];
-    this.url.year = year[0];
-    this.url.month = month[0];
+    // const [year, month] = [...url.matchAll(/[0-9]{2,4}/g)];
+    // this.url.year = year[0];
+    // this.url.month = month[0];
+    const res = url.match(/[0-9]{2,4}/g);
+    this.url.year = res[res.length - 1];
+    this.url.month = res[res.length - 2];
   },
   watch: {
     currentDate(newCurrentDate) {
