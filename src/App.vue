@@ -45,6 +45,7 @@ export default {
   },
   mounted() {
     this.getDateQueryParam();
+    this.dateFromUrl();
   },
   methods: {
     generateDate() {
@@ -80,6 +81,12 @@ export default {
         return formatDate == v.date;
       });
       return scheduleList;
+    },
+    dateFromUrl() {
+      const url = "https://hoge.com/2024/01/";
+      const match = url.match(/([0-9]{4})\/([0-9]{2})/);
+      const formatDate = `${match[1]}-${match[2]}`;
+      console.log(formatDate);
     },
   },
 };
