@@ -83,8 +83,10 @@ export default {
       return scheduleList;
     },
     dateFromUrl() {
-      const url = "https://hoge.com/2024/01/";
-      const match = url.match(/([0-9]{4})\/([0-9]{2})/);
+      const url = "https://hoge.com/2024/1/";
+      const match = url.match(/\/([0-9]{4})\/([0-9]{1,2})\//);
+      if (!match) return;
+      match[2] = match[2].padStart(2, "0");
       const formatDate = `${match[1]}-${match[2]}`;
       console.log(formatDate);
     },
