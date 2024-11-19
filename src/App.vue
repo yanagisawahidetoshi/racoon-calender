@@ -70,7 +70,7 @@ export default {
     //URLがhttps://hoge.com/2024/01/の場合に正規表現を使って年月を取得する
     const url = location.href;
     const date = url.match(
-      /^http:\/\/[^/]+\/([0-9]{4})\/(0[1-9]|1[0-2]|[1-9])\/$/
+      /^https?:\/\/[^/]+\/([0-9]{4})\/(0[1-9]|1[0-2]|[1-9])\/?$/
     ); //[^/]+スラッシュまで繰り返す・()で配列に格納
     console.log(date[1] + "年" + date[2] + "月");
   },
