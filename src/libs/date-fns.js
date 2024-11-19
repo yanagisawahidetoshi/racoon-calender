@@ -13,12 +13,12 @@ export const getEachDateOfMonth = (startDate, lastDate) => {
     end: lastDate
   });
 }
-export const addMonth = (date, num) => {
+export const changeMonth = (date, num) => {
   return addMonths(date, num);
 }
 export const changeToCurrentMonth = () => {
   return new Date();
 }
-export const formatDateAndDay = (date, setting) => {
+export const formatDateType = (date, setting) => {
   return format(date, setting, {locale: ja});
 }

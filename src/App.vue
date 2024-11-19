@@ -18,9 +18,9 @@ import {
   startOfMonth,
   lastOfMonth,
   getEachDateOfMonth,
-  addMonth,
+  changeMonth,
   changeToCurrentMonth,
-  formatDateAndDay,
+  formatDateType,
 } from "./libs/date-fns";
 
 export default {
@@ -40,14 +40,23 @@ export default {
   },
   methods: {
     formatDate(date, setting){
-      return formatDateAndDay(date, setting);
+      return formatDateType(date, setting);
     },
     changeToCurrentMonth() {
       this.baseDate = changeToCurrentMonth();
     },
     changeMonth(num) {
-      this.baseDate = addMonth(this.baseDate, num);
+      this.baseDate = changeMonth(this.baseDate, num);
     },
+  },
+  mounted(){
+    // ~/{西暦４桁}/{月1or2桁} を判断する正規表現。どんなURLにも対応できるように
+    const url = window.location.href;
+    const resultMatch = url.match(/https?:\/\/[^\s]+\/(\d{4})\/(\d{1,2})/);
+    if (resultMatch) {
+      console.log(resultMatch[1]);
+      console.log(resultMatch[2]);
+    }
   }
 };
 </script>
