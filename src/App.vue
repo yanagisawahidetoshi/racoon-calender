@@ -88,15 +88,23 @@ export default {
     }
 
     // 課題
-    const url = "http://hoge.com/2024/01/";
+    const url = "http://8080.com/2024/01/";
+    let regexp = /([0-9]{4})(?:\/)([0-9]{2})/;
+    let result = regexp.exec(url);
+    this.url.month = result[2];
+    this.url.year = result[1];
+    console.log(this.url);
     // this.url.year = url.match(/\/[0-9]{4}\//)[0].substring(1, 5);
     // this.url.month = url.match(/\/[0-9]{2}\//)[0].substring(1, 3);
     // const [year, month] = [...url.matchAll(/[0-9]{2,4}/g)];
     // this.url.year = year[0];
     // this.url.month = month[0];
-    const res = url.match(/[0-9]{2,4}/g);
-    this.url.year = res[res.length - 1];
-    this.url.month = res[res.length - 2];
+    // const res = url.match(/[0-9]{2,4}/g);
+    // this.url.year = res[res.length - 1];
+    // this.url.month = res[res.length - 2];
+    // const regex1 = /(\/[0-9]{2,4}\/)/g;
+    // const res2 = regex1.exec(url);
+    // console.log(res2)
   },
   watch: {
     currentDate(newCurrentDate) {
