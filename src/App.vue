@@ -33,8 +33,8 @@ export default {
       currentDate: null,
       schedules: [],
       url: {
-        year: "",
-        month: "",
+        year: null,
+        month: null,
       },
     };
   },
@@ -88,12 +88,19 @@ export default {
     }
 
     // 課題
-    const url = "http://8080.com/2024/1/";
-    const regexp = /([0-9]{4})\/([0-9]{1,2})/;
+    const url = "localhost:8000/2024/12";
+    const regexp = /(19[0-9]{4}|2[0-9]{3})\/([0-9]{1,2})/;
     const result = url.match(regexp);
-    this.url.month = result[2];
-    this.url.year = result[1];
-    console.log(result);
+    if (result !== null) {
+      this.url.month = result[2];
+      this.url.year = result[1];
+    }
+    console.log(this.url);
+    // const result = url.match(regexp);
+    // // console.log(result);
+    // this.url.month = result[2] !== null ? result[2] : null;
+    // this.url.year = result[1] !== null ? result[1] : null;
+    // console.log(this.url);
     // let regexp = /([0-9]{4})(?:\/)([0-9]{2})/;
     // let result = regexp.exec(url);
     // this.url.month = result[2];
