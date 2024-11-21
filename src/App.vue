@@ -88,12 +88,18 @@ export default {
     }
 
     // 課題
-    const url = "http://8080.com/2024/01/";
-    let regexp = /([0-9]{4})(?:\/)([0-9]{2})/;
-    let result = regexp.exec(url);
+    const url = "http://8080.com/2024/1/";
+    const regexp = /([0-9]{4})\/([0-9]{1,2})/;
+    const result = url.match(regexp);
     this.url.month = result[2];
     this.url.year = result[1];
-    console.log(this.url);
+    console.log(result);
+    // let regexp = /([0-9]{4})(?:\/)([0-9]{2})/;
+    // let result = regexp.exec(url);
+    // this.url.month = result[2];
+    // this.url.year = result[1];
+    // console.log(this.url);
+
     // this.url.year = url.match(/\/[0-9]{4}\//)[0].substring(1, 5);
     // this.url.month = url.match(/\/[0-9]{2}\//)[0].substring(1, 3);
     // const [year, month] = [...url.matchAll(/[0-9]{2,4}/g)];
