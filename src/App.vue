@@ -89,7 +89,7 @@ export default {
 
     // 課題
     const url = "localhost:2000/2024/24/";
-    const regexp = /\/(19[0-9]{4}|2[0-9]{3})\/([0-9]{1,2})/;
+    const regexp = /\/(19[0-9]{2}|2[0-9]{3})\/([0-9]{1,2})/;
     const result = url.match(regexp);
     if (result !== null) {
       this.url.month = result[2];
