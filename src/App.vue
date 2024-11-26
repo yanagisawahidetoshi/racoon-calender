@@ -21,7 +21,7 @@ import {
   changeMonth,
   changeToCurrentMonth,
   formatDate,
-  parse
+  parse,
 } from "./libs/date-fns";
 
 export default {
@@ -39,6 +39,14 @@ export default {
       return getEachDateOfMonth(startDate, lastDate);
     }
   },
+  mounted(){
+    // ~/{西暦４桁}/{月1or2桁} を判断する正規表現。どんなURLにも対応できるように
+    const currentPath = window.location.pathname;
+    const matchPath = currentPath.match(/\d{4}\/(0?[1-9]|1[0-2])$/);
+    if (matchPath) {
+      this.baseDate = parse(matchPath[0], "yyyy/MM");
+    }
+  },
   methods: {
     formatDate(date, setting){
       return formatDate(date, setting);
@@ -50,13 +58,5 @@ export default {
       this.baseDate = changeMonth(this.baseDate, num);
     },
   },
-  mounted(){
-    // ~/{西暦４桁}/{月1or2桁} を判断する正規表現。どんなURLにも対応できるように
-    const currentUrl = window.location.href;
-    const matchUrl = currentUrl.match(/https?:\/\/.+\/(\d{4})\/(\d{1,2})/);
-    const inputedDate = matchUrl[1] + '/' + matchUrl[2];
-    
-    this.baseDate = parse(inputedDate, "yyyy/MM");
-  }
 };
 </script>

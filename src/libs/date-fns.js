@@ -26,9 +26,9 @@ export const changeMonth = (date, num) => {
 export const changeToCurrentMonth = () => {
   return new Date();
 }
-export const formatDate = (date, setting) => {
-  return format(date, setting, {locale: ja});
+export const formatDate = (date, formatSetting) => {
+  return format(date, formatSetting, {locale: ja});
 }
-export const parse = (string, dateFormat) => {
-  return dateFnsParse(string, dateFormat, new Date());
+export const parse = (dateString, formatSetting) => {
+  return dateFnsParse(dateString, formatSetting, new Date());
 }
