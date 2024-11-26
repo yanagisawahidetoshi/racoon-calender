@@ -77,16 +77,23 @@ export default {
     }
     */
     // 課題 正規表現
-    const testUrl = new URL("http://localhost:8082/2024/01");
-    const testpath = testUrl.pathname;
-    //console.log(testpath);
-    const matchDate = testpath.match(/^\/(\d{4})\/(0?[1-9]|1[0-2])\/?$/);
+    const currentUrl = window.location.href;
+    const url = new URL(currentUrl);
+    const currentPath = url.pathname;
+    //console.log(currentPath);
+    const matchDate = currentPath.match(/^\/(\d{4})\/(0?[1-9]|1[0-2])\/?$/);
     //console.log(matchDate);
     if (matchDate) {
-      const year = matchDate[1];
-      const month = matchDate[2];
-      // console.log(`年: ${year}, 月: ${month}`);
-      this.currentDate = new Date(year, month - 1);
+      //const year = matchDate[1];
+      //const month = matchDate[2];
+      //console.log(`年: ${year}, 月: ${month}`);
+
+      this.currentDate = format(
+        new Date(`${matchDate[1]} / ${matchDate[2]}`),
+        "yyyy/MM"
+      );
+
+      //console.log(this.currentDate);
     } else {
       // console.log("NG: マッチしません。");
       this.currentDate = new Date();
