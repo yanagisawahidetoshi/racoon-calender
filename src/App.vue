@@ -77,9 +77,9 @@ export default {
     }
     */
     // 課題 正規表現
-    const currentUrl = window.location.href;
-    const url = new URL(currentUrl);
-    const currentPath = url.pathname;
+    //const currentUrl = window.location.href;
+    //const url = new URL(currentUrl);
+    const currentPath = window.location.pathname;
     //console.log(currentPath);
     const matchDate = currentPath.match(/^\/(\d{4})\/(0?[1-9]|1[0-2])\/?$/);
     //console.log(matchDate);
