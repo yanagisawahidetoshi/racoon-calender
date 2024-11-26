@@ -20,7 +20,8 @@ import {
   getEachDateOfMonth,
   changeMonth,
   changeToCurrentMonth,
-  formatDateType,
+  formatDate,
+  parse
 } from "./libs/date-fns";
 
 export default {
@@ -40,7 +41,7 @@ export default {
   },
   methods: {
     formatDate(date, setting){
-      return formatDateType(date, setting);
+      return formatDate(date, setting);
     },
     changeToCurrentMonth() {
       this.baseDate = changeToCurrentMonth();
@@ -53,10 +54,9 @@ export default {
     // ~/{西暦４桁}/{月1or2桁} を判断する正規表現。どんなURLにも対応できるように
     const currentUrl = window.location.href;
     const matchUrl = currentUrl.match(/https?:\/\/.+\/(\d{4})\/(\d{1,2})/);
-    if (matchUrl) {
-      console.log(matchUrl[1]);
-      console.log(matchUrl[2]);
-    }
+    const inputedDate = matchUrl[1] + '/' + matchUrl[2];
+    
+    this.baseDate = parse(inputedDate, "yyyy/MM");
   }
 };
 </script>

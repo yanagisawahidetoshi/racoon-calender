@@ -26,7 +26,7 @@ export const changeMonth = (date, num) => {
 export const changeToCurrentMonth = () => {
   return new Date();
 }
-export const formatDateType = (date, setting) => {
+export const formatDate = (date, setting) => {
   return format(date, setting, {locale: ja});
 }
 export const parse = (string, dateFormat) => {
