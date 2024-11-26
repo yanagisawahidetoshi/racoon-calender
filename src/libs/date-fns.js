@@ -1,4 +1,11 @@
-import { startOfMonth as dateFnsStartOfMonth, eachDayOfInterval as dateFnsEachDayOfInterval, lastDayOfMonth as dateFnsLastOfMonth, format, addMonths } from 'date-fns';
+import {
+  startOfMonth as dateFnsStartOfMonth,
+  eachDayOfInterval as dateFnsEachDayOfInterval,
+  lastDayOfMonth as dateFnsLastOfMonth,
+  parse as dateFnsParse,
+  format,
+  addMonths
+}from 'date-fns';
 import ja from 'date-fns/locale/ja'
 
 export const startOfMonth = (baseDate) => {
@@ -21,4 +28,7 @@ export const changeToCurrentMonth = () => {
 }
 export const formatDateType = (date, setting) => {
   return format(date, setting, {locale: ja});
+}
+export const parse = (string, dateFormat) => {
+  return dateFnsParse(string, dateFormat, new Date());
 }
