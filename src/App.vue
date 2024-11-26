@@ -3,6 +3,7 @@
     <button type="submit" @click="changeMonth(-1)">前月</button>
     <button type="submit" @click="changeToCurrentMonth">当月</button>
     <button type="submit" @click="changeMonth(1)">翌月</button>
+    {{ format(currentDay, "yyyy年MM月") }}
     <ol>
       <li v-for="(date, index) in dates" :key="index">
         <p>{{ format(date, "MM/dd EE") }}</p>
@@ -42,6 +43,17 @@ export default {
       inputText: "aaa",
       inputTime: "10:12",
     };
+  },
+  mounted() {
+    const url = location.href;
+    const matchedString = url.match(
+      /^https?:\/\/.*\/([0-9]{4})\/(0?[1-9]|1[0-2])\/.*?/
+    );
+    if (matchedString) {
+      const URLYear = matchedString[1];
+      const URLMonth = matchedString[2];
+      this.currentDay = new Date(URLYear + "-" + URLMonth + "-01");
+    }
   },
   computed: {
     dates() {
