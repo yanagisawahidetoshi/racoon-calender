@@ -78,24 +78,33 @@ export default {
   mounted() {
     const params = new URLSearchParams(location.search);
     if (params.size > 0) {
-      const year = params.get("year");
-      const month = params.get("month");
+      const url = location.href;
+      const regexp =
+        /https?:\/\/.*\/\?year=([1-2][0-9]{3})&month=(1[0-2]|0?[1-9])/;
+      const result = url.match(regexp);
+      if (result !== null) {
+        this.url.month = result[2];
+        this.url.year = result[1];
+      }
       this.currentDate = new Date(
-        parse(`${year}-${month}`, "yyyy-MM", new Date())
+        parse(`${this.url.year}-${this.url.month}`, "yyyy-MM", new Date())
       );
     } else {
       this.currentDate = new Date();
     }
 
-    // 課題
-    const url = "localhost:2000/2024/24/";
-    const regexp = /\/(19[0-9]{2}|2[0-9]{3})\/([0-9]{1,2})/;
-    const result = url.match(regexp);
-    if (result !== null) {
-      this.url.month = result[2];
-      this.url.year = result[1];
-    }
-    console.log(this.url);
+    // メモ
+    // const url = location.href;
+    // const regexp =
+    //   /https?:\/\/.*\/\?year=([1-2][0-9]{3})&month=(1[0-2]|0?[1-9])/;
+    // // const regexp = /\/(19[0-9]{2}|2[0-9]{3})\/([0-9]{1,2})/;
+    // // ^(?![1])0?[1-9]$
+    // const result = url.match(regexp);
+    // if (result !== null) {
+    //   this.url.month = result[2];
+    //   this.url.year = result[1];
+    // }
+    // console.log(this.url.month);
     // const result = url.match(regexp);
     // // console.log(result);
     // this.url.month = result[2] !== null ? result[2] : null;
