@@ -62,7 +62,36 @@ export default {
       }));
     },
   },
-
+  mounted() {
+    /*
+    const currentUrl = window.location.href;
+    const url = new URL(currentUrl);
+    const yearParam = !isNaN(Number(url.searchParams.get("year")))
+      ? url.searchParams.get("year")
+      : null;
+    const monthParam = !isNaN(Number(url.searchParams.get("month")))
+      ? url.searchParams.get("month")
+      : null;
+    if (yearParam && monthParam) {
+      this.currentDate = new Date(yearParam, monthParam - 1);
+    }
+    */
+    // 課題 正規表現
+    const testUrl = new URL("http://localhost:8082/2024/01");
+    const testpath = testUrl.pathname;
+    //console.log(testpath);
+    const matchDate = testpath.match(/^\/(\d{4})\/(0?[1-9]|1[0-2])\/?$/);
+    //console.log(matchDate);
+    if (matchDate) {
+      const year = matchDate[1];
+      const month = matchDate[2];
+      // console.log(`年: ${year}, 月: ${month}`);
+      this.currentDate = new Date(year, month - 1);
+    } else {
+      // console.log("NG: マッチしません。");
+      this.currentDate = new Date();
+    }
+  },
   methods: {
     changeMonth(addDate) {
       this.currentDate = addMonths(this.currentDate, addDate);
@@ -75,7 +104,9 @@ export default {
     urlParams() {
       const year = format(this.currentDate, "yyyy");
       const Month = format(this.currentDate, "MM");
-      const newUrl = `${window.location.pathname}?year=${year}&month=${Month}`;
+      //const newUrl = `${window.location.pathname}?year=${year}&month=${Month}`;
+      //console.log(window.location.origin);
+      const newUrl = `${window.location.origin}/${year}/${Month}/`;
       window.history.pushState({ path: newUrl }, "", newUrl);
     },
     registerSchedule(scheduleData) {
@@ -93,31 +124,6 @@ export default {
       );
       return scheduleDate ? scheduleDate : null;
     },
-  },
-  mounted() {
-    const currentUrl = window.location.href;
-    const url = new URL(currentUrl);
-    const yearParam = !isNaN(Number(url.searchParams.get("year")))
-      ? url.searchParams.get("year")
-      : null;
-    const monthParam = !isNaN(Number(url.searchParams.get("month")))
-      ? url.searchParams.get("month")
-      : null;
-    if (yearParam && monthParam) {
-      this.currentDate = new Date(yearParam, monthParam - 1);
-    }
-    const testUrl = new URL("http://localhost:8082/2024/01");
-    const testpath = testUrl.pathname;
-    //console.log(testpath);
-    const matchDate = testpath.match(/^\/(\d{4})\/(0?[1-9]|1[0-2])\/?$/);
-    //console.log(matchDate);
-    if (matchDate) {
-      const year = matchDate[1];
-      const month = matchDate[2];
-      console.log(`年: ${year}, 月: ${month}`);
-    } else {
-      console.log("NG: マッチしません。");
-    }
   },
 };
 </script>
