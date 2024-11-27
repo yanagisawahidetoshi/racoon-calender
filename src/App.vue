@@ -77,21 +77,21 @@ export default {
   },
   mounted() {
     const params = new URLSearchParams(location.search);
-    if (params.size > 0) {
-      const url = location.href;
-      const regexp =
-        /https?:\/\/.*\/\?year=([1-2][0-9]{3})&month=(1[0-2]|0?[1-9])/;
-      const result = url.match(regexp);
-      if (result !== null) {
-        this.url.month = result[2];
-        this.url.year = result[1];
-      }
-      this.currentDate = new Date(
-        parse(`${this.url.year}-${this.url.month}`, "yyyy-MM", new Date())
-      );
-    } else {
+    if (params.size === 0) {
       this.currentDate = new Date();
+      return;
     }
+    const url = location.href;
+    const regexp =
+      /https?:\/\/.*\/\?year=([1-2][0-9]{3})&month=(1[0-2]|0?[1-9])/;
+    const result = url.match(regexp);
+    if (result !== null) {
+      this.url.month = result[2];
+      this.url.year = result[1];
+    }
+    this.currentDate = new Date(
+      parse(`${this.url.year}-${this.url.month}`, "yyyy-MM", new Date())
+    );
 
     // メモ
     // const url = location.href;
