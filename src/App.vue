@@ -23,6 +23,7 @@ import {
   addMonths,
   parse,
 } from "./libs/date-fns";
+import { getYearAndMonth } from "./libs/get-year-and-month.js";
 
 import CalenderHeader from "./components/CalenderHeader";
 import DateRow from "./components/DateRow";
@@ -35,7 +36,7 @@ export default {
   },
   data() {
     return {
-      currentDate: new Date(),
+      currentDate: null,
     };
   },
   computed: {
@@ -48,9 +49,7 @@ export default {
   mounted() {
     // ~/{西暦４桁}/{月1or2桁} を判断する正規表現。どんなURLにも対応できるように
     const pathName = location.pathname;
-    const match = pathName.match(/\/(\d{4})\/(0?[1-9]|1[0-2])\/?$/);
-    console.log(match);
-    this.currentDate = parse("2024/11/", "yyyy/MM/");
+    this.currentDate = getYearAndMonth(pathName, parse);
   },
   methods: {
     formatDate(date) {
