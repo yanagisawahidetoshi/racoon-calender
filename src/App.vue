@@ -1,40 +1,49 @@
 <template>
   <div id="app">
-    <CalenderHeader
+    <!-- <CalenderHeader
       :currentDate="currentDate"
       @changeMonth="changeMonth"
       @changeToCurrentMonth="changeToCurrentMonth"
       :inputDate="inputDate"
       :inputText="inputText"
       :inputTime="inputTime"
-    />
+    /> -->
+    <div>
+      <button type="button" @click="changeMonth(-1)">前月</button>
+      <button type="button" @click="changeToCurrentMonth">当月</button>
+      <button type="button" @click="changeMonth(1)">翌月</button>
+      <h1>{{ format(currentDate, "yyyy/MM") }}</h1>
+      <button type="submit" @click="openModal('registNewSchedule-modal')">
+        登録
+      </button>
+      <vue-modal-2
+        name="registNewSchedule-modal"
+        @on-close="closeModal('registNewSchedule-modal')"
+        :headerOptions="{ title: '予定を登録' }"
+        :footerOptions="{
+          btn1: 'キャンセル',
+          btn2: '登録',
+          btn2Style: {
+            backgroundColor: 'blue',
+          },
+          btn1OnClick: () => {
+            closeModal('registNewSchedule-modal');
+          },
+          btn2OnClick: () => {
+            regist();
+          },
+        }"
+      >
+        <InputDate v-model="inputDate" />
+        <InputTime v-model="inputTime" />
+        <InputText v-model="inputText" />
+      </vue-modal-2>
+    </div>
     <ol>
       <li v-for="(date, index) in dates" :key="index">
         <DateRow :date="date" />
       </li>
     </ol>
-    <vue-modal-2
-      name="registNewSchedule-modal"
-      @on-close="closeModal('registNewSchedule-modal')"
-      :headerOptions="{ title: '予定を登録' }"
-      :footerOptions="{
-        btn1: 'キャンセル',
-        btn2: '登録',
-        btn2Style: {
-          backgroundColor: 'blue',
-        },
-        btn1OnClick: () => {
-          closeModal('registNewSchedule-modal');
-        },
-        btn2OnClick: () => {
-          regist();
-        },
-      }"
-    >
-      <InputDate v-model="inputDate" />
-      <InputTime v-model="inputTime" />
-      <InputText v-model="inputText" />
-    </vue-modal-2>
   </div>
 </template>
 
@@ -47,7 +56,6 @@ import {
   addMonths,
 } from "./libs/date-util.js";
 import DateRow from "./components/atoms/DateRow";
-import CalenderHeader from "./components/organisms/CalenderHeader";
 import InputDate from "./components/atoms/InputDate";
 import InputText from "./components/atoms/InputText";
 import InputTime from "./components/atoms/InputTime";
@@ -56,7 +64,6 @@ export default {
   name: "App",
   components: {
     DateRow,
-    CalenderHeader,
     InputDate,
     InputText,
     InputTime,
