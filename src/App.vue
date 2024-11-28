@@ -13,6 +13,28 @@
         <DateRow :date="date" />
       </li>
     </ol>
+    <vue-modal-2
+      name="registNewSchedule-modal"
+      @on-close="closeModal('registNewSchedule-modal')"
+      :headerOptions="{ title: '予定を登録' }"
+      :footerOptions="{
+        btn1: 'キャンセル',
+        btn2: '登録',
+        btn2Style: {
+          backgroundColor: 'blue',
+        },
+        btn1OnClick: () => {
+          closeModal('registNewSchedule-modal');
+        },
+        btn2OnClick: () => {
+          regist();
+        },
+      }"
+    >
+      <InputDate v-model="inputDate" />
+      <InputTime v-model="inputTime" />
+      <InputText v-model="inputText" />
+    </vue-modal-2>
   </div>
 </template>
 
@@ -26,11 +48,18 @@ import {
 } from "./libs/date-util.js";
 import DateRow from "./components/atoms/DateRow";
 import CalenderHeader from "./components/organisms/CalenderHeader";
+import InputDate from "./components/atoms/InputDate";
+import InputText from "./components/atoms/InputText";
+import InputTime from "./components/atoms/InputTime";
+
 export default {
   name: "App",
   components: {
     DateRow,
     CalenderHeader,
+    InputDate,
+    InputText,
+    InputTime,
   },
   data() {
     return {
@@ -73,6 +102,13 @@ export default {
     changeToCurrentMonth() {
       this.currentDate = new Date();
     },
+    openModal(name) {
+      this.$vm2.open(name);
+    },
+    closeModal(name) {
+      this.$vm2.close(name);
+    },
+    regist() {},
   },
 };
 </script>
