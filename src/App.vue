@@ -3,7 +3,7 @@
     <button type="submit" @click="changeMonth(-1)">前月</button>
     <button type="submit" @click="changeToCurrentMonth">当月</button>
     <button type="submit" @click="changeMonth(1)">翌月</button>
-    {{ format(currentDay, "yyyy年MM月") }}
+    {{ format(currentDate, "yyyy年MM月") }}
     <ol>
       <li v-for="(date, index) in dates" :key="index">
         <p>{{ format(date, "MM/dd EE") }}</p>
@@ -38,7 +38,7 @@ export default {
   },
   data() {
     return {
-      currentDay: new Date(),
+      currentDate: new Date(),
       inputDate: "2024-10-28",
       inputText: "aaa",
       inputTime: "10:12",
@@ -46,19 +46,19 @@ export default {
   },
   mounted() {
     const currentURL = window.location.href;
-    const matchedStrings = currentURL.matchedStrings(
+    const matchedStrings = currentURL.match(
       /^https?:\/\/.*\/([0-9]{4})\/(0[1-9]|1[0-2])\/?.*$/
     );
     if (matchedStrings) {
       const yearFromURL = matchedStrings[1];
       const monthFromURL = matchedStrings[2];
-      console.log(yearFromURL + "-" + monthFromURL + "-01");
+      this.currentDate = new Date(yearFromURL + "-" + monthFromURL + "-01");
     }
   },
   computed: {
     dates() {
-      const start = startOfMonth(this.currentDay);
-      const end = lastDayOfMonth(this.currentDay);
+      const start = startOfMonth(this.currentDate);
+      const end = lastDayOfMonth(this.currentDate);
       return eachDayOfInterval({ start, end });
     },
   },
@@ -67,10 +67,10 @@ export default {
       return format(date, pattern);
     },
     changeMonth(num) {
-      this.currentDay = addMonths(this.currentDay, num);
+      this.currentDate = addMonths(this.currentDate, num);
     },
     changeToCurrentMonth() {
-      this.currentDay = new Date();
+      this.currentDate = new Date();
     },
   },
 };
