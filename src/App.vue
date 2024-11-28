@@ -1,19 +1,18 @@
 <template>
   <div id="app">
-    <button type="submit" @click="changeMonth(-1)">前月</button>
-    <button type="submit" @click="changeToCurrentMonth">当月</button>
-    <button type="submit" @click="changeMonth(1)">翌月</button>
+    <CalenderHeader
+      :currentDate="currentDate"
+      @changeMonth="changeMonth"
+      @changeToCurrentMonth="changeToCurrentMonth"
+      :inputDate="inputDate"
+      :inputText="inputText"
+      :inputTime="inputTime"
+    />
     <ol>
       <li v-for="(date, index) in dates" :key="index">
-        <p>{{ format(date, "MM/dd EE") }}</p>
+        <DateRow :date="date" />
       </li>
     </ol>
-    {{ inputDate }}
-    {{ inputTime }}
-    {{ inputText }}<br />
-    <InputDate v-model="inputDate" />
-    <InputTime v-model="inputTime" />
-    <InputText v-model="inputText" />
   </div>
 </template>
 
@@ -25,28 +24,37 @@ import {
   format,
   addMonths,
 } from "./libs/date-util.js";
-import InputDate from "./components/atoms/InputDate";
-import InputText from "./components/atoms/InputText";
-import InputTime from "./components/atoms/InputTime";
+import DateRow from "./components/atoms/DateRow";
+import CalenderHeader from "./components/organisms/CalenderHeader";
 export default {
   name: "App",
   components: {
-    InputDate,
-    InputText,
-    InputTime,
+    DateRow,
+    CalenderHeader,
   },
   data() {
     return {
-      currentDay: new Date(),
+      currentDate: new Date(),
       inputDate: "2024-10-28",
       inputText: "aaa",
       inputTime: "10:12",
     };
   },
+  mounted() {
+    const currentURL = window.location.href;
+    const match = currentURL.match(
+      /^https?:\/\/.*\/([0-9]{4})\/(0[1-9]|1[0-2])\/?.*$/
+    );
+    if (match) {
+      const yearFromURL = match[1];
+      const monthFromURL = match[2].padStart(2, 0);
+      this.currentDate = new Date(yearFromURL + "-" + monthFromURL + "-01");
+    }
+  },
   computed: {
     dates() {
-      const start = startOfMonth(this.currentDay);
-      const end = lastDayOfMonth(this.currentDay);
+      const start = startOfMonth(this.currentDate);
+      const end = lastDayOfMonth(this.currentDate);
       return eachDayOfInterval({ start, end });
     },
   },
@@ -55,10 +63,15 @@ export default {
       return format(date, pattern);
     },
     changeMonth(num) {
-      this.currentDay = addMonths(this.currentDay, num);
+      this.currentDate = addMonths(this.currentDate, num);
+      window.history.pushState(
+        {},
+        "",
+        this.format(this.currentDate, "/yyyy/MM/")
+      );
     },
     changeToCurrentMonth() {
-      this.currentDay = new Date();
+      this.currentDate = new Date();
     },
   },
 };
