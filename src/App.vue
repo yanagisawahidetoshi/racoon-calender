@@ -32,10 +32,6 @@ export default {
     return {
       currentDate: null,
       schedules: [],
-      url: {
-        year: null,
-        month: null,
-      },
     };
   },
   components: {
@@ -76,21 +72,17 @@ export default {
     },
   },
   mounted() {
-    const params = new URLSearchParams(location.search);
-    if (params.size === 0) {
+    const url = location.href;
+    const regexp =
+      /https?:\/\/.*\/\?year=([1-2][0-9]{3})&month=(0?[1-9]|1[0-2])$\/?.*/;
+    const result = url.match(regexp);
+
+    if (result === null) {
       this.currentDate = new Date();
       return;
     }
-    const url = location.href;
-    const regexp =
-      /https?:\/\/.*\/\?year=([1-2][0-9]{3})&month=(1[0-2]|0?[1-9])/;
-    const result = url.match(regexp);
-    if (result !== null) {
-      this.url.month = result[2];
-      this.url.year = result[1];
-    }
     this.currentDate = new Date(
-      parse(`${this.url.year}-${this.url.month}`, "yyyy-MM", new Date())
+      parse(`${result[1]}-${result[2]}`, "yyyy-MM", new Date())
     );
 
     // メモ
