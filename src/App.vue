@@ -47,7 +47,7 @@ export default {
   mounted() {
     const currentURL = window.location.href;
     const matchedStrings = currentURL.match(
-      /^https?:\/\/.*\/([0-9]{4})\/(0[1-9]|1[0-2])\/?.*$/
+      /^https?:\/\/.*\/([0-9]{4})\/(0[1-9]|1[0-2]).*$/
     );
     if (matchedStrings) {
       const yearFromURL = matchedStrings[1];
