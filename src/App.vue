@@ -45,14 +45,14 @@ export default {
     };
   },
   mounted() {
-    const url = location.href;
-    const matchedString = url.match(
-      /^https?:\/\/.*\/([0-9]{4})\/(0?[1-9]|1[0-2])\/.*?/
+    const currentURL = window.location.href;
+    const matchedStrings = currentURL.matchedStrings(
+      /^https?:\/\/.*\/([0-9]{4})\/(0[1-9]|1[0-2])\/?.*$/
     );
-    if (matchedString) {
-      const URLYear = matchedString[1];
-      const URLMonth = matchedString[2];
-      this.currentDay = new Date(URLYear + "-" + URLMonth + "-01");
+    if (matchedStrings) {
+      const yearFromURL = matchedStrings[1];
+      const monthFromURL = matchedStrings[2];
+      console.log(yearFromURL + "-" + monthFromURL + "-01");
     }
   },
   computed: {
