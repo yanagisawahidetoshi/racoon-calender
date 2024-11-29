@@ -29,7 +29,7 @@ export default {
   components: {},
   data() {
     return{
-      baseDate: new Date(),
+      baseDate: null,
     }
   },
   computed: {
@@ -40,12 +40,13 @@ export default {
     }
   },
   mounted(){
-    // ~/{西暦４桁}/{月1or2桁} を判断する正規表現。どんなURLにも対応できるように
     const currentPath = window.location.pathname;
     const matchPath = currentPath.match(/\d{4}\/(0?[1-9]|1[0-2])$/);
-    if (matchPath) {
-      this.baseDate = parse(matchPath[0], "yyyy/MM");
+    if (matchPath === null) {
+      this.baseDate = new Date();
+      return this.baseDate;
     }
+    this.baseDate = parse(matchPath[0], "yyyy/MM");
   },
   methods: {
     formatDate(date, setting){
