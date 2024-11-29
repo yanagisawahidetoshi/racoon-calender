@@ -54,9 +54,11 @@ export default {
     },
     changeToCurrentMonth() {
       this.baseDate = changeToCurrentMonth();
+      window.location.pathname = formatDate(this.baseDate, "/yyyy/MM");
     },
     changeMonth(num) {
       this.baseDate = changeMonth(this.baseDate, num);
+      window.location.pathname = formatDate(this.baseDate, "/yyyy/MM");
     },
   },
 };
