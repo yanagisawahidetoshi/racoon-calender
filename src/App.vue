@@ -32,10 +32,6 @@ export default {
     return {
       currentDate: null,
       schedules: [],
-      url: {
-        year: null,
-        month: null,
-      },
     };
   },
   components: {
@@ -76,26 +72,31 @@ export default {
     },
   },
   mounted() {
-    const params = new URLSearchParams(location.search);
-    if (params.size > 0) {
-      const year = params.get("year");
-      const month = params.get("month");
-      this.currentDate = new Date(
-        parse(`${year}-${month}`, "yyyy-MM", new Date())
-      );
-    } else {
-      this.currentDate = new Date();
-    }
-
-    // 課題
-    const url = "localhost:2000/2024/24/";
-    const regexp = /\/(19[0-9]{2}|2[0-9]{3})\/([0-9]{1,2})/;
+    const url = location.href;
+    const regexp =
+      /https?:\/\/.*\/\?year=([1-2][0-9]{3})&month=(0?[1-9]|1[0-2])$\/?.*/;
     const result = url.match(regexp);
-    if (result !== null) {
-      this.url.month = result[2];
-      this.url.year = result[1];
+
+    if (result === null) {
+      this.currentDate = new Date();
+      return;
     }
-    console.log(this.url);
+    this.currentDate = 
+      parse(`${result[1]}-${result[2]}`, "yyyy-MM", new Date())
+    ;
+
+    // メモ
+    // const url = location.href;
+    // const regexp =
+    //   /https?:\/\/.*\/\?year=([1-2][0-9]{3})&month=(1[0-2]|0?[1-9])/;
+    // // const regexp = /\/(19[0-9]{2}|2[0-9]{3})\/([0-9]{1,2})/;
+    // // ^(?![1])0?[1-9]$
+    // const result = url.match(regexp);
+    // if (result !== null) {
+    //   this.url.month = result[2];
+    //   this.url.year = result[1];
+    // }
+    // console.log(this.url.month);
     // const result = url.match(regexp);
     // // console.log(result);
     // this.url.month = result[2] !== null ? result[2] : null;
