@@ -81,9 +81,9 @@ export default {
       this.currentDate = new Date();
       return;
     }
-    this.currentDate = new Date(
+    this.currentDate = 
       parse(`${result[1]}-${result[2]}`, "yyyy-MM", new Date())
-    );
+    ;
 
     // メモ
     // const url = location.href;
