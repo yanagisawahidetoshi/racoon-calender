@@ -46,18 +46,12 @@ export default {
       return dates;
     },
   },
-  methods: {
-    formatDate(date, f) {
-      return format(date, f);
-    },
-    changeCurrentMonth() {
-      this.currentDate = new Date();
-    },
-    changeDate(num) {
-      this.currentDate = addMonths(this.currentDate, num);
-    },
-    receivedSchedules(data) {
-      this.schedules.push(data); //data内はdateValue,startTimeValue,endTimeValue
+  watch: {
+    currentDate: function (newcurrentDate) {
+      const url = new URL(window.location.href);
+      url.searchParams.set("year", format(newcurrentDate, "yyyy"));
+      url.searchParams.set("month", format(newcurrentDate, "MM"));
+      window.history.pushState({}, "", url);
     },
   },
   mounted() {
@@ -74,12 +68,18 @@ export default {
     ); //[^/]+スラッシュまで繰り返す・()で配列に格納
     console.log(date[1] + "年" + date[2] + "月");
   },
-  watch: {
-    currentDate: function (newcurrentDate) {
-      const url = new URL(window.location.href);
-      url.searchParams.set("year", format(newcurrentDate, "yyyy"));
-      url.searchParams.set("month", format(newcurrentDate, "MM"));
-      window.history.pushState({}, "", url);
+  methods: {
+    formatDate(date, f) {
+      return format(date, f);
+    },
+    changeCurrentMonth() {
+      this.currentDate = new Date();
+    },
+    changeDate(num) {
+      this.currentDate = addMonths(this.currentDate, num);
+    },
+    receivedSchedules(data) {
+      this.schedules.push(data); //data内はdateValue,startTimeValue,endTimeValue
     },
   },
 };
