@@ -66,11 +66,7 @@ export default {
         return;
       }
       match[2] = match[2].padStart(2, "0");
-      this.currentDate = parse(
-        `${match[1]}-${match[2]}`,
-        "yyyy-MM",
-        new Date()
-      );
+      this.currentDate = parse(`${match[1]}-${match[2]}`, "yyyy-MM");
       this.generateDate();
     },
     changeCurrentMonth() {
