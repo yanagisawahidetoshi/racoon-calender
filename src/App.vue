@@ -18,8 +18,8 @@ import {
   startOfMonth,
   lastOfMonth,
   getEachDateOfMonth,
-  changeMonth,
-  changeToCurrentMonth,
+  addMonths,
+  setNewDate,
   formatDate,
   parse,
 } from "./libs/date-fns";
@@ -41,24 +41,24 @@ export default {
   },
   mounted(){
     const currentPath = window.location.pathname;
-    const matchPath = currentPath.match(/\d{4}\/(0?[1-9]|1[0-2])$/);
+    const matchPath = currentPath.match(/(\d{4})\/(0?[1-9]|1[0-2])$/);
     if (matchPath === null) {
       this.baseDate = new Date();
       return this.baseDate;
     }
-    this.baseDate = parse(matchPath[0], "yyyy/MM");
+    this.baseDate = parse(matchPath[1] + "/" + matchPath[2], "yyyy/MM");
   },
   methods: {
     formatDate(date, setting){
       return formatDate(date, setting);
     },
     changeToCurrentMonth() {
-      this.baseDate = changeToCurrentMonth();
-      window.location.pathname = formatDate(this.baseDate, "/yyyy/MM");
+      this.baseDate = setNewDate();
+      window.location.pathname = formatDate(this.baseDate, "yyyy/MM");
     },
     changeMonth(num) {
-      this.baseDate = changeMonth(this.baseDate, num);
-      window.location.pathname = formatDate(this.baseDate, "/yyyy/MM");
+      this.baseDate = addMonths(this.baseDate, num);
+      window.location.pathname = formatDate(this.baseDate, "yyyy/MM");
     },
   },
 };

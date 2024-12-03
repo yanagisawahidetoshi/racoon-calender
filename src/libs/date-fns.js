@@ -4,7 +4,7 @@ import {
   lastDayOfMonth as dateFnsLastOfMonth,
   parse as dateFnsParse,
   format,
-  addMonths
+  addMonths as dateFnsAddMonth
 }from 'date-fns';
 import ja from 'date-fns/locale/ja'
 
@@ -20,10 +20,10 @@ export const getEachDateOfMonth = (startDate, lastDate) => {
     end: lastDate
   });
 }
-export const changeMonth = (date, num) => {
-  return addMonths(date, num);
+export const addMonths = (date, num) => {
+  return dateFnsAddMonth(date, num);
 }
-export const changeToCurrentMonth = () => {
+export const setNewDate = () => {
   return new Date();
 }
 export const formatDate = (date, formatSetting) => {
