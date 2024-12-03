@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <CalenderHeader
-      :active-date="activeDate"
+      :current-date="currentDate"
       @changeMonth="changeMonth"
       @onChange="changeCurrentMonth"
       @register="handleRegisterSchedule"
@@ -39,7 +39,7 @@ export default {
   },
   data() {
     return {
-      activeDate: new Date(),
+      currentDate: new Date(),
       scheduleList: [],
     };
   },
@@ -49,23 +49,28 @@ export default {
   },
   methods: {
     generateDate() {
-      const start = startOfMonth(this.activeDate);
-      const end = endOfMonth(this.activeDate);
+      const start = startOfMonth(this.currentDate);
+      const end = endOfMonth(this.currentDate);
       return eachDayOfInterval({ start, end });
     },
     changeMonth(num) {
-      const changeMonth = addMonths(this.activeDate, num);
+      const changeMonth = addMonths(this.currentDate, num);
       history.replaceState("", "", "?date=" + format(changeMonth, "yyyy-MM"));
       this.getDateQueryParam();
     },
     getDateQueryParam() {
-      const urlParams = new URLSearchParams(location.search);
-      const dateParam = urlParams.get("date");
-      if (dateParam) {
-        this.activeDate = parse(dateParam, "yyyy-MM", new Date());
-      } else {
-        this.activeDate = new Date();
+      const url = location.href;
+      const match = url.match(/date=([0-9]{4})-(0[1-9]|1[0-2]|[1-9])/);
+      if (match === null) {
+        this.currentDate = new Date();
+        return;
       }
+      match[2] = match[2].padStart(2, "0");
+      this.currentDate = parse(
+        `${match[1]}-${match[2]}`,
+        "yyyy-MM",
+        new Date()
+      );
       this.generateDate();
     },
     changeCurrentMonth() {
@@ -84,7 +89,7 @@ export default {
     },
     dateFromUrl() {
       const url = "https://hoge.com/2024/1/";
-      const match = url.match(/\/([0-9]{4})\/([0-9]{1,2})\//);
+      const match = url.match(/\/([0-9]{4})\/(0?[1-9]|1[0-2])\//);
       if (!match) return;
       match[2] = match[2].padStart(2, "0");
       const formatDate = `${match[1]}-${match[2]}`;

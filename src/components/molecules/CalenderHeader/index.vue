@@ -9,7 +9,7 @@
       </li>
       <li><BaseButton @click="$emit('changeMonth', 1)">&gt;</BaseButton></li>
     </ul>
-    <div>{{ formatMonth(activeDate) }}</div>
+    <div>{{ formatMonth(currentDate) }}</div>
     <BaseButton @click="openModal">登録</BaseButton>
     <CalenderRegisterModal @register="handleRegisterSchedule" />
   </header>
@@ -23,7 +23,7 @@ export default {
   name: "CalenderHeader",
   components: { BaseButton, CalenderRegisterModal },
   props: {
-    activeDate: {
+    currentDate: {
       type: Date,
       required: true,
     },
