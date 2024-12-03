@@ -23,6 +23,6 @@ export const format = (date, dateFormatDate) => {
 export const addMonths = (date, num) => {
   return dateFnsAddMonths(date, num);
 };
-export const parse = (date, dateFormatDate) => {
-  return dateFnsParse(date, dateFormatDate, new Date());
+export const parse = (dateString, dateFormatDate) => {
+  return dateFnsParse(dateString, dateFormatDate, new Date());
 };
