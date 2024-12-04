@@ -19,8 +19,8 @@ import {
   lastOfMonth,
   getEachDateOfMonth,
   addMonths,
-  setNewDate,
-  formatDate,
+  getNewDate,
+  format,
   parse,
 } from "./libs/date-fns";
 
@@ -50,15 +50,15 @@ export default {
   },
   methods: {
     formatDate(date, setting){
-      return formatDate(date, setting);
+      return format(date, setting);
     },
     changeToCurrentMonth() {
-      this.baseDate = setNewDate();
-      window.location.pathname = formatDate(this.baseDate, "yyyy/MM");
+      this.baseDate = getNewDate();
+      window.location.pathname = format(this.baseDate, "yyyy/MM");
     },
     changeMonth(num) {
       this.baseDate = addMonths(this.baseDate, num);
-      window.location.pathname = formatDate(this.baseDate, "yyyy/MM");
+      window.location.pathname = format(this.baseDate, "yyyy/MM");
     },
   },
 };
