@@ -55,9 +55,9 @@ export default {
         startTimeValue: this.startTimeValue,
         endTimeValue: this.endTimeValue,
       });
-      (this.startTimeValue = ""),
-        (this.endTimeValue = ""),
-        (this.isEdit = false);
+      this.startTimeValue = "";
+      this.endTimeValue = "";
+      this.isEdit = false;
     },
   },
 };

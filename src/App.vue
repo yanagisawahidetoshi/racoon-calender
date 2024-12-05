@@ -28,8 +28,6 @@ import {
   format,
   addMonths,
   parse,
-  isSameYear,
-  isSameMonth,
   isSameDay,
 } from "./libs/date-util";
 import CalenderHeader from "./components/molecules/Calender/Header.vue";
@@ -92,21 +90,13 @@ export default {
     },
     filterSchedules(date) {
       const schedule = this.schedules.filter((v) => {
-        return (
-          isSameYear(date, v.dateValue) &&
-          isSameMonth(date, v.dateValue) &&
-          isSameDay(date, v.dateValue)
-        );
+        return isSameDay(date, v.dateValue);
       });
       return schedule.length === 0 ? null : schedule[0];
     },
     updateSchedule(schedule) {
       this.schedules = this.schedules.map((v) => {
-        if (
-          isSameYear(schedule.dateValue, v.dateValue) &&
-          isSameMonth(schedule.dateValue, v.dateValue) &&
-          isSameDay(schedule.dateValue, v.dateValue)
-        ) {
+        if (isSameDay(schedule.dateValue, v.dateValue)) {
           return { ...v, ...schedule };
         }
         return v;
