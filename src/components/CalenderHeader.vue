@@ -15,7 +15,7 @@
         <button type="button" @click="openScheduleModal">登録</button>
       </li>
     </ul>
-    <ScheduleModal />
+    <ScheduleModal :isModalOpen="isModalOpen" />
   </div>
 </template>
 
@@ -28,6 +28,11 @@ export default {
   props: {
     currentDate: { type: Date },
   },
+	data() {
+		return {
+			isModalOpen: false,
+		}
+	},
   components: { ScheduleModal },
   computed: {
     title() {
@@ -37,10 +42,10 @@ export default {
   },
   methods: {
     openScheduleModal() {
-      this.$vm2.open("scheduleModal");
+			this.isModalOpen = true;
     },
-    close() {
-      this.$vm2.close("scheduleModal");
+    closeScheduleModal() {
+			this.isModalOpen = false;
     },
   },
 };
