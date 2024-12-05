@@ -8,7 +8,7 @@
         </div>
         <BaseButton @click="toggleEdit">編集</BaseButton>
       </template>
-      <template v-if="isEdit">
+      <template v-else-if="isEdit">
         <div class="time edit">
           <InputTime v-model="startTimeValue" />
           <InputTime v-model="endTimeValue" />
@@ -50,7 +50,7 @@ export default {
       this.isEdit = !this.isEdit;
     },
     completeEdit() {
-      this.$emit("schedule", {
+      this.$emit("updateSchedule", {
         dateValue: this.date,
         startTimeValue: this.startTimeValue,
         endTimeValue: this.endTimeValue,

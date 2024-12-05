@@ -12,7 +12,7 @@
           <CalenderDate
             :date="date"
             :schedule="filterSchedules(date)"
-            @schedule="updateSchedule"
+            @updateSchedule="updateSchedule"
           />
         </li>
       </ol>
