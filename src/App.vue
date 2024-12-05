@@ -4,12 +4,12 @@
       :changeDate="changeDate"
       :changeCurrentMonth="changeCurrentMonth"
       :currentDate="currentDate"
-      @sendSchedule="receivedSchedules"
+      @schedule="schedule"
     />
     <section class="block">
       <ol class="list">
-        <li class="detail" v-for="(day, index) in instanceMonth" :key="index">
-          <CalenderDate :day="day" :schedules="schedules" />
+        <li class="detail" v-for="(date, index) in currentMonth" :key="index">
+          <CalenderDate :date="date" :schedule="filterSchedules(date)" />
         </li>
       </ol>
     </section>
@@ -24,6 +24,9 @@ import {
   format,
   addMonths,
   parse,
+  isSameYear,
+  isSameMonth,
+  isSameDay,
 } from "./libs/date-util";
 import CalenderHeader from "./components/molecules/Calender/Header.vue";
 import CalenderDate from "./components/molecules/Calender/Date.vue";
@@ -38,7 +41,7 @@ export default {
     };
   },
   computed: {
-    instanceMonth() {
+    currentMonth() {
       const dates = eachDayOfInterval({
         start: startOfMonth(this.currentDate),
         end: endOfMonth(this.currentDate),
@@ -61,14 +64,14 @@ export default {
     if (year && month) {
       this.currentDate = parse(`${year}-${month}`, "yyyy-MM", new Date());
     }
-    //URLが/年/月/の場合に正規表現を使って年月を取得する
-    const url = location.href;
-    const date = url.match(
-      /^https?:\/\/[^/]+\/([0-9]{4})\/(0[1-9]|1[0-2]|[1-9])\/?$/
-    ); //[^/]+スラッシュまで繰り返す・()で配列に格納
-    if (date) {
-      this.currentDate = parse(`${date[1]}-${date[2]}`, "yyyy-MM", new Date());
-    }
+    // //URLが/年/月/の場合に正規表現を使って年月を取得する
+    // const url = location.href;
+    // const date = url.match(
+    //   /^https?:\/\/[^/]+\/([0-9]{4})\/(0[1-9]|1[0-2]|[1-9])\/?$/
+    // ); //[^/]+スラッシュまで繰り返す・()で配列に格納
+    // if (date) {
+    //   this.currentDate = parse(`${date[1]}-${date[2]}`, "yyyy-MM", new Date());
+    // }
   },
   methods: {
     formatDate(date, f) {
@@ -80,8 +83,19 @@ export default {
     changeDate(num) {
       this.currentDate = addMonths(this.currentDate, num);
     },
-    receivedSchedules(data) {
+    schedule(data) {
       this.schedules.push(data); //data内はdateValue,startTimeValue,endTimeValue
+    },
+    filterSchedules(date) {
+      const schedule = this.schedules.filter((v) => {
+        const dateValue = parse(v.dateValue, "yyyy-MM-dd", new Date()); // dateValueはyyyy-mm-ddなので、dayと比較するためフォーマットを揃える
+        return (
+          isSameYear(date, dateValue) &&
+          isSameMonth(date, dateValue) &&
+          isSameDay(date, dateValue)
+        );
+      });
+      return schedule.length === 0 ? null : schedule[0];
     },
   },
 };

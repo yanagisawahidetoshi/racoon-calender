@@ -8,7 +8,7 @@
       <!--vue-modal-2はグローバルに提供されている-->
       {{ formatDate(currentDate, "yyyy年MMMM") }}
     </div>
-    <ModalRegistScheduleVue @sendSchedule="sendSchedule" />
+    <ModalRegistScheduleVue @schedule="schedule" />
   </header>
 </template>
 
@@ -27,8 +27,8 @@ export default {
     },
   },
   methods: {
-    sendSchedule(data) {
-      this.$emit("sendSchedule", data);
+    schedule(data) {
+      this.$emit("schedule", data);
     },
     formatDate(data, f) {
       return format(data, f);

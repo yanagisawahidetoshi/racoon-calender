@@ -1,11 +1,10 @@
 <template>
   <vue-modal-2
-    @on-close="$vm2.close('registScheduleModal')"
     name="registScheduleModal"
-    :headerOptions="{
+    :header-options="{
       title: '予定を登録',
     }"
-    :footerOptions="{
+    :footer-options="{
       btn1: 'キャンセル',
       btn2: '登録',
       btn2Style: {
@@ -19,6 +18,7 @@
         $vm2.close('registScheduleModal');
       },
     }"
+    @on-close="$vm2.close('registScheduleModal')"
   >
     <div class="wrap_input">
       <dl class="input_col">
@@ -52,7 +52,7 @@ export default {
   },
   methods: {
     registSchedule() {
-      this.$emit("sendSchedule", {
+      this.$emit("schedule", {
         dateValue: this.dateValue,
         startTimeValue: this.startTimeValue,
         endTimeValue: this.endTimeValue,
