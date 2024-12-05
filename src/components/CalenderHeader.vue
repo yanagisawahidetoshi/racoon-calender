@@ -28,11 +28,11 @@ export default {
   props: {
     currentDate: { type: Date },
   },
-	data() {
-		return {
-			isModalOpen: false,
-		}
-	},
+  data() {
+    return {
+      isModalOpen: false,
+    };
+  },
   components: { ScheduleModal },
   computed: {
     title() {
@@ -42,10 +42,10 @@ export default {
   },
   methods: {
     openScheduleModal() {
-			this.isModalOpen = true;
+      this.isModalOpen = true;
     },
     closeScheduleModal() {
-			this.isModalOpen = false;
+      this.isModalOpen = false;
     },
   },
 };

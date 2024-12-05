@@ -5,13 +5,13 @@
 <script>
 export default {
   name: "ScheduleModal",
-	props: {
-		isModalOpen: {
-			type: Boolean,
-		}
-	},
-	mounted() {
-		this.$vm2.open("scheduleModal");
-	},
+  props: {
+    isModalOpen: {
+      type: Boolean,
+    },
+  },
+  mounted() {
+    this.$vm2.open("scheduleModal");
+  },
 };
 </script>
