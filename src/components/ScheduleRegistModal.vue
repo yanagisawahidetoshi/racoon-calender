@@ -1,12 +1,5 @@
 <template>
   <div>
-    <Button
-      tagName="a"
-      className="regist"
-      @click="$vm2.open('modalToRegistSchedule')"
-    >
-      登録
-    </Button>
     <vue-modal-2
       name="modalToRegistSchedule"
       @on-close="modalClose()"
@@ -68,9 +61,6 @@ export default {
     };
   },
   methods: {
-    modalOpen() {
-      this.$vm2.open("modalToRegistSchedule");
-    },
     modalClose() {
       this.clearInputs();
       this.$vm2.close("modalToRegistSchedule");

@@ -1,15 +1,20 @@
 <template>
   <div>
     <CalenderHeader
-      :dispDate="dispDate"
+      :formatDate="formatDate"
       @changeMonth="changeMonth"
       @changeCurrentMonth="changeCurrentMonth"
       @registerSchedule="registerSchedule"
     />
     {{ /* 日付と曜日を出力 */ }}
+    <ol class="day-Week">
+      <li v-for="(day, index) in daysOfWeek" :key="index">
+        {{ day }}
+      </li>
+    </ol>
     <ol class="date-list">
       <li v-for="(n, index) in calendar" :key="index">
-        <DateItem
+        <DateField
           :date="n.date"
           :day="n.day"
           :scheduleDate="getSchedule(n.date)"
@@ -22,19 +27,23 @@
 <script>
 import {
   format,
-  dateInterval,
+  //dateInterval,
   addMonths,
+  addDays,
   startOfMonth,
   endOfMonth,
   getDay,
+  eachWeekOfInterval,
+  eachDayOfInterval,
 } from "./libs/date-utility";
-import DateItem from "./components/DateItem";
+import { getPathYearMonth } from "./libs/get-path-year-month.js";
+import DateField from "./components/DateField";
 import CalenderHeader from "./components/CalenderHeader";
 
 export default {
   name: "App",
   components: {
-    DateItem,
+    DateField,
     CalenderHeader,
   },
 
@@ -50,54 +59,39 @@ export default {
     };
   },
   computed: {
-    dispDate() {
+    formatDate() {
       return format(this.currentDate, "yyyy年MM月");
     },
     calendar() {
       const startDate = startOfMonth(this.currentDate);
       const endDate = endOfMonth(this.currentDate);
-      return dateInterval(startDate, endDate).map((days) => ({
-        date: format(days, "yyyy-MM-dd"),
-        day: this.daysOfWeek[getDay(days)],
+      const dateWeek = eachWeekOfInterval(startDate, endDate);
+      const endWeekDay = getDay(endDate); // 0-6
+      //console.table(dateWeek);
+      //console.log(endWeekDay);
+
+      // 曜日と月日を取得
+      const monthDate = eachDayOfInterval(dateWeek[0], endDate).map((week) => ({
+        date: format(week, "yyyy-MM-dd"),
+        day: this.daysOfWeek[getDay(week)],
       }));
+      // 月末の週で曜日欄が空欄の場合、次の月日で埋める
+      let addedDateCount = 6 - endWeekDay;
+      for (let i = 1; i <= addedDateCount; i++) {
+        const addDate = addDays(endDate, i);
+        monthDate.push({
+          date: format(addDate, "yyyy-MM-dd"),
+          day: this.daysOfWeek[getDay(addDate)],
+        });
+      }
+      //console.log(monthDate);
+
+      return monthDate;
     },
   },
   mounted() {
-    /*
-    const currentUrl = window.location.href;
-    const url = new URL(currentUrl);
-    const yearParam = !isNaN(Number(url.searchParams.get("year")))
-      ? url.searchParams.get("year")
-      : null;
-    const monthParam = !isNaN(Number(url.searchParams.get("month")))
-      ? url.searchParams.get("month")
-      : null;
-    if (yearParam && monthParam) {
-      this.currentDate = new Date(yearParam, monthParam - 1);
-    }
-    */
-    // 課題 正規表現
-    //const currentUrl = window.location.href;
-    //const url = new URL(currentUrl);
     const currentPath = window.location.pathname;
-    //console.log(currentPath);
-    const matchDate = currentPath.match(/^\/(\d{4})\/(0?[1-9]|1[0-2])\/?$/);
-    //console.log(matchDate);
-    if (matchDate) {
-      //const year = matchDate[1];
-      //const month = matchDate[2];
-      //console.log(`年: ${year}, 月: ${month}`);
-
-      this.currentDate = format(
-        new Date(`${matchDate[1]} / ${matchDate[2]}`),
-        "yyyy/MM"
-      );
-
-      //console.log(this.currentDate);
-    } else {
-      // console.log("NG: マッチしません。");
-      this.currentDate = new Date();
-    }
+    this.currentDate = getPathYearMonth(currentPath, format);
   },
   methods: {
     changeMonth(addDate) {
@@ -111,8 +105,6 @@ export default {
     urlParams() {
       const year = format(this.currentDate, "yyyy");
       const Month = format(this.currentDate, "MM");
-      //const newUrl = `${window.location.pathname}?year=${year}&month=${Month}`;
-      //console.log(window.location.origin);
       const newUrl = `${window.location.origin}/${year}/${Month}/`;
       window.history.pushState({ path: newUrl }, "", newUrl);
     },
@@ -141,9 +133,19 @@ li {
   margin: 0;
   list-style: none;
 }
+.day-Week,
+.date-list {
+  display: flex;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+.day-Week li,
 .date-list li {
   border-bottom: 1px solid #d3d3d3;
+  border-right: 1px solid #d3d3d3;
   padding: 12px 0;
+  min-width: calc(100% / 7);
 }
 .btn {
   margin: 0 6px;

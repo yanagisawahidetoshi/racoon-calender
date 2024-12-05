@@ -1,8 +1,8 @@
 <template>
-  <p class="date">
-    {{ formatDate }} 日 <span class="day">({{ day }})</span>
+  <p class="date-block">
+    <span class="date">{{ formatDate }}</span>
     <span v-for="(n, index) in scheduleDate" :key="index" class="schedule">
-      {{ n.schedule }} ({{ n.startTime }} - {{ n.endTime }})
+      {{ n.schedule }}({{ n.startTime }}-{{ n.endTime }})
     </span>
   </p>
 </template>
@@ -10,7 +10,7 @@
 <script>
 import { format } from "../libs/date-utility";
 export default {
-  name: "DateItem",
+  name: "DateField",
   props: {
     date: {
       type: String,
@@ -31,16 +31,30 @@ export default {
       return viewDate;
     },
   },
+  methods: {
+    modalOpen() {
+      this.$vm2.open("modalToRegistSchedule");
+    },
+  },
 };
 </script>
 <style>
+.date-block {
+  padding: 6px;
+}
 .date {
-  padding: 0 0 0 12px;
+  display: block;
+  margin: 0 0 12px;
 }
 .day {
   font-size: 12px;
 }
 .schedule {
-  margin: 0 0 0 12px;
+  display: block;
+  font-size: 12px;
+  background: #66cdaa;
+  border-radius: 8px;
+  padding: 2px 6px;
+  text-align: center;
 }
 </style>
