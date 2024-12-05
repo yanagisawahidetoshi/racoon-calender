@@ -9,7 +9,11 @@
     <section class="block">
       <ol class="list">
         <li class="detail" v-for="(date, index) in currentMonth" :key="index">
-          <CalenderDate :date="date" :schedule="filterSchedules(date)" />
+          <CalenderDate
+            :date="date"
+            :schedule="filterSchedules(date)"
+            @schedule="updateSchedule"
+          />
         </li>
       </ol>
     </section>
@@ -88,14 +92,25 @@ export default {
     },
     filterSchedules(date) {
       const schedule = this.schedules.filter((v) => {
-        const dateValue = parse(v.dateValue, "yyyy-MM-dd", new Date()); // dateValueはyyyy-mm-ddなので、dayと比較するためフォーマットを揃える
         return (
-          isSameYear(date, dateValue) &&
-          isSameMonth(date, dateValue) &&
-          isSameDay(date, dateValue)
+          isSameYear(date, v.dateValue) &&
+          isSameMonth(date, v.dateValue) &&
+          isSameDay(date, v.dateValue)
         );
       });
       return schedule.length === 0 ? null : schedule[0];
+    },
+    updateSchedule(schedule) {
+      this.schedules = this.schedules.map((v) => {
+        if (
+          isSameYear(schedule.dateValue, v.dateValue) &&
+          isSameMonth(schedule.dateValue, v.dateValue) &&
+          isSameDay(schedule.dateValue, v.dateValue)
+        ) {
+          return { ...v, ...schedule };
+        }
+        return v;
+      });
     },
   },
 };
