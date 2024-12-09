@@ -33,11 +33,9 @@ export default {
   methods: {
     openScheduleModal() {
       this.isModalOpen = true;
-      this.$vm2.open("scheduleModal");
     },
     closeScheduleModal() {
       this.isModalOpen = false;
-      this.$vm2.close("scheduleModal");
     },
   },
 }

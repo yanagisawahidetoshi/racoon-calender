@@ -1,6 +1,5 @@
 <template>
-  <vue-modal-2 v-if="isModalOpen" name="scheduleModal"> test 
-    <!-- <button @click="$emit('close')">閉じる</button> -->
+  <vue-modal-2 name="scheduleModal" @on-close="$emit('close')"> test 
   </vue-modal-2>
 </template>
 
@@ -13,10 +12,14 @@ export default {
       required: true,
     },
   },
-  // computed: {
-  //   modalOpening(){
-  //     モーダルが開いているかどうかを監視
-  //   },
-  // },
+  watch: {
+    isModalOpen: function(flag) {
+      if (flag === true) {
+        this.$vm2.open("scheduleModal");
+      }else{
+        this.$vm2.close("scheduleModal");
+      }
+    }
+  },
 };
 </script>
