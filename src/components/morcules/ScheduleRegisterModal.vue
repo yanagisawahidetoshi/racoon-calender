@@ -53,7 +53,7 @@ export default {
   },
   methods: {
     closeModalAddSchedule() {
-      this.$emit("isClickedCloseButton", false);
+      this.$emit("isClickedCloseButton");
     },
     register() {
       this.$emit("registeredSchedule", {

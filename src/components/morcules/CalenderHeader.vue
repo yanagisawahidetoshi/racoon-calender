@@ -68,8 +68,8 @@ export default {
     formatDate(date, pattern) {
       return format(date, pattern);
     },
-    closeModal(v) {
-      this.isModalOpen = v;
+    closeModal() {
+      this.isModalOpen = false;
     },
   },
 };
