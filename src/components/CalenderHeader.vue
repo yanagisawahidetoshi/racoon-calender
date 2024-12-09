@@ -15,7 +15,9 @@
         <button type="button" @click="openScheduleModal">登録</button>
       </li>
     </ul>
-    <ScheduleModal :isModalOpen="isModalOpen" />
+    <ScheduleModal
+      :isModalOpen="isModalOpen"
+      @close="closeScheduleModal" />
   </div>
 </template>
 
