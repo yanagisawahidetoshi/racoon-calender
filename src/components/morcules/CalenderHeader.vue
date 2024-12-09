@@ -69,7 +69,6 @@ export default {
       return format(date, pattern);
     },
     closeModal(v) {
-      console.log(v);
       this.isModalOpen = v;
     },
   },

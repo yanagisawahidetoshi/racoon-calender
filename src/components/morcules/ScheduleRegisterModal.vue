@@ -53,7 +53,6 @@ export default {
   },
   methods: {
     closeModalAddSchedule() {
-      this.$vm2.close("modal-add-schedule");
       this.$emit("closeModal", false);
     },
     register() {
@@ -73,6 +72,8 @@ export default {
     isModalOpen(status) {
       if (status) {
         this.$vm2.open("modal-add-schedule");
+      } else {
+        this.$vm2.close("modal-add-schedule");
       }
     },
   },
