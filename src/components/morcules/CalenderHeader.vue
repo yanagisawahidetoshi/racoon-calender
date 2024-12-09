@@ -38,7 +38,7 @@
     <CommonButton @click="isModalOpen = true">登録</CommonButton>
     <ScheduleRegisterModal
       @registeredSchedule="(v) => $emit('registeredSchedule', v)"
-      @isClickedCloseButton="closeModal"
+      @closeButtonClicked="closeModal"
       :isModalOpen="isModalOpen"
     />
   </header>
