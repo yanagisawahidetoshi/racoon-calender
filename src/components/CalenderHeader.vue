@@ -12,10 +12,13 @@
         <button type="button" @click="$emit('changeToNextMonth')">翌月</button>
       </li>
       <li>
-        <button type="button" @click="openScheduleModal">登録</button>
+        <button type="button" @click="toggleScheduleModal(true)">登録</button>
       </li>
     </ul>
-    <ScheduleModal :isModalOpen="isModalOpen" />
+    <ScheduleModal
+      :is-modal-open="isModalOpen"
+      @closeModal="toggleScheduleModal(false)"
+    />
   </div>
 </template>
 
@@ -25,15 +28,15 @@ import ScheduleModal from "../components/ScheduleModal.vue";
 
 export default {
   name: "CalenderHeader",
+  components: { ScheduleModal },
   props: {
-    currentDate: { type: Date },
+    currentDate: { type: Date, default: "" },
   },
   data() {
     return {
       isModalOpen: false,
     };
   },
-  components: { ScheduleModal },
   computed: {
     title() {
       console.log(this.currentDate);
@@ -41,11 +44,8 @@ export default {
     },
   },
   methods: {
-    openScheduleModal() {
-      this.isModalOpen = true;
-    },
-    closeScheduleModal() {
-      this.isModalOpen = false;
+    toggleScheduleModal(val) {
+      this.isModalOpen = val;
     },
   },
 };
