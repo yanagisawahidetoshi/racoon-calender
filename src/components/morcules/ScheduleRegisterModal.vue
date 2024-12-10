@@ -9,7 +9,7 @@
       btn1: 'キャンセル',
       btn2: '登録',
       btn1OnClick: () => {
-        $vm2.close('modal-add-schedule');
+        closeModalAddSchedule();
       },
       btn2OnClick: () => {
         register();
@@ -46,9 +46,14 @@ export default {
       },
     };
   },
+  props: {
+    isModalOpen: {
+      type: Boolean,
+    },
+  },
   methods: {
     closeModalAddSchedule() {
-      this.$vm2.close("modal-add-schedule");
+      this.$emit("clickCloseButton");
     },
     register() {
       this.$emit("registeredSchedule", {
@@ -57,10 +62,19 @@ export default {
         startTime: this.schedule.startTime,
         finishTime: this.schedule.finishTime,
       });
-      this.$vm2.close("modal-add-schedule");
+      this.closeModalAddSchedule();
       Object.keys(this.schedule).forEach((key) => {
         this.schedule[key] = "";
       });
+    },
+  },
+  watch: {
+    isModalOpen(status) {
+      if (status) {
+        this.$vm2.open("modal-add-schedule");
+      } else {
+        this.$vm2.close("modal-add-schedule");
+      }
     },
   },
 };
