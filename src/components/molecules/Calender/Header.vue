@@ -4,14 +4,14 @@
       <BaseButton @click="changeDate(-1)">前月</BaseButton>
       <BaseButton @click="changeCurrentMonth()">当月</BaseButton>
       <BaseButton @click="changeDate(1)">翌月</BaseButton>
-      <BaseButton @click="openScheduleRegistModal">登録</BaseButton>
+      <BaseButton @click="toggleScheduleRegistModal(true)">登録</BaseButton>
       <!--vue-modal-2はグローバルに提供されている-->
       {{ formatDate(currentDate, "yyyy年MMMM") }}
     </div>
     <ModalRegistScheduleVue
       @schedule="schedule"
-      :isScheduleRegistModalOpen="isScheduleRegistModalOpen"
-      @closeScheduleRegistModal="closeScheduleRegistModal"
+      :isModalOpen="isModalOpen"
+      @toggleScheduleRegistModal="toggleScheduleRegistModal"
     />
   </header>
 </template>
@@ -25,7 +25,7 @@ export default {
   components: { BaseButton, ModalRegistScheduleVue },
   data() {
     return {
-      isScheduleRegistModalOpen: false,
+      isModalOpen: false,
     };
   },
   props: {
@@ -42,11 +42,8 @@ export default {
     formatDate(data, f) {
       return format(data, f);
     },
-    openScheduleRegistModal() {
-      this.isScheduleRegistModalOpen = true;
-    },
-    closeScheduleRegistModal() {
-      this.isScheduleRegistModalOpen = false;
+    toggleScheduleRegistModal(val) {
+      this.isModalOpen = val;
     },
   },
 };

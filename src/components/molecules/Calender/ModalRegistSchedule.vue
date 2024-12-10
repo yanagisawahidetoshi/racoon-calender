@@ -11,14 +11,14 @@
         backgroundColor: 'green',
       },
       btn1OnClick: () => {
-        $emit('closeScheduleRegistModal');
+        $emit('toggleScheduleRegistModal', false);
       },
       btn2OnClick: () => {
         registSchedule();
-        $emit('closeScheduleRegistModal');
+        $emit('toggleScheduleRegistModal', false);
       },
     }"
-    @on-close="$emit('closeScheduleRegistModal')"
+    @on-close="$emit('toggleScheduleRegistModal', false)"
   >
     <div class="wrap_input">
       <dl class="input_col">
@@ -44,7 +44,7 @@ export default {
   name: "CalenderModalRegistSchedule.vue",
   components: { InputDate, InputTime },
   props: {
-    isScheduleRegistModalOpen: {
+    isModalOpen: {
       type: Boolean,
     },
   },
@@ -56,7 +56,7 @@ export default {
     };
   },
   watch: {
-    isScheduleRegistModalOpen(newValue) {
+    isModalOpen(newValue) {
       console.log(newValue);
       newValue
         ? this.$vm2.open("registScheduleModal")
