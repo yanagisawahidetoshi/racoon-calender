@@ -11,14 +11,14 @@
         backgroundColor: 'green',
       },
       btn1OnClick: () => {
-        $vm2.close('registScheduleModal');
+        $emit('toggleScheduleRegistModal', false);
       },
       btn2OnClick: () => {
         registSchedule();
-        $vm2.close('registScheduleModal');
+        $emit('toggleScheduleRegistModal', false);
       },
     }"
-    @on-close="$vm2.close('registScheduleModal')"
+    @on-close="$emit('toggleScheduleRegistModal', false)"
   >
     <div class="wrap_input">
       <dl class="input_col">
@@ -43,12 +43,25 @@ import InputTime from "@/components/atoms/InputTime.vue";
 export default {
   name: "CalenderModalRegistSchedule.vue",
   components: { InputDate, InputTime },
+  props: {
+    isModalOpen: {
+      type: Boolean,
+    },
+  },
   data() {
     return {
       dateValue: "",
       startTimeValue: "",
       endTimeValue: "",
     };
+  },
+  watch: {
+    isModalOpen(newValue) {
+      console.log(newValue);
+      newValue
+        ? this.$vm2.open("registScheduleModal")
+        : this.$vm2.close("registScheduleModal");
+    },
   },
   methods: {
     registSchedule() {
