@@ -2,7 +2,9 @@
   <p class="date-block">
     <span class="date">{{ formatDate }}</span>
     <span v-for="(n, index) in scheduleDate" :key="index" class="schedule">
-      {{ n.schedule }}({{ n.startTime }}-{{ n.endTime }})
+      <button tagName="a" className="regist" @click="editModalOpen(index)">
+        {{ n.schedule }} ({{ n.startTime }}-{{ n.endTime }})
+      </button>
     </span>
   </p>
 </template>
@@ -32,8 +34,8 @@ export default {
     },
   },
   methods: {
-    modalOpen() {
-      this.$vm2.open("modalToRegistSchedule");
+    editModalOpen(scheduleIndex) {
+      this.$emit("editModalOpen", scheduleIndex);
     },
   },
 };

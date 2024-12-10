@@ -5,22 +5,25 @@
       @changeMonth="changeMonth"
       @changeCurrentMonth="changeCurrentMonth"
       @registerSchedule="registerSchedule"
+      @modalOpen="modalOpen"
     />
     {{ /* 日付と曜日を出力 */ }}
-    <ol class="day-Week">
-      <li v-for="(day, index) in daysOfWeek" :key="index">
-        {{ day }}
-      </li>
-    </ol>
-    <ol class="date-list">
-      <li v-for="(n, index) in calendar" :key="index">
-        <DateField
-          :date="n.date"
-          :day="n.day"
-          :scheduleDate="getSchedule(n.date)"
-        />
-      </li>
-    </ol>
+    <CalenderFild
+      :daysOfWeek="daysOfWeek"
+      :calendar="calendar"
+      :schedules="rgistedSchedule"
+      @editModalOpen="editModalOpen"
+    />
+    {{ /* 新規の場合、編集IDはあり得ない数字にする */ }}
+    <ScheduleRegistModal
+      :isModalOpen="isModalOpen"
+      :isEditType="isEditType"
+      :editScheduleIndex="isEditType ? editScheduleIndex : -1"
+      :editSchedule="editSchedule"
+      @modalClose="modalClose"
+      @registerSchedule="registerSchedule($event)"
+      @updatedSchedule="updatedSchedule($event)"
+    />
   </div>
 </template>
 
@@ -37,14 +40,16 @@ import {
   eachDayOfInterval,
 } from "./libs/date-utility";
 import { getPathYearMonth } from "./libs/get-path-year-month.js";
-import DateField from "./components/DateField";
+import CalenderFild from "./components/CalenderFild";
 import CalenderHeader from "./components/CalenderHeader";
+import ScheduleRegistModal from "./components/ScheduleRegistModal";
 
 export default {
   name: "App",
   components: {
-    DateField,
+    CalenderFild,
     CalenderHeader,
+    ScheduleRegistModal,
   },
 
   data() {
@@ -56,6 +61,10 @@ export default {
       inputStartTime: "",
       inputEndTime: "",
       rgistedSchedule: [],
+      editSchedule: null,
+      editScheduleIndex: "",
+      isModalOpen: false,
+      isEditType: false,
     };
   },
   computed: {
@@ -67,9 +76,6 @@ export default {
       const endDate = endOfMonth(this.currentDate);
       const dateWeek = eachWeekOfInterval(startDate, endDate);
       const endWeekDay = getDay(endDate); // 0-6
-      //console.table(dateWeek);
-      //console.log(endWeekDay);
-
       // 曜日と月日を取得
       const monthDate = eachDayOfInterval(dateWeek[0], endDate).map((week) => ({
         date: format(week, "yyyy-MM-dd"),
@@ -84,8 +90,6 @@ export default {
           day: this.daysOfWeek[getDay(addDate)],
         });
       }
-      //console.log(monthDate);
-
       return monthDate;
     },
   },
@@ -116,12 +120,31 @@ export default {
         schedule: scheduleData.schedule,
       };
       this.rgistedSchedule.push(newSchedule);
+      this.modalClose();
     },
-    getSchedule(date) {
-      const scheduleDate = this.rgistedSchedule.filter(
-        (item) => item.date === date
-      );
-      return scheduleDate ? scheduleDate : null;
+    modalOpen() {
+      this.isModalOpen = true;
+    },
+    modalClose() {
+      this.isModalOpen = false;
+      this.isEditType = false;
+      this.editSchedule = null;
+      this.editScheduleIndex = "";
+    },
+    editModalOpen(scheduleIndex) {
+      this.editScheduleIndex = scheduleIndex;
+      this.editSchedule = this.rgistedSchedule[scheduleIndex];
+      this.isEditType = true;
+      this.modalOpen();
+    },
+    updatedSchedule(updatedSchedule, index) {
+      console.log("index:", index);
+      console.log("Updated Schedule:", updatedSchedule);
+      this.rgistedSchedule.splice(index, 1, {
+        ...this.rgistedSchedule[index],
+        ...updatedSchedule,
+      });
+      this.modalClose();
     },
   },
 };
@@ -145,7 +168,8 @@ li {
   border-bottom: 1px solid #d3d3d3;
   border-right: 1px solid #d3d3d3;
   padding: 12px 0;
-  min-width: calc(100% / 7);
+  max-width: calc(100% / 7);
+  width: 100%;
 }
 .btn {
   margin: 0 6px;
