@@ -10,7 +10,7 @@
     </div>
     <ModalRegistScheduleVue
       @schedule="schedule"
-      :isModalOpen="isModalOpen"
+      :isModalOpen="isScheduleRegistModalOpen"
       @toggleScheduleRegistModal="toggleScheduleRegistModal"
     />
   </header>
@@ -25,7 +25,7 @@ export default {
   components: { BaseButton, ModalRegistScheduleVue },
   data() {
     return {
-      isModalOpen: false,
+      isScheduleRegistModalOpen: false,
     };
   },
   props: {
@@ -43,7 +43,7 @@ export default {
       return format(data, f);
     },
     toggleScheduleRegistModal(val) {
-      this.isModalOpen = val;
+      this.isScheduleRegistModalOpen = val;
     },
   },
 };
