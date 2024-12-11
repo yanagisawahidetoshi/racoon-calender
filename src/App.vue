@@ -98,8 +98,8 @@ export default {
       this.currentDate = addMonths(this.currentDate, num);
     },
     addSchedule(data) {
-      // schedulesの初期値は空のためif文追加
-      if (this.schedules.length < 0) {
+      if (this.schedules.length === 0) {
+        // schedulesの初期値がnullの時はidを持っていないため、何もせず配列追加をする
         this.schedules.push(data);
       } else {
         data.id = this.schedules[this.schedules.length - 1].id + 1;
