@@ -4,15 +4,16 @@
       :changeDate="changeDate"
       :changeCurrentMonth="changeCurrentMonth"
       :currentDate="currentDate"
-      @schedule="schedule"
+      @schedule="addSchedule"
     />
     <section class="block">
       <ol class="list">
         <li class="detail" v-for="(date, index) in currentMonth" :key="index">
           <CalenderDate
             :date="date"
-            :schedule="filterSchedules(date)"
+            :schedules="filterSchedules(date)"
             @updateSchedule="updateSchedule"
+            @toggleEdit="toggleEdit"
           />
         </li>
       </ol>
@@ -39,7 +40,7 @@ export default {
   data() {
     return {
       currentDate: new Date(),
-      schedules: [],
+      schedules: [], //初期値は空。dateValue,startTimeValue,endTimeValue,id,isEdit
     };
   },
   computed: {
@@ -85,20 +86,41 @@ export default {
     changeDate(num) {
       this.currentDate = addMonths(this.currentDate, num);
     },
-    schedule(data) {
-      this.schedules.push(data); //data内はdateValue,startTimeValue,endTimeValue
+    addSchedule(data) {
+      // schedulesの初期値は空のためif文追加
+      if (this.schedules.length) {
+        // 予定登録のたびにIDを+1
+        data.id = this.schedules[this.schedules.length - 1].id + 1;
+      }
+      this.schedules.push(data);
     },
     filterSchedules(date) {
-      const schedule = this.schedules.filter((v) => {
+      const schedules = this.schedules.filter((v) => {
         return isSameDay(date, v.dateValue);
       });
-      return schedule.length === 0 ? null : schedule[0];
+      return schedules;
     },
-    updateSchedule(schedule) {
+    updateSchedule(newSchedule) {
       this.schedules = this.schedules.map((v) => {
-        if (isSameDay(schedule.dateValue, v.dateValue)) {
-          return { ...v, ...schedule };
+        if (
+          isSameDay(newSchedule.dateValue, v.dateValue) &&
+          v.id === newSchedule.id
+        ) {
+          return { ...v, ...newSchedule };
         }
+        return v;
+      });
+    },
+    toggleEdit(schedule) {
+      this.schedules = this.schedules.map((v) => {
+        // 同じ日付かつ同じIDの予定を取り出す
+        if (
+          isSameDay(schedule.dateValue, v.dateValue) &&
+          v.id === schedule.id
+        ) {
+          return { ...v, isEdit: !v.isEdit };
+        }
+        // 他の予定はそのまま返す
         return v;
       });
     },

@@ -57,7 +57,6 @@ export default {
   },
   watch: {
     isModalOpen(newValue) {
-      console.log(newValue);
       newValue
         ? this.$vm2.open("registScheduleModal")
         : this.$vm2.close("registScheduleModal");
@@ -69,6 +68,8 @@ export default {
         dateValue: this.dateValue,
         startTimeValue: this.startTimeValue,
         endTimeValue: this.endTimeValue,
+        isEdit: false,
+        id: 0,
       });
     },
   },

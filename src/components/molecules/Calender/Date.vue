@@ -1,20 +1,31 @@
 <template>
   <div class="wrap_date">
     <div>{{ formatDate(date, "do（E）") }}</div>
-    <template v-if="schedule">
-      <template v-if="!isEdit">
-        <div class="time">
-          {{ schedule.startTimeValue }} ～ {{ schedule.endTimeValue }}
-        </div>
-        <BaseButton @click="toggleEdit">編集</BaseButton>
-      </template>
-      <template v-else-if="isEdit">
-        <div class="time edit">
-          <InputTime v-model="startTimeValue" />
-          <InputTime v-model="endTimeValue" />
-        </div>
-        <BaseButton @click="completeEdit">完了</BaseButton>
-      </template>
+    <template v-for="(schedule, index) in schedules">
+      <div :key="index" class="schedule">
+        <template v-if="!schedule.isEdit">
+          <div class="time">
+            {{ schedule.startTimeValue }} ～ {{ schedule.endTimeValue }}
+          </div>
+          <BaseButton @click="$emit('toggleEdit', schedule)">編集</BaseButton>
+        </template>
+        <template v-else-if="schedule.isEdit">
+          <div class="time edit">
+            <InputTime v-model="schedule.startTimeValue" />
+            <InputTime v-model="schedule.endTimeValue" />
+          </div>
+          <BaseButton
+            @click="
+              completeEdit(
+                schedule.startTimeValue,
+                schedule.endTimeValue,
+                schedule.id
+              )
+            "
+            >完了</BaseButton
+          >
+        </template>
+      </div>
     </template>
     <!-- 年月日が一致すれば該当オブジェクトの時間を表示 -->
   </div>
@@ -27,37 +38,26 @@ import InputTime from "@/components/atoms/InputTime.vue";
 export default {
   name: "CalenderDate",
   components: { BaseButton, InputTime },
-  data() {
-    return {
-      isEdit: false,
-      startTimeValue: "",
-      endTimeValue: "",
-    };
-  },
   props: {
     date: {
       type: Date,
     },
-    schedule: {
-      type: Object,
+    schedules: {
+      type: Array,
     },
   },
   methods: {
     formatDate(date, f) {
       return format(date, f);
     },
-    toggleEdit() {
-      this.isEdit = !this.isEdit;
-    },
-    completeEdit() {
+    completeEdit(startTimeValue, endTimeValue, id) {
       this.$emit("updateSchedule", {
         dateValue: this.date,
-        startTimeValue: this.startTimeValue,
-        endTimeValue: this.endTimeValue,
+        startTimeValue: startTimeValue,
+        endTimeValue: endTimeValue,
+        isEdit: false,
+        id: id,
       });
-      this.startTimeValue = "";
-      this.endTimeValue = "";
-      this.isEdit = false;
     },
   },
 };
@@ -65,7 +65,8 @@ export default {
 <style scoped>
 .wrap_date {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  gap: 5px;
 }
 .time {
   margin-right: 5px;
@@ -73,5 +74,14 @@ export default {
 .edit {
   display: flex;
   gap: 8px;
+}
+.schedule {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 10px;
+}
+.schedule:before {
+  content: "・";
 }
 </style>
