@@ -4,7 +4,7 @@
       :changeDate="changeDate"
       :changeCurrentMonth="changeCurrentMonth"
       :currentDate="currentDate"
-      @schedule="addSchedule"
+      @addSchedule="addSchedule"
     />
     <section class="block">
       <ol class="list">
@@ -12,12 +12,20 @@
           <CalenderDate
             :date="date"
             :schedules="filterSchedules(date)"
-            @updateSchedule="updateSchedule"
-            @toggleEdit="toggleEdit"
+            @toggleModalEditSchedule="toggleModalEditSchedule"
           />
         </li>
       </ol>
     </section>
+    <ModalSchedule
+      @toggleModalSchedule="toggleModalEditSchedule"
+      @newSchedule="updateSchedule"
+      :schedule="schedules[scheduleId]"
+      :isModalOpen="isScheduleEditModalOpen"
+      :modalName="'modalEditSchedule'"
+      :modalTitle="'予定の登録'"
+      :modalBtnName="'登録'"
+    />
   </div>
 </template>
 
@@ -33,14 +41,17 @@ import {
 } from "./libs/date-util";
 import CalenderHeader from "./components/molecules/Calender/Header.vue";
 import CalenderDate from "./components/molecules/Calender/Date.vue";
+import ModalSchedule from "./components/molecules/Calender/ModalSchedule.vue";
 
 export default {
   name: "App",
-  components: { CalenderHeader, CalenderDate },
+  components: { CalenderHeader, CalenderDate, ModalSchedule },
   data() {
     return {
       currentDate: new Date(),
-      schedules: [], //初期値は空。dateValue,startTimeValue,endTimeValue,id,isEdit
+      schedules: [], //初期値は空。dateValue,startTimeValue,endTimeValue,id
+      isScheduleEditModalOpen: false,
+      scheduleId: Number,
     };
   },
   computed: {
@@ -88,11 +99,12 @@ export default {
     },
     addSchedule(data) {
       // schedulesの初期値は空のためif文追加
-      if (this.schedules.length) {
-        // 予定登録のたびにIDを+1
+      if (this.schedules.length < 0) {
+        this.schedules.push(data);
+      } else {
         data.id = this.schedules[this.schedules.length - 1].id + 1;
+        this.schedules.push(data);
       }
-      this.schedules.push(data);
     },
     filterSchedules(date) {
       const schedules = this.schedules.filter((v) => {
@@ -100,29 +112,17 @@ export default {
       });
       return schedules;
     },
-    updateSchedule(newSchedule) {
+    updateSchedule(updateSchedule) {
       this.schedules = this.schedules.map((v) => {
-        if (
-          isSameDay(newSchedule.dateValue, v.dateValue) &&
-          v.id === newSchedule.id
-        ) {
-          return { ...v, ...newSchedule };
+        if (v.id === updateSchedule.id) {
+          return { ...v, ...updateSchedule };
         }
         return v;
       });
     },
-    toggleEdit(schedule) {
-      this.schedules = this.schedules.map((v) => {
-        // 同じ日付かつ同じIDの予定を取り出す
-        if (
-          isSameDay(schedule.dateValue, v.dateValue) &&
-          v.id === schedule.id
-        ) {
-          return { ...v, isEdit: !v.isEdit };
-        }
-        // 他の予定はそのまま返す
-        return v;
-      });
+    toggleModalEditSchedule(val, id) {
+      this.isScheduleEditModalOpen = val;
+      this.scheduleId = id;
     },
   },
 };

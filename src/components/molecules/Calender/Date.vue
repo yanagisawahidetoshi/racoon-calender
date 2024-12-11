@@ -3,41 +3,24 @@
     <div>{{ formatDate(date, "do（E）") }}</div>
     <template v-for="(schedule, index) in schedules">
       <div :key="index" class="schedule">
-        <template v-if="!schedule.isEdit">
-          <div class="time">
-            {{ schedule.startTimeValue }} ～ {{ schedule.endTimeValue }}
-          </div>
-          <BaseButton @click="$emit('toggleEdit', schedule)">編集</BaseButton>
-        </template>
-        <template v-else-if="schedule.isEdit">
-          <div class="time edit">
-            <InputTime v-model="schedule.startTimeValue" />
-            <InputTime v-model="schedule.endTimeValue" />
-          </div>
-          <BaseButton
-            @click="
-              completeEdit(
-                schedule.startTimeValue,
-                schedule.endTimeValue,
-                schedule.id
-              )
-            "
-            >完了</BaseButton
-          >
-        </template>
+        <div class="time">
+          {{ schedule.startTimeValue }} ～ {{ schedule.endTimeValue }}
+        </div>
+        <div>{{ schedule.toDo }}</div>
+        <BaseButton @click="$emit('toggleModalEditSchedule', true, schedule.id)"
+          >編集</BaseButton
+        >
       </div>
     </template>
-    <!-- 年月日が一致すれば該当オブジェクトの時間を表示 -->
   </div>
 </template>
 
 <script>
 import { format } from "../../../libs/date-util";
 import BaseButton from "@/components/atoms/BaseButton.vue";
-import InputTime from "@/components/atoms/InputTime.vue";
 export default {
   name: "CalenderDate",
-  components: { BaseButton, InputTime },
+  components: { BaseButton },
   props: {
     date: {
       type: Date,
@@ -55,7 +38,6 @@ export default {
         dateValue: this.date,
         startTimeValue: startTimeValue,
         endTimeValue: endTimeValue,
-        isEdit: false,
         id: id,
       });
     },
