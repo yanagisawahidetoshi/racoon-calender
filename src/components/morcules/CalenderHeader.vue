@@ -35,12 +35,18 @@
       </li>
     </ul>
     <h1 class="title">{{ formatDate(date, "yyyy年M月") }}</h1>
-    <CommonButton @click="registSchedule">登録</CommonButton>
+    <CommonButton @click="openRegisterModal">登録</CommonButton>
+    <ScheduleRegisterModal
+      @registeredSchedule="addNewSchedule"
+      @clickCloseButton="closeModal"
+      :isEditModalOpen="isEditModalOpen"
+    />
   </header>
 </template>
 <script>
 import { format } from "../../libs/dateUtil.js";
 import CommonButton from "@/components/atoms/CommonButton";
+import ScheduleRegisterModal from "@/components/morcules/ScheduleRegisterModal";
 
 export default {
   name: "CalenderHeader",
@@ -53,16 +59,26 @@ export default {
     date: {
       type: Date,
     },
+    isEditModalOpen: {
+      type: Boolean,
+    },
   },
   components: {
     CommonButton,
+    ScheduleRegisterModal,
   },
   methods: {
     formatDate(date, pattern) {
       return format(date, pattern);
     },
-    registSchedule() {
-      this.$emit("registSchedule");
+    openRegisterModal() {
+      this.isModalOpen = true;
+    },
+    addNewSchedule(schedule) {
+      this.$emit("addNewSchedule", schedule);
+    },
+    closeModal() {
+      this.isModalOpen = false;
     },
   },
 };

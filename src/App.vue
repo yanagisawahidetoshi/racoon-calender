@@ -3,23 +3,25 @@
     <CalenderHeader
       @changeMonth="changeMonth"
       :date="currentDate"
-      @registSchedule="openRegisterModal"
+      @addNewSchedule="addNewSchedule"
     />
     <ol class="calendar-list">
       <li v-for="(date, index) in calendar" :key="index" class="calendar-item">
         <CalenderRow
           :date="date"
           :schedules="filterScheduleByDate(date)"
+          :isEditModalOpen="isEditModalOpen"
           @editSchedule="openEditModal"
+          @upDateSchedules="upDateSchedules"
         />
       </li>
     </ol>
-    <ScheduleRegisterModal
+    <!-- <ScheduleRegisterModal
       @registeredSchedule="upDateSchedules"
       @clickCloseButton="closeModal"
       :isModalOpen="isModalOpen"
       :editingSchedule="editingSchedule"
-    />
+    /> -->
   </div>
 </template>
 
@@ -35,13 +37,14 @@ import {
 
 import CalenderRow from "@/components/atoms/CalenderRow";
 import CalenderHeader from "@/components/morcules/CalenderHeader";
-import ScheduleRegisterModal from "@/components/morcules/ScheduleRegisterModal";
+// import ScheduleRegisterModal from "@/components/morcules/ScheduleRegisterModal";
 
 export default {
   name: "App",
   data() {
     return {
-      isModalOpen: false,
+      // isModalOpen: false,
+      isEditModalOpen: false,
       currentDate: null,
       schedules: [],
       editIndex: null,
@@ -56,7 +59,7 @@ export default {
   components: {
     CalenderRow,
     CalenderHeader,
-    ScheduleRegisterModal,
+    // ScheduleRegisterModal,
   },
   computed: {
     calendar() {
@@ -87,17 +90,24 @@ export default {
     getSearchParam(url, param) {
       return url.searchParams.get(param);
     },
-    upDateSchedules(newSchedule) {
-      if (this.editIndex === null) {
-        this.schedules = [...this.schedules, newSchedule];
-        return;
-      }
-      // 編集時は、該当の予定を上書きする
-      const newSchedules = this.schedules.map((schedule, index) => {
-        return index === this.editIndex ? { ...newSchedule } : { ...schedule };
-      });
-      this.schedules = newSchedules;
+    // 新規登録
+    addNewSchedule(newSchedule) {
+      this.schedules = [...this.schedules, newSchedule];
     },
+    upDateSchedules(newSchedule) {
+      this.schedules = newSchedule;
+    },
+    // upDateSchedules(newSchedule) {
+    //   if (this.editIndex === null) {
+    //     this.schedules = [...this.schedules, newSchedule];
+    //     return;
+    //   }
+    //   // 編集時は、該当の予定を上書きする
+    //   const newSchedules = this.schedules.map((schedule, index) => {
+    //     return index === this.editIndex ? { ...newSchedule } : { ...schedule };
+    //   });
+    //   this.schedules = newSchedules;
+    // },
     closeModal() {
       this.isModalOpen = false;
       this.editingSchedule = {
@@ -107,9 +117,6 @@ export default {
         finishTime: "",
       };
       this.editIndex = null;
-    },
-    openRegisterModal() {
-      this.isModalOpen = true;
     },
     openEditModal(index) {
       this.isModalOpen = true;
