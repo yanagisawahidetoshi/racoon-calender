@@ -5,6 +5,7 @@
       @changeToNextMonth="changeMonth(1)"
       @changeCurrentMonth="changeCurrentMonth"
       :currentDate="currentDate"
+      @onRegisterSchedule="handleRegisterSchedule"
     />
     <ol>
       <li v-for="(date, index) in dates" :key="index">
@@ -37,6 +38,7 @@ export default {
   data() {
     return {
       currentDate: null,
+      schedules: [],
     };
   },
   computed: {
@@ -61,6 +63,10 @@ export default {
     },
     changeCurrentMonth() {
       this.currentDate = new Date();
+    },
+    handleRegisterSchedule(newSchedule) {
+      const id = this.schedules.length > 0 ? this.schedules.at(-1).id + 1 : 1;
+      this.schedules = [...this.schedules, { ...newSchedule, id }];
     },
   },
 };
