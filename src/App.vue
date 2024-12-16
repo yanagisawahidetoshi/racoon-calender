@@ -4,7 +4,7 @@
       :changeDate="changeDate"
       :changeCurrentMonth="changeCurrentMonth"
       :currentDate="currentDate"
-      @addSchedule="addSchedule"
+      @onSchedule="addSchedule"
     />
     <section class="block">
       <ol class="list">
@@ -12,19 +12,21 @@
           <CalenderDate
             :date="date"
             :schedules="filterSchedules(date)"
-            @toggleModalEditSchedule="toggleModalEditSchedule"
+            @onToggleModalEditSchedule="toggleModalEditSchedule"
           />
         </li>
       </ol>
     </section>
     <ModalSchedule
-      @toggleModalSchedule="toggleModalEditSchedule"
-      @newSchedule="updateSchedule"
-      :schedule="schedules[scheduleId]"
-      :isModalOpen="isScheduleEditModalOpen"
+      @onToggleModalSchedule="toggleModalEditSchedule"
+      @onSchedule="updateSchedule"
+      :schedule="
+        schedules.find((schedule) => schedule.id === editingScheduleId)
+      "
+      :isModalOpen="isModalEditScheduleOpen"
       :modalName="'modalEditSchedule'"
-      :modalTitle="'予定の登録'"
-      :modalBtnName="'登録'"
+      :modalTitle="'予定の編集'"
+      :modalBtnName="'編集'"
     />
   </div>
 </template>
@@ -50,8 +52,8 @@ export default {
     return {
       currentDate: new Date(),
       schedules: [], //初期値は空。dateValue,startTimeValue,endTimeValue,id
-      isScheduleEditModalOpen: false,
-      scheduleId: Number,
+      isModalEditScheduleOpen: false,
+      editingScheduleId: Number,
     };
   },
   computed: {
@@ -98,13 +100,8 @@ export default {
       this.currentDate = addMonths(this.currentDate, num);
     },
     addSchedule(data) {
-      if (this.schedules.length === 0) {
-        // schedulesの初期値がnullの時はidを持っていないため、何もせず配列追加をする
-        this.schedules.push(data);
-      } else {
-        data.id = this.schedules[this.schedules.length - 1].id + 1;
-        this.schedules.push(data);
-      }
+      data.id = Date.now(); //その時の日時（ミリ単位）をIDとして登録
+      this.schedules.push(data);
     },
     filterSchedules(date) {
       const schedules = this.schedules.filter((v) => {
@@ -112,17 +109,17 @@ export default {
       });
       return schedules;
     },
-    updateSchedule(updateSchedule) {
+    updateSchedule(newSchedule) {
       this.schedules = this.schedules.map((v) => {
-        if (v.id === updateSchedule.id) {
-          return { ...v, ...updateSchedule };
+        if (v.id === newSchedule.id) {
+          return { ...v, ...newSchedule };
         }
         return v;
       });
     },
     toggleModalEditSchedule(val, id) {
-      this.isScheduleEditModalOpen = val;
-      this.scheduleId = id;
+      this.isModalEditScheduleOpen = val;
+      this.editingScheduleId = id;
     },
   },
 };

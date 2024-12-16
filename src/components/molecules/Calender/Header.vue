@@ -8,9 +8,9 @@
       {{ formatDate(currentDate, "yyyy年MMMM") }}
     </div>
     <ModalSchedule
-      @newSchedule="addSchedule"
-      @toggleModalSchedule="toggleModalRegistSchedule"
-      :isModalOpen="isScheduleRegistModalOpen"
+      @onSchedule="(data) => $emit('onSchedule', data)"
+      @onToggleModalSchedule="toggleModalRegistSchedule"
+      :isModalOpen="isModalRegistScheduleOpen"
       :modalName="'modalRegistSchedule'"
       :modalTitle="'予定の登録'"
       :modalBtnName="'登録'"
@@ -27,7 +27,7 @@ export default {
   components: { BaseButton, ModalSchedule },
   data() {
     return {
-      isScheduleRegistModalOpen: false,
+      isModalRegistScheduleOpen: false,
     };
   },
   props: {
@@ -38,14 +38,11 @@ export default {
     },
   },
   methods: {
-    addSchedule(data) {
-      this.$emit("addSchedule", data);
-    },
     formatDate(data, f) {
       return format(data, f);
     },
     toggleModalRegistSchedule(val) {
-      this.isScheduleRegistModalOpen = val;
+      this.isModalRegistScheduleOpen = val;
     },
   },
 };

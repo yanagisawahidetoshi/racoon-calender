@@ -11,14 +11,20 @@
         backgroundColor: 'green',
       },
       btn1OnClick: () => {
-        $emit('toggleModalSchedule', false);
+        $emit('onToggleModalSchedule', false);
       },
       btn2OnClick: () => {
-        newSchedule();
-        $emit('toggleModalSchedule', false);
+        $emit('onSchedule', {
+          dateValue: dateValue,
+          startTimeValue: startTimeValue,
+          endTimeValue: endTimeValue,
+          toDo: toDo,
+          id: id,
+        });
+        $emit('onToggleModalSchedule', false);
       },
     }"
-    @on-close="$emit('toggleModalSchedule', false)"
+    @on-close="$emit('onToggleModalSchedule', false)"
   >
     <div class="wrap_input">
       <dl class="input_col">
@@ -86,17 +92,6 @@ export default {
       newValue
         ? this.$vm2.open(this.modalName)
         : this.$vm2.close(this.modalName);
-    },
-  },
-  methods: {
-    newSchedule() {
-      this.$emit("newSchedule", {
-        dateValue: this.dateValue,
-        startTimeValue: this.startTimeValue,
-        endTimeValue: this.endTimeValue,
-        toDo: this.toDo,
-        id: this.id,
-      });
     },
   },
 };

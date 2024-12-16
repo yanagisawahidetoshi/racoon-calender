@@ -7,7 +7,8 @@
           {{ schedule.startTimeValue }} ～ {{ schedule.endTimeValue }}
         </div>
         <div>{{ schedule.toDo }}</div>
-        <BaseButton @click="$emit('toggleModalEditSchedule', true, schedule.id)"
+        <BaseButton
+          @click="$emit('onToggleModalEditSchedule', true, schedule.id)"
           >編集</BaseButton
         >
       </div>
@@ -32,14 +33,6 @@ export default {
   methods: {
     formatDate(date, f) {
       return format(date, f);
-    },
-    completeEdit(startTimeValue, endTimeValue, id) {
-      this.$emit("updateSchedule", {
-        dateValue: this.date,
-        startTimeValue: startTimeValue,
-        endTimeValue: endTimeValue,
-        id: id,
-      });
     },
   },
 };
