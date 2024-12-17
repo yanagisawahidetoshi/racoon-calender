@@ -67,6 +67,14 @@ export default {
     handleRegisterSchedule(newSchedule) {
       const id = this.schedules.length > 0 ? this.schedules.at(-1).id + 1 : 1;
       this.schedules = [...this.schedules, { ...newSchedule, id }];
+      this.schedules = this.schedules.sort((a, b) =>
+        a.startTime.localeCompare(b.startTime)
+      );
+      console.log(this.schedules);
+      // 課題：現状、再描画が2回されているので、1回でおさめる
+      // localecompareは文字列以外でも比較してくれる
+      // dateFnsをつかったほうがより厳密にできる
+      // 関数を切り出してテストを書けば、いちいち画面上で操作してテストしなくて済む
     },
   },
 };

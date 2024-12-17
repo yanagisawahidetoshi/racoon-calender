@@ -18,7 +18,9 @@
     <ScheduleModal
       :is-modal-open="isModalOpen"
       @closeModal="toggleScheduleModal(false)"
-      @onRegisterSchedule="$emit('onRegisterSchedule')"
+      @onRegisterSchedule="
+        (newSchedule) => $emit('onRegisterSchedule', newSchedule)
+      "
     />
   </div>
 </template>
