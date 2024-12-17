@@ -1,13 +1,13 @@
 <template>
   <div id="app">
-    <ul>
-      <li><button @click="changeMonth(-1)">prev</button></li>
-      <li><button @click="changeToCurrentMonth()">current</button></li>
-      <li><button @click="changeMonth(1)">next</button></li>
-    </ul>
+    <CalendarHeader
+      :baseDate="baseDate"
+      @changeMonth="changeMonth"
+      @changeToCurrentMonth="changeToCurrentMonth" />
     <ol>
       <li v-for="(date, index) in dates" :key="index">
-        <p>{{ formatDate(date, 'MM/dd EEEE') }}</p>
+        <CalendarEachRow 
+        :date="date"/>
       </li>
     </ol>
   </div>
@@ -23,10 +23,12 @@ import {
   format,
   parse,
 } from "./libs/date-fns";
+import CalendarHeader from "./components/molecules/CalendarHeader/CalendarHeader.vue";
+import CalendarEachRow from "./components/atoms/CalendarEachRow/CalendarEachRow.vue";
 
 export default {
   name: "App",
-  components: {},
+  components: { CalendarHeader, CalendarEachRow },
   data() {
     return{
       baseDate: null,
