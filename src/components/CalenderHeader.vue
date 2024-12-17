@@ -4,24 +4,54 @@
     <Button className="arrow-left" @click="$emit('changeMonth', -1)" />
     <Button tagName="span" @click="$emit('changeCurrentMonth')"> 当月 </Button>
     <Button className="arrow-right" @click="$emit('changeMonth', 1)" />
-    <Button tagName="a" className="regist" @click="$emit('modalOpen')">
-      登録
-    </Button>
+    <Button tagName="a" className="regist" @click="modalOpen"> 登録 </Button>
+    {{ /* 新規の場合、編集IDはあり得ない数字にする */ }}
+    <ScheduleRegistModal
+      v-show="isModalOpen"
+      :isModalOpen="isModalOpen"
+      :isEditType="isEditType"
+      :editScheduleIndex="isEditType ? editScheduleIndex : -1"
+      :editSchedule="editSchedule"
+      @registerSchedule="registerSchedule($event)"
+      @modalClose="modalClose"
+    />
   </div>
 </template>
 
 <script>
 import Button from "./Button";
+import ScheduleRegistModal from "./ScheduleRegistModal";
 
 export default {
   name: "CalenderHeader",
   components: {
     Button,
+    ScheduleRegistModal,
   },
   props: {
     formatDate: {
       type: String,
       default: "",
+    },
+  },
+  data() {
+    return {
+      isModalOpen: false,
+      isEditType: false,
+      editSchedule: null,
+      editScheduleIndex: "",
+    };
+  },
+  methods: {
+    modalOpen() {
+      this.isModalOpen = true;
+    },
+    modalClose() {
+      this.isModalOpen = false;
+    },
+    registerSchedule(scheduleData) {
+      this.$emit("registerSchedule", scheduleData);
+      this.modalClose();
     },
   },
 };

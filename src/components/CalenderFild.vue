@@ -15,16 +15,26 @@
         />
       </li>
     </ol>
+    {{ /* 新規の場合、編集IDはあり得ない数字にする */ }}
+    <ScheduleRegistModal
+      v-show="isModalOpen"
+      :isModalOpen="isModalOpen"
+      :isEditType="isEditType"
+      :targetSchedule="targetSchedule"
+      @modalClose="modalClose"
+      @updatedSchedule="updatedSchedule($event)"
+    />
   </div>
 </template>
 
 <script>
 import DateField from "./DateField";
-
+import ScheduleRegistModal from "./ScheduleRegistModal";
 export default {
   name: "CalenderFild",
   components: {
     DateField,
+    ScheduleRegistModal,
   },
   props: {
     daysOfWeek: {
@@ -40,13 +50,37 @@ export default {
       required: true,
     },
   },
+  data() {
+    return {
+      isModalOpen: false,
+      isEditType: false,
+      targetSchedule: null,
+      scheduleId: "",
+    };
+  },
   methods: {
     getSchedule(date) {
       const scheduleDate = this.schedules.filter((item) => item.date === date);
       return scheduleDate ? scheduleDate : null;
     },
-    editModalOpen(scheduleIndex) {
-      this.$emit("editModalOpen", scheduleIndex);
+    editModalOpen(scheduleId) {
+      this.targetScheduleId = scheduleId;
+      this.targetSchedule = this.schedules.find(
+        (schedule) => schedule.id === scheduleId
+      );
+      this.isEditType = true;
+      this.isModalOpen = true;
+    },
+    modalClose() {
+      this.isModalOpen = false;
+      this.isModalOpen = false;
+      this.isEditType = false;
+      this.targetSchedule = null;
+      this.targetScheduleId = "";
+    },
+    updatedSchedule(scheduleData) {
+      this.$emit("updatedSchedule", scheduleData);
+      this.modalClose();
     },
   },
 };

@@ -5,23 +5,12 @@
       @changeMonth="changeMonth"
       @changeCurrentMonth="changeCurrentMonth"
       @registerSchedule="registerSchedule"
-      @modalOpen="modalOpen"
     />
     {{ /* 日付と曜日を出力 */ }}
     <CalenderFild
       :daysOfWeek="daysOfWeek"
       :calendar="calendar"
       :schedules="rgistedSchedule"
-      @editModalOpen="editModalOpen"
-    />
-    {{ /* 新規の場合、編集IDはあり得ない数字にする */ }}
-    <ScheduleRegistModal
-      :isModalOpen="isModalOpen"
-      :isEditType="isEditType"
-      :editScheduleIndex="isEditType ? editScheduleIndex : -1"
-      :editSchedule="editSchedule"
-      @modalClose="modalClose"
-      @registerSchedule="registerSchedule($event)"
       @updatedSchedule="updatedSchedule($event)"
     />
   </div>
@@ -42,14 +31,12 @@ import {
 import { getPathYearMonth } from "./libs/get-path-year-month.js";
 import CalenderFild from "./components/CalenderFild";
 import CalenderHeader from "./components/CalenderHeader";
-import ScheduleRegistModal from "./components/ScheduleRegistModal";
 
 export default {
   name: "App",
   components: {
     CalenderFild,
     CalenderHeader,
-    ScheduleRegistModal,
   },
 
   data() {
@@ -60,11 +47,15 @@ export default {
       inputDate: "",
       inputStartTime: "",
       inputEndTime: "",
-      rgistedSchedule: [],
-      editSchedule: null,
-      editScheduleIndex: "",
-      isModalOpen: false,
-      isEditType: false,
+      rgistedSchedule: [
+        {
+          id: 1,
+          date: "2024-12-01",
+          startTime: "12:00",
+          endTime: "13:00",
+          schedule: "aaaa",
+        },
+      ],
     };
   },
   computed: {
@@ -113,38 +104,34 @@ export default {
       window.history.pushState({ path: newUrl }, "", newUrl);
     },
     registerSchedule(scheduleData) {
+      // console.log(scheduleData);
       const newSchedule = {
+        id: (this.rgistedSchedule.at(-1)?.id ?? 0) + 1,
         date: scheduleData.date,
         startTime: scheduleData.startTime,
         endTime: scheduleData.endTime,
         schedule: scheduleData.schedule,
       };
       this.rgistedSchedule.push(newSchedule);
-      this.modalClose();
     },
-    modalOpen() {
-      this.isModalOpen = true;
-    },
-    modalClose() {
-      this.isModalOpen = false;
-      this.isEditType = false;
-      this.editSchedule = null;
-      this.editScheduleIndex = "";
-    },
-    editModalOpen(scheduleIndex) {
-      this.editScheduleIndex = scheduleIndex;
-      this.editSchedule = this.rgistedSchedule[scheduleIndex];
-      this.isEditType = true;
-      this.modalOpen();
-    },
-    updatedSchedule(updatedSchedule, index) {
-      console.log("index:", index);
-      console.log("Updated Schedule:", updatedSchedule);
-      this.rgistedSchedule.splice(index, 1, {
-        ...this.rgistedSchedule[index],
-        ...updatedSchedule,
-      });
-      this.modalClose();
+    updatedSchedule(updatedSchedule) {
+      // console.log("Updated Schedule:", updatedSchedule);
+      const updateItem = this.rgistedSchedule.find(
+        (item) => item.id === updatedSchedule.id
+      );
+      // console.log(updateItem);
+      const index = this.rgistedSchedule.indexOf(updateItem);
+      if (updateItem) {
+        this.$set(this.rgistedSchedule, index, {
+          ...updatedSchedule,
+        });
+      } else {
+        console.log("一致するデータがありません。");
+        return;
+      }
+      // console.log(
+      //   JSON.stringify(this.rgistedSchedule, null, 2)
+      // );
     },
   },
 };

@@ -2,7 +2,7 @@
   <p class="date-block">
     <span class="date">{{ formatDate }}</span>
     <span v-for="(n, index) in scheduleDate" :key="index" class="schedule">
-      <button tagName="a" className="regist" @click="editModalOpen(index)">
+      <button tagName="a" className="regist" @click="editModalOpen(n.id)">
         {{ n.schedule }} ({{ n.startTime }}-{{ n.endTime }})
       </button>
     </span>
@@ -34,8 +34,8 @@ export default {
     },
   },
   methods: {
-    editModalOpen(scheduleIndex) {
-      this.$emit("editModalOpen", scheduleIndex);
+    editModalOpen(scheduleId) {
+      this.$emit("editModalOpen", scheduleId);
     },
   },
 };
@@ -58,5 +58,10 @@ export default {
   border-radius: 8px;
   padding: 2px 6px;
   text-align: center;
+}
+.edit {
+  vertical-align: -4px;
+  margin: 0 6px;
+  cursor: pointer;
 }
 </style>

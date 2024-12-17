@@ -23,7 +23,8 @@
       }"
       @on-close="modalClose()"
     >
-      <div class="input-wrap">
+      {{ /* 新規 */ }}
+      <div class="input-wrap" v-show="!isEditType">
         {{ /* input:text */ }}
         <p>
           <InputText v-model="inputSchedule" placeholder="予定を入力" />
@@ -36,7 +37,20 @@
         <p>開始時間：<InputTime v-model="inputStartTime" /></p>
         <p>終了時間：<InputTime v-model="inputEndTime" /></p>
       </div>
-      {{ this.editScheduleIndex }}
+      {{ /* 編集 */ }}
+      <div class="input-wrap" v-show="isEditType">
+        {{ /* input:text */ }}
+        <p>
+          <InputText v-model="editSchedule.schedule" />
+        </p>
+        {{ /* input:date */ }}
+        <p>
+          <InputDate v-model="editSchedule.date" />
+        </p>
+        {{ /* input:time */ }}
+        <p>開始時間：<InputTime v-model="editSchedule.startTime" /></p>
+        <p>終了時間：<InputTime v-model="editSchedule.endTime" /></p>
+      </div>
     </vue-modal-2>
   </div>
 </template>
@@ -62,13 +76,15 @@ export default {
       type: Boolean,
       required: true,
     },
-    editScheduleIndex: {
-      type: Number,
-      default: -1,
-    },
-    editSchedule: {
+    targetSchedule: {
       type: Object,
-      default: () => null,
+      default: () => ({
+        id: "",
+        date: "",
+        startTime: "",
+        endTime: "",
+        schedule: "",
+      }),
     },
   },
   data() {
@@ -77,28 +93,25 @@ export default {
       inputDate: "",
       inputStartTime: "",
       inputEndTime: "",
+      editSchedule: {
+        id: "",
+        date: "",
+        startTime: "",
+        endTime: "",
+        schedule: "",
+      },
     };
   },
   watch: {
     isModalOpen(isOpen) {
-      isOpen
-        ? this.$vm2.open("modalToRegistSchedule")
-        : this.$vm2.close("modalToRegistSchedule");
-    },
-    editSchedule: {
-      // 参考：https://qiita.com/smkhkc/items/d5e1bc5580a62d060516
-      //handlerプロパティにハンドラを定義
-      handler(newVal) {
-        if (newVal) {
-          //console.log(this.editSchedule);
-          this.inputSchedule = newVal.schedule || "";
-          this.inputDate = newVal.date || "";
-          this.inputStartTime = newVal.startTime || "";
-          this.inputEndTime = newVal.endTime || "";
+      if (isOpen) {
+        this.$vm2.open("modalToRegistSchedule");
+        if (this.isEditType) {
+          this.editSchedule = { ...this.targetSchedule };
         }
-      },
-      //immediate = 初期読み込み時にも呼び出す
-      immediate: true,
+      } else {
+        this.$vm2.close("modalToRegistSchedule");
+      }
     },
   },
   methods: {
@@ -107,17 +120,18 @@ export default {
       this.$emit("modalClose");
     },
     submitRegist() {
-      const scheduleData = {
-        date: this.inputDate,
-        startTime: this.inputStartTime,
-        endTime: this.inputEndTime,
-        schedule: this.inputSchedule,
-      };
-      // console.log(scheduleData);
-      // console.log(this.editScheduleIndex);
+      const scheduleData = this.isEditType
+        ? { ...this.editSchedule }
+        : {
+            date: this.inputDate,
+            startTime: this.inputStartTime,
+            endTime: this.inputEndTime,
+            schedule: this.inputSchedule,
+          };
       if (this.isEditType) {
-        this.$emit("updatedSchedule", scheduleData, this.editScheduleIndex);
+        this.$emit("updatedSchedule", scheduleData);
       } else {
+        console.log(scheduleData);
         this.$emit("registerSchedule", scheduleData);
       }
     },
