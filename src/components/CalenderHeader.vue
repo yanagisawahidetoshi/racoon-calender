@@ -17,7 +17,9 @@
     </ul>
     <ScheduleModal
       :isModalOpen="isModalOpen"
-      @close="closeScheduleModal" />
+      @close="closeScheduleModal"
+      @onSubmit="$emit('onSubmit', $event)"
+    />
   </div>
 </template>
 

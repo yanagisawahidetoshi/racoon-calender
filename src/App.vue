@@ -5,12 +5,14 @@
       @changeToNextMonth="changeMonth(1)"
       @changeCurrentMonth="changeCurrentMonth"
       :currentDate="currentDate"
+      @onSubmit="resgistSchedule"
     />
     <ol>
       <li v-for="(date, index) in dates" :key="index">
         <DateRow :date="date" />
       </li>
     </ol>
+    {{ schedules }}
   </div>
 </template>
 
@@ -37,6 +39,7 @@ export default {
   data() {
     return {
       currentDate: null,
+      schedules: [],
     };
   },
   computed: {
@@ -61,6 +64,10 @@ export default {
     },
     changeCurrentMonth() {
       this.currentDate = new Date();
+    },
+    resgistSchedule(newSchedule) {
+      const id = this.schedules?.at(-1)?.id ?? 0;
+      this.schedules.push({ ...newSchedule, id: id + 1 });
     },
   },
 };
