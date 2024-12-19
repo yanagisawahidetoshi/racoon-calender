@@ -5,6 +5,7 @@ import {
   addMonths as dateFnsAddMonths,
   format as dateFnsFormat,
   parse as dateFnsParse,
+  isSameDay as dateFnsIsSameDay,
 } from "date-fns";
 import ja from "date-fns/locale/ja";
 
@@ -25,4 +26,7 @@ export const format = (date, dateFormat) => {
 };
 export const parse = (dateString, dateFormat) => {
   return dateFnsParse(dateString, dateFormat, new Date());
+};
+export const isSameDay = (date1, date2) => {
+  return dateFnsIsSameDay(date1, date2);
 };

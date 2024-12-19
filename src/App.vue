@@ -9,7 +9,7 @@
     />
     <ol>
       <li v-for="(date, index) in dates" :key="index">
-        <DateRow :date="date" />
+        <DateRow :date="date" :schedules="filterSchedule(date)" />
       </li>
     </ol>
   </div>
@@ -23,6 +23,7 @@ import {
   format,
   addMonths,
   parse,
+  isSameDay,
 } from "./libs/date-fns";
 import { getYearAndMonth } from "./libs/get-year-and-month.js";
 
@@ -38,7 +39,36 @@ export default {
   data() {
     return {
       currentDate: null,
-      schedules: [],
+      schedules: [
+        {
+          content: "aaaa",
+          date: "2024-12-19",
+          finishTime: "14:08",
+          id: 1,
+          startTime: "14:07",
+        },
+        {
+          content: "BBBBB",
+          date: "2024-12-19",
+          finishTime: "11:08",
+          id: 2,
+          startTime: "10:07",
+        },
+        {
+          content: "CCCC",
+          date: "2024-12-20",
+          finishTime: "11:08",
+          id: 3,
+          startTime: "10:07",
+        },
+        {
+          content: "DDDD",
+          date: "2024-12-20",
+          finishTime: "14:08",
+          id: 4,
+          startTime: "12:07",
+        },
+      ],
     };
   },
   computed: {
@@ -66,15 +96,18 @@ export default {
     },
     handleRegisterSchedule(newSchedule) {
       const id = this.schedules.length > 0 ? this.schedules.at(-1).id + 1 : 1;
-      this.schedules = [...this.schedules, { ...newSchedule, id }];
-      this.schedules = this.schedules.sort((a, b) =>
-        a.startTime.localeCompare(b.startTime)
+      this.schedules = [...this.schedules, { ...newSchedule, id }].sort(
+        (a, b) => a.startTime.localeCompare(b.startTime)
       );
       console.log(this.schedules);
-      // 課題：現状、再描画が2回されているので、1回でおさめる
       // localecompareは文字列以外でも比較してくれる
       // dateFnsをつかったほうがより厳密にできる
       // 関数を切り出してテストを書けば、いちいち画面上で操作してテストしなくて済む
+    },
+    filterSchedule(date) {
+      return this.schedules.filter((v) => {
+        return isSameDay(date, v.date);
+      });
     },
   },
 };
