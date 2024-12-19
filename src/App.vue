@@ -50,17 +50,10 @@ export default {
       rgistedSchedule: [
         {
           id: 1,
-          date: "2024-12-01",
-          startTime: "12:00",
-          endTime: "13:00",
-          schedule: "aaaa",
-        },
-        {
-          id: 2,
-          date: "2024-12-04",
-          startTime: "12:00",
-          endTime: "13:00",
-          schedule: "aaaa",
+          date: "2025-01-01",
+          startTime: "00:00",
+          endTime: "23:59",
+          schedule: "元旦",
         },
       ],
     };
@@ -116,15 +109,15 @@ export default {
       this.rgistedSchedule.push({ ...scheduleData, id: scheduleid });
       // console.log(this.rgistedSchedule);
     },
-    updatedSchedule(updateScheduleData) {
-      // console.log("Updated Schedule:", updateScheduleData);
-      // console.log(updateScheduleData.id);
+    updatedSchedule(scheduleData) {
+      // console.log("Updated Schedule:", scheduleData);
+      // console.log(scheduleData.id);
 
       //let debug = false;
       this.rgistedSchedule = this.rgistedSchedule.map((schedule) => {
-        if (schedule.id === updateScheduleData.id) {
+        if (schedule.id === scheduleData.id) {
           //debug = true;
-          return { ...updateScheduleData };
+          return { ...scheduleData };
         } else {
           return schedule;
         }

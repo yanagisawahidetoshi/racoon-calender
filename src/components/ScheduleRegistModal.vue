@@ -94,22 +94,11 @@ export default {
   },
   methods: {
     modalClose() {
-      this.clearInputs();
       this.$emit("modalClose");
     },
     handleSubmit() {
       const scheduleData = { ...this.editSchedule };
       this.$emit("onSubmit", scheduleData);
-    },
-
-    clearInputs() {
-      this.editSchedule = {
-        id: "",
-        date: "",
-        startTime: "",
-        endTime: "",
-        schedule: "",
-      };
     },
   },
 };
