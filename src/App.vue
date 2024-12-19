@@ -4,15 +4,13 @@
       :changeDate="changeDate"
       :changeCurrentMonth="changeCurrentMonth"
       :currentDate="currentDate"
-      @schedule="schedule"
+      @onSchedule="addSchedule"
     />
-    <section class="block">
-      <ol class="list">
-        <li class="detail" v-for="(date, index) in currentMonth" :key="index">
-          <CalenderDate :date="date" :schedule="filterSchedules(date)" />
-        </li>
-      </ol>
-    </section>
+    <DateList
+      :currentMonth="currentMonth"
+      :schedules="schedules"
+      @onSchedule="updateSchedule"
+    />
   </div>
 </template>
 
@@ -24,20 +22,18 @@ import {
   format,
   addMonths,
   parse,
-  isSameYear,
-  isSameMonth,
-  isSameDay,
 } from "./libs/date-util";
 import CalenderHeader from "./components/molecules/Calender/Header.vue";
-import CalenderDate from "./components/molecules/Calender/Date.vue";
+import DateList from "./components/molecules/Calender/DateList.vue";
 
 export default {
   name: "App",
-  components: { CalenderHeader, CalenderDate },
+  components: { CalenderHeader, DateList },
   data() {
     return {
       currentDate: new Date(),
-      schedules: [],
+      schedules: [], //初期値は空。dateValue,startTimeValue,endTimeValue,id
+      isModalEditScheduleOpen: false,
     };
   },
   computed: {
@@ -83,19 +79,24 @@ export default {
     changeDate(num) {
       this.currentDate = addMonths(this.currentDate, num);
     },
-    schedule(data) {
-      this.schedules.push(data); //data内はdateValue,startTimeValue,endTimeValue
+    addSchedule(data) {
+      data.id = Date.now(); //その時の日時（ミリ単位）をIDとして登録
+      const schedules = this.schedules.push(data);
+      this.schedules = this.sortSchedules(schedules);
     },
-    filterSchedules(date) {
-      const schedule = this.schedules.filter((v) => {
-        const dateValue = parse(v.dateValue, "yyyy-MM-dd", new Date()); // dateValueはyyyy-mm-ddなので、dayと比較するためフォーマットを揃える
-        return (
-          isSameYear(date, dateValue) &&
-          isSameMonth(date, dateValue) &&
-          isSameDay(date, dateValue)
-        );
+    updateSchedule(newSchedule) {
+      const schedules = this.schedules.map((v) => {
+        if (v.id === newSchedule.id) {
+          return { ...v, ...newSchedule };
+        }
+        return v;
       });
-      return schedule.length === 0 ? null : schedule[0];
+      this.schedules = this.sortSchedules(schedules);
+    },
+    sortSchedules(schedules) {
+      return schedules.sort((a, b) =>
+        a.startTimeValue.localeCompare(b.startTimeValue)
+      );
     },
   },
 };
@@ -104,11 +105,5 @@ export default {
 <style scoped>
 #app {
   margin: 30px;
-}
-.block {
-  margin: 30px 0;
-}
-.list .detail {
-  margin-bottom: 8px;
 }
 </style>
