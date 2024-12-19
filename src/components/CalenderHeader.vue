@@ -9,10 +9,7 @@
     <ScheduleRegistModal
       v-show="isModalOpen"
       :isModalOpen="isModalOpen"
-      :isEditType="isEditType"
-      :editScheduleIndex="isEditType ? editScheduleIndex : -1"
-      :editSchedule="editSchedule"
-      @registerSchedule="registerSchedule($event)"
+      @onSubmit="registerSchedule($event)"
       @modalClose="modalClose"
     />
   </div>
@@ -37,9 +34,7 @@ export default {
   data() {
     return {
       isModalOpen: false,
-      isEditType: false,
       editSchedule: null,
-      editScheduleIndex: "",
     };
   },
   methods: {

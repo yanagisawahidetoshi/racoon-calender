@@ -19,10 +19,9 @@
     <ScheduleRegistModal
       v-show="isModalOpen"
       :isModalOpen="isModalOpen"
-      :isEditType="isEditType"
       :targetSchedule="targetSchedule"
       @modalClose="modalClose"
-      @updatedSchedule="updatedSchedule($event)"
+      @onSubmit="updatedSchedule($event)"
     />
   </div>
 </template>
@@ -68,13 +67,10 @@ export default {
       this.targetSchedule = this.schedules.find(
         (schedule) => schedule.id === scheduleId
       );
-      this.isEditType = true;
       this.isModalOpen = true;
     },
     modalClose() {
       this.isModalOpen = false;
-      this.isModalOpen = false;
-      this.isEditType = false;
       this.targetSchedule = null;
       this.targetScheduleId = "";
     },

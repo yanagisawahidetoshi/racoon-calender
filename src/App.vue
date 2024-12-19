@@ -55,6 +55,13 @@ export default {
           endTime: "13:00",
           schedule: "aaaa",
         },
+        {
+          id: 2,
+          date: "2024-12-04",
+          startTime: "12:00",
+          endTime: "13:00",
+          schedule: "aaaa",
+        },
       ],
     };
   },
@@ -105,33 +112,28 @@ export default {
     },
     registerSchedule(scheduleData) {
       // console.log(scheduleData);
-      const newSchedule = {
-        id: (this.rgistedSchedule.at(-1)?.id ?? 0) + 1,
-        date: scheduleData.date,
-        startTime: scheduleData.startTime,
-        endTime: scheduleData.endTime,
-        schedule: scheduleData.schedule,
-      };
-      this.rgistedSchedule.push(newSchedule);
+      const scheduleid = (this.rgistedSchedule.at(-1)?.id ?? 0) + 1;
+      this.rgistedSchedule.push({ ...scheduleData, id: scheduleid });
+      // console.log(this.rgistedSchedule);
     },
-    updatedSchedule(updatedSchedule) {
-      // console.log("Updated Schedule:", updatedSchedule);
-      const updateItem = this.rgistedSchedule.find(
-        (item) => item.id === updatedSchedule.id
-      );
-      // console.log(updateItem);
-      const index = this.rgistedSchedule.indexOf(updateItem);
-      if (updateItem) {
-        this.$set(this.rgistedSchedule, index, {
-          ...updatedSchedule,
-        });
-      } else {
-        console.log("一致するデータがありません。");
-        return;
-      }
-      // console.log(
-      //   JSON.stringify(this.rgistedSchedule, null, 2)
-      // );
+    updatedSchedule(updateScheduleData) {
+      // console.log("Updated Schedule:", updateScheduleData);
+      // console.log(updateScheduleData.id);
+
+      //let debug = false;
+      this.rgistedSchedule = this.rgistedSchedule.map((schedule) => {
+        if (schedule.id === updateScheduleData.id) {
+          //debug = true;
+          return { ...updateScheduleData };
+        } else {
+          return schedule;
+        }
+      });
+      //console.log(debug);
+      // if (!debug) {
+      //   console.log("一致する情報がない");
+      // }
+      // console.log(JSON.stringify(this.rgistedSchedule, null, 2));
     },
   },
 };
