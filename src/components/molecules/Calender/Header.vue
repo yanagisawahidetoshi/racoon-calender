@@ -8,7 +8,7 @@
       {{ formatDate(currentDate, "yyyy年MMMM") }}
     </div>
     <ModalSchedule
-      @onSchedule="(data) => $emit('onSchedule', data)"
+      @onSchedule="(newSchedule) => $emit('onSchedule', newSchedule)"
       @onToggleModalSchedule="toggleModalRegistSchedule"
       :isModalOpen="isModalRegistScheduleOpen"
       :modalName="'modalRegistSchedule'"

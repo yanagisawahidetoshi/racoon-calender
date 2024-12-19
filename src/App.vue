@@ -6,27 +6,10 @@
       :currentDate="currentDate"
       @onSchedule="addSchedule"
     />
-    <section class="block">
-      <ol class="list">
-        <li class="detail" v-for="(date, index) in currentMonth" :key="index">
-          <CalenderDate
-            :date="date"
-            :schedules="filterSchedules(date)"
-            @onToggleModalEditSchedule="toggleModalEditSchedule"
-          />
-        </li>
-      </ol>
-    </section>
-    <ModalSchedule
-      @onToggleModalSchedule="toggleModalEditSchedule"
+    <DateList
+      :currentMonth="currentMonth"
+      :schedules="schedules"
       @onSchedule="updateSchedule"
-      :schedule="
-        schedules.find((schedule) => schedule.id === editingScheduleId)
-      "
-      :isModalOpen="isModalEditScheduleOpen"
-      :modalName="'modalEditSchedule'"
-      :modalTitle="'予定の編集'"
-      :modalBtnName="'編集'"
     />
   </div>
 </template>
@@ -39,21 +22,18 @@ import {
   format,
   addMonths,
   parse,
-  isSameDay,
 } from "./libs/date-util";
 import CalenderHeader from "./components/molecules/Calender/Header.vue";
-import CalenderDate from "./components/molecules/Calender/Date.vue";
-import ModalSchedule from "./components/molecules/Calender/ModalSchedule.vue";
+import DateList from "./components/molecules/Calender/DateList.vue";
 
 export default {
   name: "App",
-  components: { CalenderHeader, CalenderDate, ModalSchedule },
+  components: { CalenderHeader, DateList },
   data() {
     return {
       currentDate: new Date(),
       schedules: [], //初期値は空。dateValue,startTimeValue,endTimeValue,id
       isModalEditScheduleOpen: false,
-      editingScheduleId: Number,
     };
   },
   computed: {
@@ -101,25 +81,22 @@ export default {
     },
     addSchedule(data) {
       data.id = Date.now(); //その時の日時（ミリ単位）をIDとして登録
-      this.schedules.push(data);
-    },
-    filterSchedules(date) {
-      const schedules = this.schedules.filter((v) => {
-        return isSameDay(date, v.dateValue);
-      });
-      return schedules;
+      const schedules = this.schedules.push(data);
+      this.schedules = this.sortSchedules(schedules);
     },
     updateSchedule(newSchedule) {
-      this.schedules = this.schedules.map((v) => {
+      const schedules = this.schedules.map((v) => {
         if (v.id === newSchedule.id) {
           return { ...v, ...newSchedule };
         }
         return v;
       });
+      this.schedules = this.sortSchedules(schedules);
     },
-    toggleModalEditSchedule(val, id) {
-      this.isModalEditScheduleOpen = val;
-      this.editingScheduleId = id;
+    sortSchedules(schedules) {
+      return schedules.sort((a, b) =>
+        a.startTimeValue.localeCompare(b.startTimeValue)
+      );
     },
   },
 };
@@ -128,11 +105,5 @@ export default {
 <style scoped>
 #app {
   margin: 30px;
-}
-.block {
-  margin: 30px 0;
-}
-.list .detail {
-  margin-bottom: 8px;
 }
 </style>
