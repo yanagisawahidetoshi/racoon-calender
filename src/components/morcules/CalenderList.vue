@@ -5,7 +5,7 @@
         <CalenderRow
           :date="date"
           :schedules="filterScheduleByDate(date)"
-          @onEditingSchedule="editSchedule"
+          @onEditingSchedule="openEditModal"
         />
       </li>
     </ol>
@@ -13,9 +13,9 @@
       :editingSchedule="editingSchedule"
       :isModalOpen="isModalOpen"
       @registeredSchedule="upDateSchedules"
+      @clickCloseButton="closeModal"
       modalName="modal-edit-schedule"
       button2Name="編集"
-      @clickCloseButton="closeModal"
     />
   </div>
 </template>
@@ -29,7 +29,6 @@ export default {
   data() {
     return {
       isModalOpen: false,
-      editIndex: null,
       editingSchedule: {
         id: "",
         content: "",
@@ -61,15 +60,13 @@ export default {
         return target === schedule.date;
       });
     },
-    editSchedule(editingSchedule) {
-      console.log(editingSchedule);
+    openEditModal(editingSchedule) {
       this.editingSchedule = editingSchedule;
-      this.editIndex = editingSchedule.id;
       this.isModalOpen = true;
     },
     upDateSchedules(newSchedule) {
       const newSchedules = this.schedules.map((schedule) => {
-        return schedule.id === this.editIndex
+        return schedule.id === this.editingSchedule.id
           ? { ...newSchedule, id: schedule.id }
           : { ...schedule };
       });

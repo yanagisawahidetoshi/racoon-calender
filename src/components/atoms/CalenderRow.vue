@@ -6,7 +6,7 @@
       <button
         type="button"
         class="calender-button"
-        @click="editModalOpen(schedule)"
+        @click="openEditModal(schedule)"
       >
         <div>
           ID:{{ schedule.id }}<br />
@@ -34,7 +34,7 @@ export default {
     formatDate(date, pattern) {
       return format(date, pattern);
     },
-    editModalOpen(schedule) {
+    openEditModal(schedule) {
       this.$emit("onEditingSchedule", schedule);
     },
   },

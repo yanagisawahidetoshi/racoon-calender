@@ -37,7 +37,7 @@
     <h1 class="title">{{ formatDate(date, "yyyy年M月") }}</h1>
     <CommonButton @click="openRegisterModal">登録</CommonButton>
     <ScheduleRegisterModal
-      @registeredSchedule="addNewSchedule"
+      @registeredSchedule="(newSchedule) => $emit('onAddSchedule', newSchedule)"
       @clickCloseButton="closeModal"
       :isModalOpen="isModalOpen"
       button2Name="登録"
@@ -72,9 +72,6 @@ export default {
     },
     openRegisterModal() {
       this.isModalOpen = true;
-    },
-    addNewSchedule(schedule) {
-      this.$emit("addNewSchedule", schedule);
     },
     closeModal() {
       this.isModalOpen = false;

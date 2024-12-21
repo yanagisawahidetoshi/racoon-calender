@@ -3,7 +3,7 @@
     <CalenderHeader
       @changeMonth="changeMonth"
       :date="currentDate"
-      @addNewSchedule="addNewSchedule"
+      @onAddSchedule="addNewSchedule"
     />
     <CalenderList
       :schedules="schedules"
@@ -30,17 +30,8 @@ export default {
   name: "App",
   data() {
     return {
-      isModalOpen: false,
-      isEditModalOpen: false,
       currentDate: null,
       schedules: [],
-      editIndex: null,
-      editingSchedule: {
-        content: "",
-        date: "",
-        startTime: "",
-        finishTime: "",
-      },
     };
   },
   components: {
