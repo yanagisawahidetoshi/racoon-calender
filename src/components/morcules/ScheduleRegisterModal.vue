@@ -1,6 +1,6 @@
 <template>
   <vue-modal-2
-    name="modal-add-schedule"
+    :name="modalName"
     @on-close="closeModalAddSchedule"
     :headerOptions="{
       title: '予定を登録',
@@ -43,16 +43,22 @@ export default {
     editingSchedule: {
       type: Object,
     },
+    button2Name: {
+      type: String,
+    },
+    modalName: {
+      type: String,
+    },
   },
   data() {
     return {
       schedule: {
+        id: "",
         content: "",
         date: "",
         startTime: "",
         finishTime: "",
       },
-      button2Name: "登録",
     };
   },
   methods: {
@@ -75,22 +81,20 @@ export default {
   watch: {
     isModalOpen(status) {
       if (status) {
-        this.$vm2.open("modal-add-schedule");
+        this.$vm2.open(this.modalName);
       } else {
-        this.$vm2.close("modal-add-schedule");
+        this.$vm2.close(this.modalName);
       }
     },
     editingSchedule(editSchedule) {
       // ifをしないと、登録ボタンからモーダル出したときにエラーになる
-      if (!editSchedule) {
-        this.button2Name = "登録";
+      if (this.button2Name === "登録") {
         return;
       }
       this.schedule.content = editSchedule.content;
       this.schedule.date = editSchedule.date;
       this.schedule.startTime = editSchedule.startTime;
       this.schedule.finishTime = editSchedule.finishTime;
-      this.button2Name = "編集";
     },
   },
 };

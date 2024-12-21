@@ -39,7 +39,9 @@
     <ScheduleRegisterModal
       @registeredSchedule="addNewSchedule"
       @clickCloseButton="closeModal"
-      :isEditModalOpen="isEditModalOpen"
+      :isModalOpen="isModalOpen"
+      button2Name="登録"
+      modalName="modal-new-schedule"
     />
   </header>
 </template>
@@ -58,9 +60,6 @@ export default {
   props: {
     date: {
       type: Date,
-    },
-    isEditModalOpen: {
-      type: Boolean,
     },
   },
   components: {

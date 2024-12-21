@@ -5,23 +5,11 @@
       :date="currentDate"
       @addNewSchedule="addNewSchedule"
     />
-    <ol class="calendar-list">
-      <li v-for="(date, index) in calendar" :key="index" class="calendar-item">
-        <CalenderRow
-          :date="date"
-          :schedules="filterScheduleByDate(date)"
-          :isEditModalOpen="isEditModalOpen"
-          @editSchedule="openEditModal"
-          @upDateSchedules="upDateSchedules"
-        />
-      </li>
-    </ol>
-    <!-- <ScheduleRegisterModal
-      @registeredSchedule="upDateSchedules"
-      @clickCloseButton="closeModal"
-      :isModalOpen="isModalOpen"
-      :editingSchedule="editingSchedule"
-    /> -->
+    <CalenderList
+      :schedules="schedules"
+      :calendar="calendar"
+      @onUpdate="upDateSchedule"
+    />
   </div>
 </template>
 
@@ -35,15 +23,14 @@ import {
   parse,
 } from "./libs/dateUtil.js";
 
-import CalenderRow from "@/components/atoms/CalenderRow";
 import CalenderHeader from "@/components/morcules/CalenderHeader";
-// import ScheduleRegisterModal from "@/components/morcules/ScheduleRegisterModal";
+import CalenderList from "@/components/morcules/CalenderList";
 
 export default {
   name: "App",
   data() {
     return {
-      // isModalOpen: false,
+      isModalOpen: false,
       isEditModalOpen: false,
       currentDate: null,
       schedules: [],
@@ -57,9 +44,8 @@ export default {
     };
   },
   components: {
-    CalenderRow,
     CalenderHeader,
-    // ScheduleRegisterModal,
+    CalenderList,
   },
   computed: {
     calendar() {
@@ -72,12 +58,6 @@ export default {
     },
   },
   methods: {
-    filterScheduleByDate(date) {
-      const target = this.formatDate(date, "yyyy-MM-dd");
-      return this.schedules.filter((schedule) => {
-        return target === schedule.date;
-      });
-    },
     formatDate(date, pattern) {
       return format(date, pattern);
     },
@@ -90,38 +70,12 @@ export default {
     getSearchParam(url, param) {
       return url.searchParams.get(param);
     },
-    // 新規登録
     addNewSchedule(newSchedule) {
-      this.schedules = [...this.schedules, newSchedule];
+      const id = this.schedules.length > 0 ? this.schedules.at(-1).id + 1 : 1;
+      this.schedules = [...this.schedules, { ...newSchedule, id }];
     },
-    upDateSchedules(newSchedule) {
+    upDateSchedule(newSchedule) {
       this.schedules = newSchedule;
-    },
-    // upDateSchedules(newSchedule) {
-    //   if (this.editIndex === null) {
-    //     this.schedules = [...this.schedules, newSchedule];
-    //     return;
-    //   }
-    //   // 編集時は、該当の予定を上書きする
-    //   const newSchedules = this.schedules.map((schedule, index) => {
-    //     return index === this.editIndex ? { ...newSchedule } : { ...schedule };
-    //   });
-    //   this.schedules = newSchedules;
-    // },
-    closeModal() {
-      this.isModalOpen = false;
-      this.editingSchedule = {
-        content: "",
-        date: "",
-        startTime: "",
-        finishTime: "",
-      };
-      this.editIndex = null;
-    },
-    openEditModal(index) {
-      this.isModalOpen = true;
-      this.editIndex = index;
-      this.editingSchedule = this.schedules[index];
     },
   },
   mounted() {
