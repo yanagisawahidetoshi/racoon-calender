@@ -108,12 +108,4 @@ button {
 li {
   list-style-type: none;
 }
-
-.calendar-list {
-  padding-left: 0;
-}
-.calendar-item {
-  border-bottom: 1px solid #dadce0;
-  padding: 16px;
-}
 </style>
