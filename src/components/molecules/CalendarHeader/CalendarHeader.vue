@@ -13,16 +13,8 @@
     
     <ScheduleModal
       :isModalOpen="isModalOpen"
-      :headerOptions="{ title: 'スケジュール登録' }"
-      :footerOptions="{
-        btn1: 'キャンセル',
-        btn2: '登録',
-        btn1OnClick: closeScheduleModal,
-        btn2OnClick: setSchedule,
-      }"
       @close="closeScheduleModal"
-      @updateScheduleDate="setScheduleDate"
-      @updateScheduleContent="setScheduleContent"
+      @onSubmit="$emit('onSubmit', $event)"
     />
   </header>
 </template>
@@ -46,16 +38,16 @@ export default {
     closeScheduleModal() {
       this.isModalOpen = false;
     },
-    setScheduleDate(date) {
-      this.scheduleDate = date;
-    },
-    setScheduleContent(content) {
-      this.scheduleContent = content;
-    },
-    setSchedule() {
-      console.log(this.scheduleDate);
-      console.log(this.scheduleContent);
-    },
+    // setScheduleDate(date) {
+    //   this.scheduleDate = date;
+    // },
+    // setScheduleContent(content) {
+    //   this.scheduleContent = content;
+    // },
+    // onSubmit() {
+    //   console.log(this.onSubmit);
+    //   console.log(this.scheduleContent);
+    // },
   },
 };
 </script>

@@ -3,13 +3,15 @@
     <CalendarHeader
       :baseDate="baseDate"
       @changeMonth="changeMonth"
-      @changeToCurrentMonth="changeToCurrentMonth" />
+      @changeToCurrentMonth="changeToCurrentMonth"
+      @onSubmit="registSchedule" />
     <ol>
       <li v-for="(date, index) in dates" :key="index">
         <CalendarEachRow 
         :date="date"/>
       </li>
     </ol>
+    <p>{{ schedules }}</p>
   </div>
 </template>
 
@@ -32,6 +34,7 @@ export default {
   data() {
     return{
       baseDate: null,
+      schedules: [],
     }
   },
   computed: {
@@ -62,6 +65,11 @@ export default {
       this.baseDate = addMonths(this.baseDate, num);
       window.location.pathname = format(this.baseDate, "yyyy/MM");
     },
+    registSchedule(newSchedule) {
+      const id = this.schedules?.at(-1)?.id ?? 0;
+      // newSchedule.id = id + 1;
+      this.schedules.push({...newSchedule, id:id + 1})
+    }
   },
 };
 </script>

@@ -2,18 +2,47 @@
   <vue-modal-2
     :name="modalName"
     @on-close="$emit('close')"
-    :headerOptions="headerOptions"
-    :footerOptions="footerOptions"
+    :headerOptions="{ title: 'スケジュール登録' }"
+    :footerOptions="{
+      btn1: 'キャンセル',
+      btn2: '登録',
+      btn2OnClick: () => {
+        handleSubmit();
+      },
+      btn1OnClick: () => {
+        handleClose();
+      },
+    }"
   >
-    <input
+    <!-- <input
       type="date"
       @input="updateScheduleDate($event.target.value)"
-    />
-    <input
+    /> -->
+    <input 
+      type="date" 
+      name="date" 
+      v-model="schedule.date"
+    /><br>
+    <input 
+      type="time" 
+      name="startTime" 
+      v-model="schedule.startTime"
+    /><br>
+    <input 
+      type="time" 
+      name="endTime" 
+      v-model="schedule.endTime"
+    /><br>
+    <textarea 
+      type="text" 
+      name="content" 
+      v-model="schedule.content"
+    ></textarea>
+    <!-- <input
       v-model="scheduleContent"
       @input="updateScheduleContent"
       placeholder="内容を入力"
-    />
+    /> -->
   </vue-modal-2>
 </template>
 
@@ -36,7 +65,14 @@ export default {
   data() {
     return {
       modalName: MODAL_NAME,
-      scheduleContent: "",
+      schedule: {
+        id: "",
+        date: "",
+        startTime: "",
+        endTime: "",
+        content: "",
+      },
+      // scheduleContent: "",
     };
   },
   watch: {
@@ -49,12 +85,19 @@ export default {
     },
   },
   methods: {
-    updateScheduleDate(value) {
-      this.$emit("updateScheduleDate", value);
+    handleClose() {
+      this.$vm2.close(MODAL_NAME);
     },
-    updateScheduleContent() {
-      this.$emit("updateScheduleContent", this.scheduleContent);
+    handleSubmit() {
+      this.$emit("onSubmit", this.schedule);
+      this.$vm2.close(MODAL_NAME);
     }
+    // updateScheduleDate(value) {
+    //   this.$emit("updateScheduleDate", value);
+    // },
+    // updateScheduleContent() {
+    //   this.$emit("updateScheduleContent", this.scheduleContent);
+    // }
   },
 };
 </script>
