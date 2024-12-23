@@ -40,7 +40,7 @@ export default {
   components: { ScheduleModal },
   computed: {
     title() {
-      console.log(this.currentDate);
+      //console.log(this.currentDate);
       return format(this.currentDate, "yyyy年MM月");
     },
   },

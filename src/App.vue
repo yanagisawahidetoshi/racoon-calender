@@ -9,7 +9,7 @@
     />
     <ol>
       <li v-for="(date, index) in dates" :key="index">
-        <DateRow :date="date" />
+        <DateRow :date="date" :schedules="getSchedule(date)" />
       </li>
     </ol>
     {{ schedules }}
@@ -39,7 +39,22 @@ export default {
   data() {
     return {
       currentDate: null,
-      schedules: [],
+      schedules: [
+        {
+          id: 1,
+          date: "2024-12-23",
+          startTime: "14:22",
+          endTime: "15:22",
+          content: "aaaaaa",
+        },
+        {
+          id: 2,
+          date: "2024-12-23",
+          startTime: "10:22",
+          endTime: "15:22",
+          content: "bbbbb",
+        },
+      ],
     };
   },
   computed: {
@@ -55,6 +70,13 @@ export default {
     this.currentDate = getYearAndMonth(pathName, parse);
   },
   methods: {
+    getSchedule(date) {
+      const formatDate = format(date, "yyyy-MM-dd");
+      const schedules = this.schedules.filter(
+        (item) => item.date === formatDate
+      );
+      return schedules;
+    },
     formatDate(date) {
       return format(date, "MM月dd日");
     },
