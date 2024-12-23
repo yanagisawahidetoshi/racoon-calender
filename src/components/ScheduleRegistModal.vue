@@ -1,7 +1,7 @@
 <template>
   <div>
     <vue-modal-2
-      name="modalToRegistSchedule"
+      :name="modalName"
       :headerOptions="{
         title:
           targetSchedule && targetSchedule.id ? '予定を編集' : '予定を登録',
@@ -78,21 +78,36 @@ export default {
         endTime: "",
         schedule: "",
       },
+      modalName: "",
     };
   },
   watch: {
     isModalOpen(isOpen) {
+      this.modalName =
+        this.targetSchedule && this.targetSchedule.id
+          ? "editModal"
+          : "registModal";
+      this.debug(this.targetSchedule);
       if (isOpen) {
-        this.$vm2.open("modalToRegistSchedule");
-        if (this.targetSchedule) {
-          this.editSchedule = { ...this.targetSchedule };
-        }
+        // データが更新後に処理（$nextTick）
+        this.$nextTick(() => {
+          this.debug(this.modalName);
+          this.$vm2.open(this.modalName);
+          if (this.targetSchedule) {
+            this.editSchedule = { ...this.targetSchedule };
+          }
+        });
       } else {
-        this.$vm2.close("modalToRegistSchedule");
+        this.debug(this.modalName);
+        this.$vm2.close(this.modalName);
       }
     },
   },
+
   methods: {
+    debug(a) {
+      console.log(a);
+    },
     modalClose() {
       this.$emit("modalClose");
     },

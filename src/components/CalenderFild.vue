@@ -15,13 +15,11 @@
         />
       </li>
     </ol>
-    {{ /* 新規の場合、編集IDはあり得ない数字にする */ }}
     <ScheduleRegistModal
-      v-show="isModalOpen"
       :isModalOpen="isModalOpen"
       :targetSchedule="targetSchedule"
-      @modalClose="modalClose"
       @onSubmit="updatedSchedule($event)"
+      @modalClose="modalClose"
     />
   </div>
 </template>
@@ -71,8 +69,6 @@ export default {
     },
     modalClose() {
       this.isModalOpen = false;
-      this.targetSchedule = null;
-      this.targetScheduleId = "";
     },
     updatedSchedule(scheduleData) {
       this.$emit("updatedSchedule", scheduleData);

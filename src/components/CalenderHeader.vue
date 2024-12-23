@@ -5,9 +5,8 @@
     <Button tagName="span" @click="$emit('changeCurrentMonth')"> 当月 </Button>
     <Button className="arrow-right" @click="$emit('changeMonth', 1)" />
     <Button tagName="a" className="regist" @click="modalOpen"> 登録 </Button>
-    {{ /* 新規の場合、編集IDはあり得ない数字にする */ }}
+
     <ScheduleRegistModal
-      v-show="isModalOpen"
       :isModalOpen="isModalOpen"
       @onSubmit="registerSchedule($event)"
       @modalClose="modalClose"
