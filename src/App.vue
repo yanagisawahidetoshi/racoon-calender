@@ -8,10 +8,11 @@
     <ol>
       <li v-for="(date, index) in dates" :key="index">
         <CalendarEachRow 
-        :date="date"/>
+        :date="date"
+        :schedules="schedules"
+        />
       </li>
     </ol>
-    <p>{{ schedules }}</p>
   </div>
 </template>
 
@@ -69,6 +70,8 @@ export default {
       const id = this.schedules?.at(-1)?.id ?? 0;
       // newSchedule.id = id + 1;
       this.schedules.push({...newSchedule, id:id + 1})
+
+      console.log(this.dates.find(date => date == this.schedules.date));
     }
   },
 };
