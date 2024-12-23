@@ -70,8 +70,6 @@ export default {
       const id = this.schedules?.at(-1)?.id ?? 0;
       // newSchedule.id = id + 1;
       this.schedules.push({...newSchedule, id:id + 1})
-
-      console.log(this.dates.find(date => date == this.schedules.date));
     }
   },
 };
