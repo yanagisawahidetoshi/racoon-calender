@@ -91,23 +91,18 @@ export default {
       if (isOpen) {
         // データが更新後に処理（$nextTick）
         this.$nextTick(() => {
-          this.debug(this.modalName);
           this.$vm2.open(this.modalName);
           if (this.targetSchedule) {
             this.editSchedule = { ...this.targetSchedule };
           }
         });
       } else {
-        this.debug(this.modalName);
         this.$vm2.close(this.modalName);
       }
     },
   },
 
   methods: {
-    debug(a) {
-      console.log(a);
-    },
     modalClose() {
       this.$emit("modalClose");
     },
