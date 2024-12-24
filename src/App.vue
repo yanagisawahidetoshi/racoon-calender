@@ -7,11 +7,7 @@
       :currentDate="currentDate"
       @onRegisterSchedule="handleRegisterSchedule"
     />
-    <ol>
-      <li v-for="(date, index) in dates" :key="index">
-        <DateRow :date="date" :schedules="filterSchedule(date)" />
-      </li>
-    </ol>
+    <CalenterBody :dates="dates" :schedules="schedules" />
   </div>
 </template>
 
@@ -28,13 +24,13 @@ import {
 import { getYearAndMonth } from "./libs/get-year-and-month.js";
 
 import CalenderHeader from "./components/CalenderHeader";
-import DateRow from "./components/DateRow";
+import CalenterBody from "./components/CalenterBody";
 
 export default {
   name: "App",
   components: {
     CalenderHeader,
-    DateRow,
+    CalenterBody,
   },
   data() {
     return {
@@ -75,6 +71,7 @@ export default {
     dates() {
       const start = getStartOfMonth(this.currentDate);
       const end = getLastDayOfMonth(this.currentDate);
+      console.log(getEachDayOfInterval({ start, end }));
       return getEachDayOfInterval({ start, end });
     },
   },
