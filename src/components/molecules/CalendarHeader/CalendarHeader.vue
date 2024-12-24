@@ -8,9 +8,14 @@
         <button type="button" @click="openScheduleModal">登録</button>
       </li>
     </ul>
+
+    <!-- <p>{{ scheduleDate }}{{ scheduleContent }}</p> -->
+    
     <ScheduleModal
       :isModalOpen="isModalOpen"
-      @close="closeScheduleModal" />
+      @close="closeScheduleModal"
+      @onSubmit="$emit('onSubmit', $event)"
+    />
   </header>
 </template>
 
@@ -19,15 +24,11 @@ import ScheduleModal from "../ScheduleModal/ScheduleModal.vue";
 export default {
   name: "CalendarHeader",
   components: { ScheduleModal },
-  props: {
-    baseDate: {
-      type: Date,
-      required: true,
-    },
-  },
   data() {
     return {
       isModalOpen: false,
+      scheduleDate: "",
+      scheduleContent: "",
     };
   },
   methods: {
@@ -37,6 +38,16 @@ export default {
     closeScheduleModal() {
       this.isModalOpen = false;
     },
+    // setScheduleDate(date) {
+    //   this.scheduleDate = date;
+    // },
+    // setScheduleContent(content) {
+    //   this.scheduleContent = content;
+    // },
+    // onSubmit() {
+    //   console.log(this.onSubmit);
+    //   console.log(this.scheduleContent);
+    // },
   },
-}
+};
 </script>
