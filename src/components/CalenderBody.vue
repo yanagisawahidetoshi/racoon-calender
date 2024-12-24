@@ -9,7 +9,7 @@
 import DateRows from "./DateRows";
 
 export default {
-  name: "CalenterBody",
+  name: "CalenderBody",
   props: {
     dates: {},
     schedules: {

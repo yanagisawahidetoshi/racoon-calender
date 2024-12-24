@@ -7,7 +7,7 @@
       :currentDate="currentDate"
       @onRegisterSchedule="handleRegisterSchedule"
     />
-    <CalenterBody :dates="dates" :schedules="schedules" />
+    <CalenderBody :dates="dates" :schedules="schedules" />
   </div>
 </template>
 
@@ -24,13 +24,13 @@ import {
 import { getYearAndMonth } from "./libs/get-year-and-month.js";
 
 import CalenderHeader from "./components/CalenderHeader";
-import CalenterBody from "./components/CalenterBody";
+import CalenderBody from "./components/CalenderBody";
 
 export default {
   name: "App",
   components: {
     CalenderHeader,
-    CalenterBody,
+    CalenderBody,
   },
   data() {
     return {
