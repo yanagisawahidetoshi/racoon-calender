@@ -1,5 +1,13 @@
 <template>
-  <p>{{ formatDate }}</p>
+  <div>
+    <p>{{ format(date, "dd EE") }}</p>
+    <div v-for="schedule in schedules" :key="schedule.id">
+      <p>
+        {{ schedule.startTime }}～{{ schedule.endTime
+        }}<span>{{ schedule.content }}</span>
+      </p>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -9,12 +17,18 @@ export default {
   components: {},
   props: {
     date: {
-      default: "",
+      type: Date,
+    },
+    schedules: {
+      type: Array,
     },
   },
   computed: {
-    formatDate() {
-      return format(this.date, "dd EE");
+    format(date, pattern) {
+      console.log(date);
+      new Date(date);
+      console.log(date);
+      return format(date, pattern);
     },
   },
 };

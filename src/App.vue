@@ -4,15 +4,14 @@
       :currentDate="currentDate"
       @changeMonth="changeMonth"
       @changeToCurrentMonth="changeToCurrentMonth"
-      :newScheduleDatas="newScheduleDatas"
       @registSchedule="registSchedule"
     />
     <ol>
       <li v-for="(date, index) in dates" :key="index">
-        <DateRow :date="date" />
+        {{ format(date, "dd EE") }}
+        <DateRow :date="date" :schedules="schedules" />
       </li>
     </ol>
-    {{ registedSchedules }}
   </div>
 </template>
 
@@ -35,13 +34,7 @@ export default {
   data() {
     return {
       currentDate: new Date(),
-      newScheduleDatas: {
-        inputDate: new Date(),
-        inputText: "aaa",
-        inputStart: "10:12",
-        inputEnd: "10:12",
-      },
-      registedSchedules: [],
+      schedules: [],
     };
   },
   mounted() {
@@ -77,14 +70,9 @@ export default {
     changeToCurrentMonth() {
       this.currentDate = new Date();
     },
-    registSchedule(tmpScheduleDatas) {
-      const newSchedule = {
-        date: tmpScheduleDatas.inputDate,
-        startTime: tmpScheduleDatas.inputStart,
-        endTime: tmpScheduleDatas.inputEnd,
-        scheduleName: tmpScheduleDatas.inputText,
-      };
-      this.registedSchedules.push(newSchedule);
+    registSchedule(newSchedule) {
+      const id = this.schedules?.at(-1)?.id ?? 0;
+      this.schedules.push({ ...newSchedule, id: id + 1 });
     },
   },
 };

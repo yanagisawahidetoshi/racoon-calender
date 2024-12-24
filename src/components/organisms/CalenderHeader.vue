@@ -32,12 +32,11 @@
         },
       }"
     >
-      <InputDate v-model="tmpScheduleDatas.inputDate" />
-      <InputTime v-model="tmpScheduleDatas.inputStart" />
-      <InputTime v-model="tmpScheduleDatas.inputEnd" />
-      <InputText v-model="tmpScheduleDatas.inputText" />
+      <InputDate v-model="schedule.startTime" />
+      <InputTime v-model="schedule.startTime" />
+      <InputTime v-model="schedule.endTime" />
+      <InputText v-model="schedule.content" />
     </vue-modal-2>
-    {{ tmpScheduleDatas }}
   </div>
 </template>
 
@@ -54,33 +53,16 @@ export default {
     currentDate: {
       type: Date,
     },
-    newScheduleDatas: {
-      type: Object,
-    },
   },
   data() {
     return {
-      tmpScheduleDatas: {
-        inputDate: new Date(),
-        inputText: "aaa",
-        inputStart: "10:12",
-        inputEnd: "10:12",
+      schedule: {
+        date: "",
+        startTime: "",
+        endTime: "",
+        content: "",
       },
     };
-  },
-  watch: {
-    "newScheduleDatas.inputDate"(newValue) {
-      this.tmpScheduleDatas.inputDate = newValue;
-    },
-    "newScheduleDatas.inputText"(newValue) {
-      this.tmpScheduleDatas.inputText = newValue;
-    },
-    "newScheduleDatas.inputStart"(newValue) {
-      this.tmpScheduleDatas.inputStart = newValue;
-    },
-    "newScheduleDatas.inputEnd"(newValue) {
-      this.tmpScheduleDatas.inputEnd = newValue;
-    },
   },
   methods: {
     format(date, pattern) {
@@ -93,7 +75,7 @@ export default {
       this.$vm2.close(name);
     },
     regist() {
-      this.$emit("registSchedule", this.tmpScheduleDatas);
+      this.$emit("registSchedule", this.schedule);
     },
   },
 };
