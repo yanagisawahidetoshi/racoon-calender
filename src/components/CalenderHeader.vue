@@ -3,7 +3,7 @@
     <h1>{{ title }}</h1>
     <ul>
       <li>
-        <button type="button" @click="$emit('changeToPrevMonth')">先月a</button>
+        <button type="button" @click="$emit('changeToPrevMonth')">先月</button>
       </li>
       <li>
         <button type="button" @click="$emit('changeCurrentMonth')">当月</button>

@@ -14,14 +14,12 @@ export default {
   name: "DateRows",
   props: {
     dates: {
-      type: {
+      type: 
         Array,
-      },
     },
     schedules: {
-      type: {
+      type: 
         Array,
-      },
     },
   },
   components: {

@@ -13,9 +13,7 @@ export default {
   props: {
     dates: {},
     schedules: {
-      type: {
-        Array,
-      },
+      type: Array,
     },
   },
   components: {
