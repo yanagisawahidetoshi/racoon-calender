@@ -28,10 +28,18 @@ export default {
     isModalOpen: {
       type: Boolean,
     },
+    defaultSchedule: {
+      type: Object,
+      default: null,
+    },
+    modalName: {
+      type: String,
+      default: MODAL_NAME,
+    }
   },
   data() {
     return {
-      modalName: MODAL_NAME,
+      // modalName: MODAL_NAME,
       schedule: {
         id: "",
         date: "",
@@ -41,19 +49,24 @@ export default {
       },
     };
   },
+  mounted() {
+    if (this.defaultSchedule) {
+      this.schedule = this.defaultSchedule;
+    }
+  },
   watch: {
     isModalOpen: function (flag) {
       if (flag) {
-        this.$vm2.open(MODAL_NAME);
+        this.$vm2.open(this.modalName);
       } else {
-        this.$vm2.close(MODAL_NAME);
+        this.$vm2.close(this.modalName);
       }
     },
   },
   methods: {
     handleSubmit() {
       this.$emit("onSubmit", this.schedule);
-      this.$vm2.close(MODAL_NAME);
+      this.$vm2.close(this.modalName);
     },
     handleClose() {},
   },
