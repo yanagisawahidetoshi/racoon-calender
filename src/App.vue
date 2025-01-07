@@ -51,9 +51,23 @@ export default {
         {
           id: 1,
           date: "2025-01-01",
-          startTime: "00:00",
+          startTime: "10:00",
           endTime: "23:59",
           schedule: "元旦",
+        },
+        {
+          id: 2,
+          date: "2025-01-01",
+          startTime: "09:00",
+          endTime: "23:59",
+          schedule: "元旦1",
+        },
+				{
+          id: 2,
+          date: "2025-01-01",
+          startTime: "09:20",
+          endTime: "23:59",
+          schedule: "元旦2",
         },
       ],
     };

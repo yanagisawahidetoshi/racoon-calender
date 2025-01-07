@@ -8,9 +8,10 @@
     <ol class="date-list">
       <li v-for="(n, index) in calendar" :key="index">
         <DateField
+          v-show="isModalOpen"
           :date="n.date"
           :day="n.day"
-          :scheduleDate="getSchedule(n.date)"
+          :schedules="getSchedule(n.date)"
           @editModalOpen="editModalOpen"
         />
       </li>
@@ -57,8 +58,16 @@ export default {
   },
   methods: {
     getSchedule(date) {
-      const scheduleDate = this.schedules.filter((item) => item.date === date);
-      return scheduleDate ? scheduleDate : null;
+      const schedules = this.schedules.filter((item) => item.date === date);
+      return schedules.sort((a, b) => {
+        const startTimeA = a.startTime;
+        const startTimeB = b.startTime;
+
+        // 文字列として比較
+        if (startTimeA < startTimeB) return -1;
+        if (startTimeA > startTimeB) return 1;
+        return 0;
+      });
     },
     editModalOpen(scheduleId) {
       this.targetScheduleId = scheduleId;
