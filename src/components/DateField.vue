@@ -1,7 +1,7 @@
 <template>
   <p class="date-block">
     <span class="date">{{ formatDate }}</span>
-    <span v-for="(n, index) in scheduleDate" :key="index" class="schedule">
+    <span v-for="n in schedules" :key="n.id" class="schedule">
       <button tagName="a" className="regist" @click="editModalOpen(n.id)">
         {{ n.schedule }} ({{ n.startTime }}-{{ n.endTime }})
       </button>
@@ -22,7 +22,7 @@ export default {
       type: String,
       required: true,
     },
-    scheduleDate: {
+    schedules: {
       type: Array,
       default: () => [],
     },
