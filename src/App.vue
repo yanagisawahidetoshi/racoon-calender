@@ -3,13 +3,14 @@
     <CalenderHeader
       @changeMonth="changeMonth"
       :date="currentDate"
-      @onAddSchedule="addNewSchedule"
+      @onSubmitSchedule="addNewSchedule"
     />
     <CalenderList
       :schedules="schedules"
       :calendar="calendar"
       @onUpdate="upDateSchedule"
     />
+    aaa
   </div>
 </template>
 
