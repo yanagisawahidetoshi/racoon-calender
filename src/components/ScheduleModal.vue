@@ -35,7 +35,7 @@ export default {
     modalName: {
       type: String,
       default: MODAL_NAME,
-    }
+    },
   },
   data() {
     return {
@@ -50,6 +50,9 @@ export default {
     };
   },
   mounted() {
+    if (this.isModalOpen) {
+      this.$vm2.open(this.modalName);
+    }
     if (this.defaultSchedule) {
       this.schedule = this.defaultSchedule;
     }

@@ -9,7 +9,12 @@
     />
     <ol>
       <li v-for="(date, index) in dates" :key="index">
-        <DateRow :date="date" :schedules="getSchedule(date)" />
+        <DateRow
+          :date="date"
+          :schedules="getSchedule(date)"
+          @onSubmit="updatedSchedule"
+          @onClickDeleteButton="deleteSchedule"
+        />
       </li>
     </ol>
     {{ schedules }}
@@ -42,17 +47,17 @@ export default {
       schedules: [
         {
           id: 1,
-          date: "2024-12-23",
-          startTime: "14:22",
-          endTime: "15:22",
-          content: "aaaaaa",
+          date: "2025-01-01",
+          startTime: "00:00",
+          endTime: "23:59",
+          content: "元旦",
         },
         {
           id: 2,
-          date: "2024-12-23",
-          startTime: "10:22",
-          endTime: "15:22",
-          content: "bbbbb",
+          date: "2025-01-13",
+          startTime: "00:00",
+          endTime: "23:59",
+          content: "成人の日",
         },
       ],
     };
@@ -90,6 +95,20 @@ export default {
     resgistSchedule(newSchedule) {
       const id = this.schedules?.at(-1)?.id ?? 0;
       this.schedules.push({ ...newSchedule, id: id + 1 });
+    },
+    updatedSchedule(editSchedule) {
+      this.schedules = this.schedules.map((schedule) => {
+        if (schedule.id === editSchedule.id) {
+          return { ...editSchedule };
+        } else {
+          return schedule;
+        }
+      });
+    },
+    deleteSchedule(scheduleId) {
+      this.schedules = this.schedules.filter(
+        (schedule) => schedule.id !== scheduleId
+      );
     },
   },
 };
